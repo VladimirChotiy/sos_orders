@@ -1,0 +1,28 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>Icons/data_icon.ico</file>
+        <file>Icons/settings.ico</file>
+        <file>Icons/three-bars.ico</file>
+        <file>Icons/close_big_icon.ico</file>
+        <file>Icons/powercircleand.ico</file>
+        <file>Icons/Data_settings.ico</file>
+        <file>Icons/ok.ico</file>
+        <file>Icons/Error.ico</file>
+        <file>Icons/refresh.ico</file>
+        <file>Icons/register.ico</file>
+        <file>Icons/new.ico</file>
+        <file>Icons/accept.ico</file>
+        <file>Icons/survey.ico</file>
+        <file>Icons/send.ico</file>
+        <file>Icons/accept_to_assembling.ico</file>
+        <file>Icons/assembling.ico</file>
+        <file>Icons/add_orders.ico</file>
+        <file>Icons/delivery.ico</file>
+        <file>Icons/building.ico</file>
+        <file>Icons/not_answer.ico</file>
+        <file>Icons/id_card.ico</file>
+        <file>Icons/home_outline.ico</file>
+        <file>Icons/addnewfile.ico</file>
+        <file>Icons/edit.ico</file>
+    </qresource>
+</RCC>

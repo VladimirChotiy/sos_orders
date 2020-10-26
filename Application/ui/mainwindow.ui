@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>825</width>
+    <height>603</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Регистрация и выполнение заявок</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Res.qrc">
+    <normaloff>:/icons/Icons/three-bars.ico</normaloff>:/icons/Icons/three-bars.ico</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QTableView" name="tbl_Requests">
+      <property name="contextMenuPolicy">
+       <enum>Qt::NoContextMenu</enum>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>825</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <widget class="QMenu" name="menuMain">
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="act_DBConnection"/>
+    <addaction name="separator"/>
+    <addaction name="act_Exit"/>
+   </widget>
+   <widget class="QMenu" name="menuFirstAction">
+    <property name="font">
+     <font>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="title">
+     <string>Заявки</string>
+    </property>
+    <widget class="QMenu" name="menuEdit">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Обработка</string>
+     </property>
+     <addaction name="act_Accept"/>
+     <addaction name="act_Survey"/>
+     <addaction name="act_SendCalc"/>
+    </widget>
+    <widget class="QMenu" name="menuWork">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Монтаж</string>
+     </property>
+     <addaction name="act_Accept_on_assembling"/>
+     <addaction name="act_Assembling"/>
+    </widget>
+    <widget class="QMenu" name="menuAdvanced">
+     <property name="font">
+      <font>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="title">
+      <string>Счета</string>
+     </property>
+     <addaction name="act_AddOrders"/>
+     <addaction name="act_OrdersReady"/>
+    </widget>
+    <addaction name="act_Refresh"/>
+    <addaction name="separator"/>
+    <addaction name="act_Register"/>
+    <addaction name="menuEdit"/>
+    <addaction name="menuWork"/>
+    <addaction name="menuAdvanced"/>
+    <addaction name="separator"/>
+    <addaction name="act_Done"/>
+    <addaction name="act_Cancel"/>
+    <addaction name="act_NotAnswer"/>
+   </widget>
+   <addaction name="menuMain"/>
+   <addaction name="menuFirstAction"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBarMain">
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::TopToolBarArea</set>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="act_DBConnection"/>
+   <addaction name="act_Exit"/>
+   <addaction name="separator"/>
+  </widget>
+  <widget class="QToolBar" name="toolBarOrder">
+   <property name="windowTitle">
+    <string>toolBar_2</string>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::TopToolBarArea</set>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="act_Refresh"/>
+   <addaction name="separator"/>
+   <addaction name="act_Register"/>
+   <addaction name="separator"/>
+   <addaction name="act_Accept"/>
+   <addaction name="act_Survey"/>
+   <addaction name="act_SendCalc"/>
+   <addaction name="separator"/>
+   <addaction name="act_Accept_on_assembling"/>
+   <addaction name="act_Assembling"/>
+   <addaction name="separator"/>
+   <addaction name="act_AddOrders"/>
+   <addaction name="act_OrdersReady"/>
+   <addaction name="separator"/>
+   <addaction name="act_Done"/>
+   <addaction name="act_Cancel"/>
+   <addaction name="act_NotAnswer"/>
+   <addaction name="separator"/>
+  </widget>
+  <action name="act_DBConnection">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/Data_settings.ico</normaloff>:/icons/Icons/Data_settings.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Настройки</string>
+   </property>
+   <property name="toolTip">
+    <string>Настройки подключения к БД</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::PreferencesRole</enum>
+   </property>
+  </action>
+  <action name="act_Exit">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/powercircleand.ico</normaloff>:/icons/Icons/powercircleand.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Выход</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+     <weight>75</weight>
+     <bold>true</bold>
+    </font>
+   </property>
+  </action>
+  <action name="act_Refresh">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/refresh.ico</normaloff>:/icons/Icons/refresh.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Обновить</string>
+   </property>
+  </action>
+  <action name="act_Register">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/new.ico</normaloff>:/icons/Icons/new.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Зарегистрировать</string>
+   </property>
+  </action>
+  <action name="act_Accept">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/accept.ico</normaloff>:/icons/Icons/accept.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Принять в обработку</string>
+   </property>
+  </action>
+  <action name="act_Survey">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/survey.ico</normaloff>:/icons/Icons/survey.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Выезд на обследование</string>
+   </property>
+  </action>
+  <action name="act_SendCalc">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/send.ico</normaloff>:/icons/Icons/send.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Отправить КП</string>
+   </property>
+  </action>
+  <action name="act_Accept_on_assembling">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/accept_to_assembling.ico</normaloff>:/icons/Icons/accept_to_assembling.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Принять в монтаж</string>
+   </property>
+  </action>
+  <action name="act_Assembling">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/assembling.ico</normaloff>:/icons/Icons/assembling.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Монтаж</string>
+   </property>
+  </action>
+  <action name="act_AddOrders">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/add_orders.ico</normaloff>:/icons/Icons/add_orders.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Прикрепить счета</string>
+   </property>
+  </action>
+  <action name="act_OrdersReady">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/building.ico</normaloff>:/icons/Icons/building.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Счета сформированы</string>
+   </property>
+  </action>
+  <action name="act_Done">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/ok.ico</normaloff>:/icons/Icons/ok.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Завершено</string>
+   </property>
+  </action>
+  <action name="act_Cancel">
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/Error.ico</normaloff>:/icons/Icons/Error.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Отменено</string>
+   </property>
+  </action>
+  <action name="act_NotAnswer">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Res.qrc">
+     <normaloff>:/icons/Icons/not_answer.ico</normaloff>:/icons/Icons/not_answer.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Нет ответа</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="Res.qrc"/>
+ </resources>
+ <connections/>
+</ui>
