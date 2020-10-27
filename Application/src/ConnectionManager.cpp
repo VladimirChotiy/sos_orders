@@ -3,7 +3,6 @@
 #include <QSqlError>
 #include <QSqlQuery>
 #include "settings.h"
-#include "mapsettings.h"
 
 using namespace DBTypes;
 namespace db

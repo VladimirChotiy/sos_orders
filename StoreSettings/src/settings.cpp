@@ -3,7 +3,6 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QDebug>
-#include "simplecrypt.h"
 
 namespace settings {
 
@@ -23,6 +22,7 @@ StoreSettings::StoreSettings()
 }
 
 StoreSettings::~StoreSettings(){
+    qDebug() << "Delete settings!";
     delete m_settings;
 }
 

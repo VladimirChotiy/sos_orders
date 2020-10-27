@@ -56,6 +56,7 @@ void MainWindow::ConnectToDB()
 {
     db::DBProcessor* m_DBProcessor {new db::DBProcessor()};
     sts_username->setText(m_DBProcessor->findUser(curUser));
+
     delete m_DBProcessor;
 }
 

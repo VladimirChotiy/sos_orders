@@ -23,10 +23,14 @@ QString DBProcessor::findUser(const QString curUser)
 
     std::tie(result, resultQuery) = Execute(queryText);
     if (result != DBTypes::DBResult::OK) {
-        return "Unknow";
+        return "Unknown";
     }
-    resultQuery.next();
-    return resultQuery.value(0).toString();
+    if (resultQuery.size() > 0){
+        resultQuery.next();
+        return resultQuery.value(0).toString();
+    } else {
+        return "Unknown";
+    }
 }
 
 std::pair<DBResult, QSqlQuery> DBProcessor::Execute(const QString& queryText, const QVariantList& args)

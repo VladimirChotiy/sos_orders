@@ -2,7 +2,6 @@
 
 #include <QDialog>
 #include <QTimer>
-#include "settings.h"
 
 namespace Ui {
 class UConnect_db;
@@ -23,7 +22,8 @@ private slots:
 
 private:
     Ui::UConnect_db *ui;
-    settings::StoreSettings* db_settings;
+    //settings::StoreSettings* db_settings;
+    void GetConnectionSettings();
 
     // QDialog interface
 public slots:
@@ -32,8 +32,4 @@ public slots:
 signals:
     emit void timerShot();
 
-
-    // QWidget interface
-protected:
-    void closeEvent(QCloseEvent *event);
 };

@@ -10,7 +10,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 INCLUDEPATH += $$PWD/inc/
 
 HEADERS += \
-    inc/mapsettings.h \
     inc/settings.h \
     inc/simplecrypt.h
 
@@ -21,7 +20,6 @@ SOURCES += \
 DESTDIR = $$PWD/../shared/lib/
 
 headers.path = ../shared/inc/
-headers.files = inc/settings.h \
-                inc/mapsettings.h
+headers.files = inc/settings.h
 
 INSTALLS += headers
