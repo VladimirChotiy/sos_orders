@@ -35,7 +35,7 @@
    <string>Подключение к базе данных</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="Res.qrc">
+   <iconset resource="../Res.qrc">
     <normaloff>:/icons/Icons/Data_settings.ico</normaloff>:/icons/Icons/Data_settings.ico</iconset>
   </property>
   <property name="modal">
@@ -216,7 +216,7 @@
   </layout>
  </widget>
  <resources>
-  <include location="Res.qrc"/>
+  <include location="../Res.qrc"/>
  </resources>
  <connections>
   <connection>

@@ -51,14 +51,14 @@ bool ConnectionManager::DBManagerPrivate::setUp()
     }
 
     settings::StoreSettings m_settings;
-    m_settings.setGroupName(settings::mapSetGroupNames.at(settings::groupSettings::Connection));
+    m_settings.setGroupName("Connection");
     m_settings.OpenGroup();
-    QString db_Hostname {m_settings.getParam(settings::mapConSetNames.at(settings::tpConnectNames::Hostname)).toString()};
-    QString db_User {m_settings.getParam(settings::mapConSetNames.at(settings::tpConnectNames::User)).toString()};
-    QString db_Password {m_settings.getCryptedParam(settings::mapConSetNames.at(settings::tpConnectNames::Password))};
-    bool db_Auto {m_settings.getParam(settings::mapConSetNames.at(settings::tpConnectNames::Autoconnect)).toBool()};
+    QString db_Hostname {m_settings.getParam("Hostname").toString()};
+    QString db_User {m_settings.getParam("User").toString()};
+    QString db_Password {m_settings.getCryptedParam("Password")};
+    bool db_Auto {m_settings.getParam("Autoconnect").toBool()};
     if (!db_Auto) {
-        m_settings.setCryptedParam(settings::mapConSetNames.at(settings::tpConnectNames::Password), "");
+        m_settings.setCryptedParam("Password", "");
     }
     m_settings.CloseGroup();
 

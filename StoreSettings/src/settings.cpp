@@ -19,10 +19,11 @@ StoreSettings::StoreSettings()
     }
 
     m_settings = new QSettings(fullPath, QSettings::IniFormat);
+    //qDebug() << "Create settings!";
 }
 
 StoreSettings::~StoreSettings(){
-    qDebug() << "Delete settings!";
+    //qDebug() << "Delete settings!";
     delete m_settings;
 }
 

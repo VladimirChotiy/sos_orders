@@ -1,7 +1,9 @@
-#pragma once
+#ifndef UCONNECTDB_H
+#define UCONNECTDB_H
 
 #include <QDialog>
 #include <QTimer>
+#include "settings.h"
 
 namespace Ui {
 class UConnect_db;
@@ -22,8 +24,10 @@ private slots:
 
 private:
     Ui::UConnect_db *ui;
-    //settings::StoreSettings* db_settings;
-    void GetConnectionSettings();
+    void LoadConnectionSettings();
+    void SaveConnectionSettings();
+    void LoadDialogUiSettings();
+    void SaveDialogUiSettings();
 
     // QDialog interface
 public slots:
@@ -33,3 +37,5 @@ signals:
     emit void timerShot();
 
 };
+
+#endif

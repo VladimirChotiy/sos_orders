@@ -11,7 +11,7 @@ CONFIG += c++11
 SOURCES += \
     src/ConnectionManager.cpp \
     src/DBProcessor.cpp \
-	src/chooseengineer.cpp \
+    src/chooseengineer.cpp \
     src/editotderstatus.cpp \
     main.cpp \
     src/mainwindow.cpp \
@@ -26,7 +26,7 @@ HEADERS += \
     inc/ConnectionManager.h \
     inc/DBProcessor.h \
     inc/dbtypes.h \
-	inc/chooseengineer.h \
+    inc/chooseengineer.h \
     inc/editotderstatus.h \
     inc/mainwindow.h \
     inc/querymainrequests.h \
