@@ -8,6 +8,7 @@
 #include "uregisternewrequest.h"
 #include "chooseengineer.h"
 #include "editotderstatus.h"
+#include "clDBMainQueryModel.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,6 +31,7 @@ private:
     QString curUser;
     ChooseEngineer *ui_chooseEng;
     EditOtderStatus *ui_editRequest;
+    clDBMainQueryModel* mainTableModel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     void RunConnectionDialog(ConnectionDlgMode mode);
     void ConfigStatusBar();

@@ -12,6 +12,7 @@ SOURCES += \
     src/ConnectionManager.cpp \
     src/DBProcessor.cpp \
     src/chooseengineer.cpp \
+    src/clDBMainQueryModel.cpp \
     src/editotderstatus.cpp \
     main.cpp \
     src/mainwindow.cpp \
@@ -25,6 +26,7 @@ INCLUDEPATH += $$PWD/inc \
 HEADERS += \
     inc/ConnectionManager.h \
     inc/DBProcessor.h \
+    inc/clDBMainQueryModel.h \
     inc/dbtypes.h \
     inc/chooseengineer.h \
     inc/editotderstatus.h \

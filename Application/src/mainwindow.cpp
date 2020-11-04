@@ -5,7 +5,8 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
-      ui(new Ui::MainWindow)
+      ui(new Ui::MainWindow),
+      mainTableModel (new clDBMainQueryModel(this))
 {
     ui->setupUi(this);
     RunConnectionDialog(ConnectionDlgMode::StartMode);
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
         curUser = qgetenv("USERNAME");
     }
     ConfigStatusBar();
+    ui->tbl_Requests->setModel(mainTableModel);
 }
 
 MainWindow::~MainWindow()
