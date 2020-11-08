@@ -14,7 +14,7 @@
    <string>Регистрация и выполнение заявок</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="Res.qrc">
+   <iconset resource="../Res.qrc">
     <normaloff>:/icons/Icons/three-bars.ico</normaloff>:/icons/Icons/three-bars.ico</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -24,9 +24,44 @@
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QTableView" name="tbl_Requests">
+      <property name="font">
+       <font>
+        <family>MS Shell Dlg 2</family>
+        <pointsize>10</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
       <property name="contextMenuPolicy">
        <enum>Qt::NoContextMenu</enum>
       </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="alternatingRowColors">
+       <bool>false</bool>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <attribute name="horizontalHeaderVisible">
+       <bool>true</bool>
+      </attribute>
+      <attribute name="horizontalHeaderCascadingSectionResizes">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="horizontalHeaderStretchLastSection">
+       <bool>false</bool>
+      </attribute>
+      <attribute name="verticalHeaderVisible">
+       <bool>false</bool>
+      </attribute>
      </widget>
     </item>
    </layout>
@@ -188,7 +223,7 @@
   </widget>
   <action name="act_DBConnection">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/Data_settings.ico</normaloff>:/icons/Icons/Data_settings.ico</iconset>
    </property>
    <property name="text">
@@ -210,7 +245,7 @@
   </action>
   <action name="act_Exit">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/powercircleand.ico</normaloff>:/icons/Icons/powercircleand.ico</iconset>
    </property>
    <property name="text">
@@ -226,7 +261,7 @@
   </action>
   <action name="act_Refresh">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/refresh.ico</normaloff>:/icons/Icons/refresh.ico</iconset>
    </property>
    <property name="text">
@@ -238,7 +273,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/new.ico</normaloff>:/icons/Icons/new.ico</iconset>
    </property>
    <property name="text">
@@ -247,7 +282,7 @@
   </action>
   <action name="act_Accept">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/accept.ico</normaloff>:/icons/Icons/accept.ico</iconset>
    </property>
    <property name="text">
@@ -256,7 +291,7 @@
   </action>
   <action name="act_Survey">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/survey.ico</normaloff>:/icons/Icons/survey.ico</iconset>
    </property>
    <property name="text">
@@ -265,7 +300,7 @@
   </action>
   <action name="act_SendCalc">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/send.ico</normaloff>:/icons/Icons/send.ico</iconset>
    </property>
    <property name="text">
@@ -274,7 +309,7 @@
   </action>
   <action name="act_Accept_on_assembling">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/accept_to_assembling.ico</normaloff>:/icons/Icons/accept_to_assembling.ico</iconset>
    </property>
    <property name="text">
@@ -283,7 +318,7 @@
   </action>
   <action name="act_Assembling">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/assembling.ico</normaloff>:/icons/Icons/assembling.ico</iconset>
    </property>
    <property name="text">
@@ -292,7 +327,7 @@
   </action>
   <action name="act_AddOrders">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/add_orders.ico</normaloff>:/icons/Icons/add_orders.ico</iconset>
    </property>
    <property name="text">
@@ -301,7 +336,7 @@
   </action>
   <action name="act_OrdersReady">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/building.ico</normaloff>:/icons/Icons/building.ico</iconset>
    </property>
    <property name="text">
@@ -310,7 +345,7 @@
   </action>
   <action name="act_Done">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/ok.ico</normaloff>:/icons/Icons/ok.ico</iconset>
    </property>
    <property name="text">
@@ -319,7 +354,7 @@
   </action>
   <action name="act_Cancel">
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/Error.ico</normaloff>:/icons/Icons/Error.ico</iconset>
    </property>
    <property name="text">
@@ -334,7 +369,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="Res.qrc">
+    <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/not_answer.ico</normaloff>:/icons/Icons/not_answer.ico</iconset>
    </property>
    <property name="text">
@@ -343,7 +378,7 @@
   </action>
  </widget>
  <resources>
-  <include location="Res.qrc"/>
+  <include location="../Res.qrc"/>
  </resources>
  <connections/>
 </ui>

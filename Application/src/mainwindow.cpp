@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      mainTableModel (new clDBMainQueryModel(this))
+      mainTableModel (new db::clDBMainQueryModel(this))
 {
     ui->setupUi(this);
     RunConnectionDialog(ConnectionDlgMode::StartMode);
@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     }
     ConfigStatusBar();
     ui->tbl_Requests->setModel(mainTableModel);
+    ui->tbl_Requests->setWordWrap(true);
+    //ui->tbl_Requests->resizeColumnsToContents();
 }
 
 MainWindow::~MainWindow()
@@ -103,4 +105,9 @@ void MainWindow::on_act_Accept_triggered()
 void MainWindow::on_act_Survey_triggered()
 {
     RunEditDlg();
+}
+
+void MainWindow::on_act_Refresh_triggered()
+{
+    mainTableModel->RefreshQuery();
 }

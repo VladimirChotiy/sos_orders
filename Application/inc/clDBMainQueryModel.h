@@ -4,6 +4,8 @@
 #include <QSqlQueryModel>
 #include <QSqlQuery>
 
+namespace db
+{
 class clDBMainQueryModel : public QSqlQueryModel
 {
     Q_OBJECT
@@ -11,6 +13,10 @@ class clDBMainQueryModel : public QSqlQueryModel
 public:
     explicit clDBMainQueryModel(QObject *parent = nullptr);
     ~clDBMainQueryModel();
+    void RefreshQuery();
+
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
+    QVariant data(const QModelIndex &index, int role) const;
 
 private:
     QSqlQuery resultQuery {};
@@ -21,6 +27,10 @@ private:
                 "LEFT JOIN tbl_changes ON tbl_requests.change_id = tbl_changes.id " \
                 "LEFT JOIN tbl_status ON tbl_changes.status_id = tbl_status.id " \
                 "LEFT JOIN tbl_users ON tbl_changes.user_id = tbl_users.id "};
+
+    QVariant GetHeaderNames(int column) const;
+    QVariant GetDataTextAlign(int column) const;
 };
+}
 
 #endif // CLDBMAINQUERYMODEL_H

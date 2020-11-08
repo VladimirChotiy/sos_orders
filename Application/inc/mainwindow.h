@@ -31,7 +31,7 @@ private:
     QString curUser;
     ChooseEngineer *ui_chooseEng;
     EditOtderStatus *ui_editRequest;
-    clDBMainQueryModel* mainTableModel;
+    db::clDBMainQueryModel* mainTableModel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     void RunConnectionDialog(ConnectionDlgMode mode);
     void ConfigStatusBar();
@@ -47,5 +47,6 @@ private slots:
     void on_act_Register_triggered();
     void on_act_Accept_triggered();
     void on_act_Survey_triggered();
+    void on_act_Refresh_triggered();
 };
 #endif // MAINWINDOW_H
