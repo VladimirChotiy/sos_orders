@@ -2,6 +2,7 @@
 #define UREGISTERNEWREQUEST_H
 
 #include <QDialog>
+#include "clDBEditRequest.h"
 
 namespace Ui {
 class URegisterNewRequest;
@@ -13,6 +14,7 @@ class URegisterNewRequest : public QDialog
 
 public:
     explicit URegisterNewRequest(QWidget *parent = nullptr);
+    URegisterNewRequest(int editID, QWidget *parent = nullptr);
     ~URegisterNewRequest();
 
 private slots:
@@ -24,8 +26,10 @@ private slots:
 
 private:
     Ui::URegisterNewRequest *ui;
+    db::clDBEditRequest m_fullModel;
     void SaveDialogSettings();
     void LoadDialogSettings();
+    void StartInit();
 };
 
 #endif // UREGISTERNEWREQUEST_H

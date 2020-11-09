@@ -5,13 +5,18 @@
 
 URegisterNewRequest::URegisterNewRequest(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::URegisterNewRequest)
+    ui(new Ui::URegisterNewRequest),
+    m_fullModel(new db::clDBEditRequest(0, this))
 {
-    ui->setupUi(this);
-    ui->ed_Date->setDate(QDate::currentDate());
-    LoadDialogSettings();
-    on_btn_Card_clicked();
-    on_btn_ObjectAddress_clicked();
+    StartInit();
+}
+
+URegisterNewRequest::URegisterNewRequest(int editID, QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::URegisterNewRequest),
+    m_fullModel(new db::clDBEditRequest(editID, this))
+{
+    StartInit();
 }
 
 URegisterNewRequest::~URegisterNewRequest()
@@ -68,6 +73,16 @@ void URegisterNewRequest::LoadDialogSettings()
     ui->btn_Card->setChecked(dlg_settings.value("btnCard_checked", "true").toBool());
     ui->btn_AddEdit->setChecked(dlg_settings.value("btnAddEdit_checked", "true").toBool());
     dlg_settings.endGroup();
+}
+
+void URegisterNewRequest::StartInit()
+{
+    ui->setupUi(this);
+    ui->ed_Date->setDate(QDate::currentDate());
+    LoadDialogSettings();
+    on_btn_Card_clicked();
+    on_btn_ObjectAddress_clicked();
+    ui->cb_Person->addItems(m_fullModel.GetPartnersList());
 }
 
 void URegisterNewRequest::on_URegisterNewRequest_rejected()

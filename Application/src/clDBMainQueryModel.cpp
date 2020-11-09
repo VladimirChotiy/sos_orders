@@ -8,13 +8,19 @@
 
 namespace db
 {
-clDBMainQueryModel::clDBMainQueryModel(QObject *parent)
+clDBMainQueryModel::clDBMainQueryModel(int reqID, QObject *parent)
     : QSqlQueryModel(parent)
 {
     DBProcessor* m_dbProcessor {new DBProcessor()};
     DBTypes::DBResult result {DBTypes::DBResult::OK};
 
-    std::tie(result, resultQuery) = m_dbProcessor->Execute(queryText);
+    QString sendQueryText;
+    if (reqID > 0) {
+        sendQueryText = queryText + " WHERE tbl_requests.id = " + QString::number(reqID);
+    }else {
+        sendQueryText = queryText;
+    }
+    std::tie(result, resultQuery) = m_dbProcessor->Execute(sendQueryText);
     delete m_dbProcessor;
     if (result == DBTypes::DBResult::OK) {
         this->setQuery(resultQuery);
@@ -34,7 +40,7 @@ clDBMainQueryModel::~clDBMainQueryModel()
 
 void clDBMainQueryModel::RefreshQuery()
 {
-    this->query().exec();
+    this->setQuery(this->query().lastQuery());
 }
 
 QVariant clDBMainQueryModel::GetHeaderNames(int column) const
@@ -44,7 +50,7 @@ QVariant clDBMainQueryModel::GetHeaderNames(int column) const
             return "№ п/п";
         }
     case 1:{
-            return "Текст заявки";
+            return "Описание заявки";
         }
     case 2:{
             return "Комментарий";
@@ -98,7 +104,7 @@ QVariant clDBMainQueryModel::headerData(int section, Qt::Orientation orientation
     }
     switch (role) {
     case Qt::DisplayRole: return GetHeaderNames(section);
-    case Qt::TextAlignmentRole: return Qt::AlignCenter;
+    //case Qt::TextAlignmentRole: return QVariant(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
     case Qt::FontRole: return QFont("MS Shell Dlg 2", 10, QFont::Bold);
     default: return QVariant();
     }

@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      mainTableModel (new db::clDBMainQueryModel(this))
+      mainTableModel (new db::clDBMainQueryModel(0, this))
 {
     ui->setupUi(this);
     RunConnectionDialog(ConnectionDlgMode::StartMode);
@@ -19,6 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tbl_Requests->setModel(mainTableModel);
     ui->tbl_Requests->setWordWrap(true);
     //ui->tbl_Requests->resizeColumnsToContents();
+    ui->tbl_Requests->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
+    ui->tbl_Requests->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
+    ui->tbl_Requests->horizontalHeader()->setStretchLastSection(true);
+    ui->tbl_Requests->horizontalHeader()->setSectionsMovable(true);
+    ui->tbl_Requests->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
 MainWindow::~MainWindow()

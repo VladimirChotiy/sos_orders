@@ -11,7 +11,7 @@ class clDBMainQueryModel : public QSqlQueryModel
     Q_OBJECT
 
 public:
-    explicit clDBMainQueryModel(QObject *parent = nullptr);
+    explicit clDBMainQueryModel(int reqID, QObject *parent = nullptr);
     ~clDBMainQueryModel();
     void RefreshQuery();
 
