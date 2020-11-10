@@ -4,7 +4,6 @@
 #include "dbtypes.h"
 #include "settings.h"
 #include <QSettings>
-#include <QDir>
 
 URegisterNewRequest::URegisterNewRequest(QWidget *parent) :
     QDialog(parent),
@@ -23,8 +22,8 @@ void URegisterNewRequest::SaveDialogSettings()
     settings::StoreSettings *m_settings {new settings::StoreSettings()};
     m_settings->setGroupName("AddNewRequestDlg");
     m_settings->OpenGroup();
-    m_settings->setParam("width", this->geometry().width());
-    m_settings->setParam("heigth", this->geometry().height());
+    m_settings->setParam("Width", this->geometry().width());
+    m_settings->setParam("Heigth", this->geometry().height());
     m_settings->CloseGroup();
     delete m_settings;
 }
@@ -34,7 +33,7 @@ void URegisterNewRequest::LoadDialogSettings()
     settings::StoreSettings *m_settings {new settings::StoreSettings()};
     m_settings->setGroupName("AddNewRequestDlg");
     m_settings->OpenGroup();
-    this->resize(m_settings->getParam("width").toInt(), m_settings->getParam("heigth").toInt());
+    this->resize(m_settings->getParam("Width").toInt(), m_settings->getParam("Heigth").toInt());
     m_settings->CloseGroup();
     delete m_settings;
 }
@@ -45,12 +44,9 @@ void URegisterNewRequest::StartInit()
     ui->ed_Date->setDate(QDate::currentDate());
     LoadDialogSettings();
 
-    m_personListModel = new QSqlTableModel(this);
-    m_personListModel->setTable("tbl_person");
-    m_personListModel->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    m_personListModel->setSort(1, Qt::SortOrder::DescendingOrder);
-    m_personListModel->select();
+    m_personListModel = new QSqlQueryModel(this);
     m_personMapper = new QDataWidgetMapper(this);
+    m_personListModel->setQuery(prepareQuery(QueryType::Person));
     ui->cb_Person->setModel(m_personListModel);
     ui->cb_Person->setModelColumn(1);
     m_personMapper->setModel(m_personListModel);
@@ -60,18 +56,15 @@ void URegisterNewRequest::StartInit()
 
     m_ObjectModel = new QSqlQueryModel(this);
     m_ObjectMapper = new QDataWidgetMapper(this);
-    m_ObjectModel->setQuery(QSqlQuery(QString("SELECT * FROM tbl_objects WHERE parent_id=-1 ORDER BY name")));
+    m_ObjectModel->setQuery(prepareQuery(QueryType::Object));
     ui->cb_Object->setModel(m_ObjectModel);
     ui->cb_Object->setModelColumn(1);
     m_ObjectMapper->setModel(m_ObjectModel);
     m_ObjectMapper->addMapping(ui->txt_Adress, 2);
-    connect(ui->cb_Object, SIGNAL(currentIndexChanged(int)), m_ObjectMapper, SLOT(setCurrentIndex(int)));
+    connect(ui->cb_Object, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_ObjectData_changed(int)));
 
-    m_systemType = new QSqlTableModel(this);
-    m_systemType->setTable("tbl_types");
-    m_systemType->setEditStrategy(QSqlTableModel::OnManualSubmit);
-    m_systemType->setSort(0, Qt::SortOrder::DescendingOrder);
-    m_systemType->select();
+    m_systemType = new QSqlQueryModel(this);
+    m_systemType->setQuery(prepareQuery(QueryType::SystemType));
     ui->cb_Type->setModel(m_systemType);
     ui->cb_Type->setModelColumn(1);
 
@@ -96,11 +89,13 @@ QSqlQuery URegisterNewRequest::prepareQuery(URegisterNewRequest::QueryType qType
     }
     case QueryType::Object:{
         textQuery = QString("SELECT * FROM tbl_objects WHERE parent_id=%1 ORDER BY name").arg(index);
+        break;
     }
     default: textQuery = "";
     }
 
     std::tie(result, resultQuery) = m_DBProcessor->Execute(textQuery);
+    delete m_DBProcessor;
     if (result == DBTypes::DBResult::FAIL) {
         qDebug() << "Error executing DBProcessor";
     }
@@ -121,20 +116,33 @@ void URegisterNewRequest::on_URegisterNewRequest_accepted()
 
 void URegisterNewRequest::usr_PersonData_changed(int index)
 {
+    int sendID {m_personListModel->query().value(0).toInt()};
     m_personMapper->setCurrentIndex(index);
 
-    m_ObjectModel->setQuery(QString("SELECT * FROM tbl_objects WHERE parent_id=%1 ORDER BY name").arg(index));
+    if (index == -1){
+        ui->ed_Telephone->setText("");
+        ui->ed_Email->setText("");
+        ui->cb_Object->setCurrentIndex(-1);
+        sendID = index;
+    }
+
+    m_ObjectModel->setQuery(prepareQuery(QueryType::Object, sendID));
+}
+
+void URegisterNewRequest::usr_ObjectData_changed(int index)
+{
+    m_ObjectMapper->setCurrentIndex(index);
+    if (index == -1) {
+        ui->txt_Adress->setText("");
+    }
 }
 
 void URegisterNewRequest::on_btn_AddPerson_clicked()
 {
     ui->cb_Person->setCurrentIndex(-1);
-    ui->ed_Telephone->setText("");
-    ui->ed_Email->setText("");
 }
 
 void URegisterNewRequest::on_btn_AddObject_clicked()
 {
     ui->cb_Object->setCurrentIndex(-1);
-    ui->txt_Adress->setText("");
 }
