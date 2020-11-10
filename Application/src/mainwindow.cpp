@@ -57,8 +57,8 @@ void MainWindow::ConfigStatusBar()
 
 void MainWindow::RunEditDlg()
 {
-    ui_editRequest = new EditOtderStatus(this);
-    ui_editRequest->open();
+    ui_editOrderStatus = new EditOtderStatus(this);
+    ui_editOrderStatus->open();
 }
 
 void MainWindow::ConnectToDB()
@@ -94,7 +94,6 @@ void MainWindow::on_act_Exit_triggered()
     close();
 }
 
-
 void MainWindow::on_act_Register_triggered()
 {
     URegisterRequest = new URegisterNewRequest(this);
@@ -115,4 +114,10 @@ void MainWindow::on_act_Survey_triggered()
 void MainWindow::on_act_Refresh_triggered()
 {
     mainTableModel->RefreshQuery();
+}
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui_editRequest = new UEditRequest(this);
+    ui_editRequest->open();
 }

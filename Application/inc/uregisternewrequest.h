@@ -2,7 +2,10 @@
 #define UREGISTERNEWREQUEST_H
 
 #include <QDialog>
-#include "clDBEditRequest.h"
+#include <QSqlTableModel>
+#include <QSqlQueryModel>
+#include <QDataWidgetMapper>
+#include <QSqlQuery>
 
 namespace Ui {
 class URegisterNewRequest;
@@ -14,19 +17,24 @@ class URegisterNewRequest : public QDialog
 
 public:
     explicit URegisterNewRequest(QWidget *parent = nullptr);
-    URegisterNewRequest(int editID, QWidget *parent = nullptr);
     ~URegisterNewRequest();
 
 private slots:
-    void on_btn_Card_clicked();
-    void on_btn_ObjectAddress_clicked();
     void on_URegisterNewRequest_rejected();
-
     void on_URegisterNewRequest_accepted();
+    void usr_PersonData_changed(int index);
+
+    void on_btn_AddPerson_clicked();
+
+    void on_btn_AddObject_clicked();
 
 private:
     Ui::URegisterNewRequest *ui;
-    db::clDBEditRequest m_fullModel;
+    QSqlTableModel *m_personListModel;
+    QSqlQueryModel *m_ObjectModel;
+    QDataWidgetMapper *m_personMapper;
+    QDataWidgetMapper *m_ObjectMapper;
+    QSqlTableModel *m_systemType;
     void SaveDialogSettings();
     void LoadDialogSettings();
     void StartInit();

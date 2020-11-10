@@ -12,14 +12,14 @@ SOURCES += \
     src/ConnectionManager.cpp \
     src/DBProcessor.cpp \
     src/chooseengineer.cpp \
-    src/clDBEditRequest.cpp \
     src/clDBMainQueryModel.cpp \
     src/editotderstatus.cpp \
     main.cpp \
     src/mainwindow.cpp \
     src/querymainrequests.cpp \
     src/uconnect_db.cpp \
-    src/uregisternewrequest.cpp
+    src/uregisternewrequest.cpp \
+    src/ueditrequest.cpp
 
 INCLUDEPATH += $$PWD/inc \
             $$PWD/../shared/inc
@@ -27,7 +27,6 @@ INCLUDEPATH += $$PWD/inc \
 HEADERS += \
     inc/ConnectionManager.h \
     inc/DBProcessor.h \
-    inc/clDBEditRequest.h \
     inc/clDBMainQueryModel.h \
     inc/dbtypes.h \
     inc/chooseengineer.h \
@@ -35,9 +34,11 @@ HEADERS += \
     inc/mainwindow.h \
     inc/querymainrequests.h \
     inc/uconnect_db.h \
-    inc/uregisternewrequest.h
+    inc/uregisternewrequest.h \
+    inc/ueditrequest.h
 
 FORMS += \
+    ui/ueditrequest.ui \
     ui/chooseengineer.ui \
     ui/editotderstatus.ui \
     ui/mainwindow.ui \

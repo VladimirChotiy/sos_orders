@@ -8,6 +8,7 @@
 #include "uregisternewrequest.h"
 #include "chooseengineer.h"
 #include "editotderstatus.h"
+#include "ueditrequest.h"
 #include "clDBMainQueryModel.h"
 
 QT_BEGIN_NAMESPACE
@@ -24,13 +25,14 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    UConnect_db * ui_connect;
+    UConnect_db *ui_connect;
     URegisterNewRequest *URegisterRequest;
     QLabel *sts_connection;
     QLabel *sts_username;
     QString curUser;
     ChooseEngineer *ui_chooseEng;
-    EditOtderStatus *ui_editRequest;
+    EditOtderStatus *ui_editOrderStatus;
+    UEditRequest *ui_editRequest;
     db::clDBMainQueryModel* mainTableModel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     void RunConnectionDialog(ConnectionDlgMode mode);
@@ -48,5 +50,6 @@ private slots:
     void on_act_Accept_triggered();
     void on_act_Survey_triggered();
     void on_act_Refresh_triggered();
+    void on_pushButton_clicked();
 };
 #endif // MAINWINDOW_H
