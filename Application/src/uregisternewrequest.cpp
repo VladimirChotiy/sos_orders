@@ -64,9 +64,12 @@ void URegisterNewRequest::StartInit()
     connect(ui->cb_Object, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_ObjectData_changed(int)));
 
     m_systemType = new QSqlQueryModel(this);
+    m_SystemMapper = new QDataWidgetMapper(this);
     m_systemType->setQuery(prepareQuery(QueryType::SystemType));
     ui->cb_Type->setModel(m_systemType);
     ui->cb_Type->setModelColumn(1);
+    m_SystemMapper->setModel(m_systemType);
+    connect(ui->cb_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_SystemData_changed(int)));
 
     ui->cb_Person->setCurrentIndex(-1);
 }
@@ -104,7 +107,6 @@ QSqlQuery URegisterNewRequest::prepareQuery(URegisterNewRequest::QueryType qType
 
 void URegisterNewRequest::on_URegisterNewRequest_rejected()
 {
-    //SaveDialogSettings();
     close();
 }
 
@@ -113,25 +115,36 @@ void URegisterNewRequest::on_URegisterNewRequest_accepted()
     SaveDialogSettings();
     db::clDBReqInserter *m_ReqInserter {new db::clDBReqInserter(this)};
     int personID;
-    int sendPersonID;
     int objectID;
-    int sendObjectID;
-    if (ui->cb_Person->currentIndex() == -1){
-        sendPersonID = ui->cb_Person->currentIndex();
-    }else {
-        sendPersonID = m_personListModel->query().value(0).toInt();
-    }
-    personID = m_ReqInserter->AddPersonInfo(sendPersonID, ui->cb_Person->currentText(), ui->ed_Telephone->text(), ui->ed_Email->text());
-    qDebug() << "Person ID: " << personID;
+    int requestID;
+    QVariantList sendArgs {};
 
-    if (ui->cb_Object->currentIndex() == -1) {
-        sendObjectID = ui->cb_Object->currentIndex();
+    personID = ui->cb_Person->currentIndex();
+    if (personID == -1){
+        sendArgs << ui->cb_Person->currentText() << ui->ed_Telephone->text() << ui->ed_Email->text();
+        personID = m_ReqInserter->AddData( sendArgs, DBTypes::DBInsertType::Person);
     }else {
-        sendObjectID = m_ObjectModel->query().value(0).toInt();
+        personID = m_personListModel->query().value(0).toInt();
+    }
+    //qDebug() << "Person ID: " << personID;
+
+    objectID = ui->cb_Object->currentIndex();
+    if (objectID == -1) {
+        sendArgs.clear();
+        sendArgs << ui->cb_Object->currentText() << ui->txt_Adress->toPlainText() << personID;
+        objectID = m_ReqInserter->AddData(sendArgs, DBTypes::DBInsertType::Object);
+    }else {
+        objectID = m_ObjectModel->query().value(0).toInt();
     }
 
-    objectID = m_ReqInserter->AddObjectInfo(sendObjectID, ui->cb_Object->currentText(), ui->txt_Adress->toPlainText(), personID);
-    qDebug() << "Object ID: " << objectID;
+    //qDebug() << "Object ID: " << objectID;
+
+    sendArgs.clear();
+    sendArgs << objectID << m_systemType->query().value(0).toInt() << ui->textEdit->toPlainText();
+    requestID = m_ReqInserter->AddData(sendArgs, DBTypes::DBInsertType::Request);
+    //qDebug() << "Request ID: " << requestID;
+
+    m_ReqInserter->UpdateUser(4, requestID);
 
     delete  m_ReqInserter;
     close();
@@ -158,6 +171,11 @@ void URegisterNewRequest::usr_ObjectData_changed(int index)
     if (index == -1) {
         ui->txt_Adress->setText("");
     }
+}
+
+void URegisterNewRequest::usr_SystemData_changed(int index)
+{
+    m_SystemMapper->setCurrentIndex(index);
 }
 
 void URegisterNewRequest::on_btn_AddPerson_clicked()

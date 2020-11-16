@@ -24,16 +24,18 @@ private slots:
     void on_URegisterNewRequest_accepted();
     void usr_PersonData_changed(int index);
     void usr_ObjectData_changed(int index);
+    void usr_SystemData_changed(int index);
     void on_btn_AddPerson_clicked();
     void on_btn_AddObject_clicked();
 
 private:
     Ui::URegisterNewRequest *ui;
     QSqlQueryModel *m_personListModel;
-    QSqlQueryModel *m_ObjectModel;
     QDataWidgetMapper *m_personMapper;
+    QSqlQueryModel *m_ObjectModel;
     QDataWidgetMapper *m_ObjectMapper;
     QSqlQueryModel *m_systemType;
+    QDataWidgetMapper *m_SystemMapper;
     void SaveDialogSettings();
     void LoadDialogSettings();
     void StartInit();

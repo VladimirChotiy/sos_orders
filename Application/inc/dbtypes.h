@@ -15,5 +15,11 @@ enum class DBState {
     ERROR_OPENING
 };
 
+enum class DBInsertType {
+    Person,
+    Object,
+    Request
+};
+
 }
 #endif // DBTYPES_H

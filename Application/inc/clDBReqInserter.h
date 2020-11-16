@@ -2,7 +2,6 @@
 #define CLDBREQINSERTER_H
 
 #include <QObject>
-#include "DBProcessor.h"
 #include "dbtypes.h"
 
 namespace db {
@@ -14,15 +13,12 @@ public:
     explicit clDBReqInserter(QObject *parent);
     ~clDBReqInserter();
 
-    int AddPersonInfo(int id, const QString name, const QString telephone, const QString email);
-    int AddObjectInfo(int id, const QString name, const QString address, int parentID);
-    bool AddRequestInfo(int type_id, int obj_id, const QString context);
+    int AddData(QVariantList arg, DBTypes::DBInsertType type);
+    bool UpdateUser(int user_id, int index);
 
 private:
     bool isError(DBTypes::DBResult result);
 
-    const QString textInsertPerson {"INSERT INTO tbl_person (name, telephone, email) VALUES (?, ?, ?)"};
-    const QString textInsertObject {"INSERT INTO tbl_objects (name, address, parent_id) VALUES (?, ?, ?)"};
     const QString textGetLastID {"SELECT LAST_INSERT_ID()"};
     //---------------------
     QString obj_name {};
