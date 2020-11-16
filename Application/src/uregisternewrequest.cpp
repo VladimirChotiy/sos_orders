@@ -3,7 +3,7 @@
 #include "DBProcessor.h"
 #include "dbtypes.h"
 #include "settings.h"
-#include <QSettings>
+#include "clDBReqInserter.h"
 
 URegisterNewRequest::URegisterNewRequest(QWidget *parent) :
     QDialog(parent),
@@ -104,13 +104,36 @@ QSqlQuery URegisterNewRequest::prepareQuery(URegisterNewRequest::QueryType qType
 
 void URegisterNewRequest::on_URegisterNewRequest_rejected()
 {
-    SaveDialogSettings();
+    //SaveDialogSettings();
     close();
 }
 
 void URegisterNewRequest::on_URegisterNewRequest_accepted()
 {
     SaveDialogSettings();
+    db::clDBReqInserter *m_ReqInserter {new db::clDBReqInserter(this)};
+    int personID;
+    int sendPersonID;
+    int objectID;
+    int sendObjectID;
+    if (ui->cb_Person->currentIndex() == -1){
+        sendPersonID = ui->cb_Person->currentIndex();
+    }else {
+        sendPersonID = m_personListModel->query().value(0).toInt();
+    }
+    personID = m_ReqInserter->AddPersonInfo(sendPersonID, ui->cb_Person->currentText(), ui->ed_Telephone->text(), ui->ed_Email->text());
+    qDebug() << "Person ID: " << personID;
+
+    if (ui->cb_Object->currentIndex() == -1) {
+        sendObjectID = ui->cb_Object->currentIndex();
+    }else {
+        sendObjectID = m_ObjectModel->query().value(0).toInt();
+    }
+
+    objectID = m_ReqInserter->AddObjectInfo(sendObjectID, ui->cb_Object->currentText(), ui->txt_Adress->toPlainText(), personID);
+    qDebug() << "Object ID: " << objectID;
+
+    delete  m_ReqInserter;
     close();
 }
 

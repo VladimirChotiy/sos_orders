@@ -13,6 +13,7 @@ SOURCES += \
     src/DBProcessor.cpp \
     src/chooseengineer.cpp \
     src/clDBMainQueryModel.cpp \
+    src/clDBReqInserter.cpp \
     src/editotderstatus.cpp \
     main.cpp \
     src/mainwindow.cpp \
@@ -28,6 +29,7 @@ HEADERS += \
     inc/ConnectionManager.h \
     inc/DBProcessor.h \
     inc/clDBMainQueryModel.h \
+    inc/clDBReqInserter.h \
     inc/dbtypes.h \
     inc/chooseengineer.h \
     inc/editotderstatus.h \
