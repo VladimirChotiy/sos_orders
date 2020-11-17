@@ -16,7 +16,7 @@ class URegisterNewRequest : public QDialog
     Q_OBJECT
 
 public:
-    explicit URegisterNewRequest(QWidget *parent = nullptr);
+    explicit URegisterNewRequest(int userID, QWidget *parent = nullptr);
     ~URegisterNewRequest();
 
 private slots:
@@ -40,7 +40,11 @@ private:
     void LoadDialogSettings();
     void StartInit();
     enum class QueryType {Person, Object, SystemType};
+    int dbUserID;
     QSqlQuery prepareQuery(QueryType qType, int index = -1);
+
+signals:
+    void db_NewRequest_Add(void);
 };
 
 #endif // UREGISTERNEWREQUEST_H

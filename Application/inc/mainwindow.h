@@ -35,6 +35,8 @@ private:
     UEditRequest *ui_editRequest;
     db::clDBMainQueryModel* mainTableModel;
     enum class ConnectionDlgMode { StartMode, RunMode};
+    int dbUserID;
+    QString dbUserName;
     void RunConnectionDialog(ConnectionDlgMode mode);
     void ConfigStatusBar();
     void RunEditDlg();

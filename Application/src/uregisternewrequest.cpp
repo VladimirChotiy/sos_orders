@@ -5,9 +5,10 @@
 #include "settings.h"
 #include "clDBReqInserter.h"
 
-URegisterNewRequest::URegisterNewRequest(QWidget *parent) :
+URegisterNewRequest::URegisterNewRequest(int userID, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::URegisterNewRequest)
+    ui(new Ui::URegisterNewRequest),
+    dbUserID(userID)
 {
     StartInit();
 }
@@ -144,7 +145,9 @@ void URegisterNewRequest::on_URegisterNewRequest_accepted()
     requestID = m_ReqInserter->AddData(sendArgs, DBTypes::DBInsertType::Request);
     //qDebug() << "Request ID: " << requestID;
 
-    m_ReqInserter->UpdateUser(4, requestID);
+    m_ReqInserter->UpdateUser(dbUserID, requestID);
+
+    emit db_NewRequest_Add();
 
     delete  m_ReqInserter;
     close();

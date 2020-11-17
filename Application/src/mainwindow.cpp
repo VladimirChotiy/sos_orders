@@ -64,8 +64,8 @@ void MainWindow::RunEditDlg()
 void MainWindow::ConnectToDB()
 {
     db::DBProcessor* m_DBProcessor {new db::DBProcessor()};
-    sts_username->setText(m_DBProcessor->findUser(curUser));
-
+    std::tie(dbUserID, dbUserName) = m_DBProcessor->findUser(curUser);
+    sts_username->setText(dbUserName);
     delete m_DBProcessor;
 }
 
@@ -96,7 +96,8 @@ void MainWindow::on_act_Exit_triggered()
 
 void MainWindow::on_act_Register_triggered()
 {
-    URegisterRequest = new URegisterNewRequest(this);
+    URegisterRequest = new URegisterNewRequest(dbUserID, this);
+    connect(URegisterRequest, SIGNAL(db_NewRequest_Add()), this, SLOT(on_act_Refresh_triggered()));
     URegisterRequest->open();
 }
 
