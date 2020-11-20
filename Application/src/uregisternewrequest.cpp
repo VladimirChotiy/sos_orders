@@ -1,7 +1,6 @@
 #include "uregisternewrequest.h"
 #include "ui_uregisternewrequest.h"
 #include "DBProcessor.h"
-#include "dbtypes.h"
 #include "settings.h"
 #include "clDBReqInserter.h"
 
@@ -42,68 +41,38 @@ void URegisterNewRequest::LoadDialogSettings()
 void URegisterNewRequest::StartInit()
 {
     ui->setupUi(this);
-    ui->ed_Date->setDate(QDate::currentDate());
     LoadDialogSettings();
+
+    db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
 
     m_personListModel = new QSqlQueryModel(this);
     m_personMapper = new QDataWidgetMapper(this);
-    m_personListModel->setQuery(prepareQuery(QueryType::Person));
+    m_personListModel->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::Person));
     ui->cb_Person->setModel(m_personListModel);
     ui->cb_Person->setModelColumn(1);
     m_personMapper->setModel(m_personListModel);
     m_personMapper->addMapping(ui->ed_Telephone, 2);
     m_personMapper->addMapping(ui->ed_Email, 3);
-    connect(ui->cb_Person, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_PersonData_changed(int)));
+    QObject::connect(ui->cb_Person, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_PersonData_changed(int)));
 
     m_ObjectModel = new QSqlQueryModel(this);
     m_ObjectMapper = new QDataWidgetMapper(this);
-    m_ObjectModel->setQuery(prepareQuery(QueryType::Object));
+    m_ObjectModel->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::Object));
     ui->cb_Object->setModel(m_ObjectModel);
     ui->cb_Object->setModelColumn(1);
     m_ObjectMapper->setModel(m_ObjectModel);
     m_ObjectMapper->addMapping(ui->txt_Adress, 2);
-    connect(ui->cb_Object, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_ObjectData_changed(int)));
+    QObject::connect(ui->cb_Object, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_ObjectData_changed(int)));
 
     m_systemType = new QSqlQueryModel(this);
     m_SystemMapper = new QDataWidgetMapper(this);
-    m_systemType->setQuery(prepareQuery(QueryType::SystemType));
+    m_systemType->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::SystemType));
     ui->cb_Type->setModel(m_systemType);
     ui->cb_Type->setModelColumn(1);
     m_SystemMapper->setModel(m_systemType);
-    connect(ui->cb_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_SystemData_changed(int)));
+    QObject::connect(ui->cb_Type, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_SystemData_changed(int)));
 
     ui->cb_Person->setCurrentIndex(-1);
-}
-
-QSqlQuery URegisterNewRequest::prepareQuery(URegisterNewRequest::QueryType qType, int index)
-{
-    db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
-    QSqlQuery resultQuery {};
-    DBTypes::DBResult result {DBTypes::DBResult::OK};
-    QString textQuery {""};
-
-    switch (qType) {
-    case QueryType::SystemType:{
-       textQuery = "SELECT * FROM tbl_types ORDER BY id";
-       break;
-    }
-    case QueryType::Person:{
-        textQuery = "SELECT * FROM tbl_person ORDER BY name";
-        break;
-    }
-    case QueryType::Object:{
-        textQuery = QString("SELECT * FROM tbl_objects WHERE parent_id=%1 ORDER BY name").arg(index);
-        break;
-    }
-    default: textQuery = "";
-    }
-
-    std::tie(result, resultQuery) = m_DBProcessor->Execute(textQuery);
-    delete m_DBProcessor;
-    if (result == DBTypes::DBResult::FAIL) {
-        qDebug() << "Error executing DBProcessor";
-    }
-    return resultQuery;
 }
 
 void URegisterNewRequest::on_URegisterNewRequest_rejected()
@@ -165,7 +134,9 @@ void URegisterNewRequest::usr_PersonData_changed(int index)
         sendID = index;
     }
 
-    m_ObjectModel->setQuery(prepareQuery(QueryType::Object, sendID));
+    db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
+    m_ObjectModel->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::Object, sendID));
+    delete m_DBProcessor;
 }
 
 void URegisterNewRequest::usr_ObjectData_changed(int index)
@@ -181,12 +152,12 @@ void URegisterNewRequest::usr_SystemData_changed(int index)
     m_SystemMapper->setCurrentIndex(index);
 }
 
-void URegisterNewRequest::on_btn_AddPerson_clicked()
+void URegisterNewRequest::on_btn_ClearPerson_clicked()
 {
     ui->cb_Person->setCurrentIndex(-1);
 }
 
-void URegisterNewRequest::on_btn_AddObject_clicked()
+void URegisterNewRequest::on_btn_ClearObj_clicked()
 {
     ui->cb_Object->setCurrentIndex(-1);
 }

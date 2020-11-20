@@ -25,8 +25,8 @@ private slots:
     void usr_PersonData_changed(int index);
     void usr_ObjectData_changed(int index);
     void usr_SystemData_changed(int index);
-    void on_btn_AddPerson_clicked();
-    void on_btn_AddObject_clicked();
+    void on_btn_ClearPerson_clicked();
+    void on_btn_ClearObj_clicked();
 
 private:
     Ui::URegisterNewRequest *ui;
@@ -39,9 +39,7 @@ private:
     void SaveDialogSettings();
     void LoadDialogSettings();
     void StartInit();
-    enum class QueryType {Person, Object, SystemType};
     int dbUserID;
-    QSqlQuery prepareQuery(QueryType qType, int index = -1);
 
 signals:
     void db_NewRequest_Add(void);

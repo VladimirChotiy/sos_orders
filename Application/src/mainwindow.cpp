@@ -6,7 +6,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      mainTableModel (new db::clDBMainQueryModel(0, this))
+      mainTableModel (new db::clDBMainQueryModel(this))
 {
     ui->setupUi(this);
     RunConnectionDialog(ConnectionDlgMode::StartMode);
@@ -23,6 +23,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tbl_Requests->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     ui->tbl_Requests->horizontalHeader()->setStretchLastSection(true);
     ui->tbl_Requests->horizontalHeader()->setSectionsMovable(true);
+    ui->tbl_Requests->horizontalHeader()->setVisible(true);
     ui->tbl_Requests->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 }
 
@@ -71,7 +72,7 @@ void MainWindow::ConnectToDB()
 
 void MainWindow::NoChangesConnectionDlg()
 {
-    qDebug() << "NoChanges!!!";
+    //qDebug() << "NoChanges!!!";
 }
 
 void MainWindow::upd_statusBar_dbConnection(bool status)
@@ -82,7 +83,6 @@ void MainWindow::upd_statusBar_dbConnection(bool status)
         sts_connection->setText("DIS");
     }
 }
-
 
 void MainWindow::on_act_DBConnection_triggered()
 {
@@ -119,6 +119,8 @@ void MainWindow::on_act_Refresh_triggered()
 
 void MainWindow::on_pushButton_clicked()
 {
-    ui_editRequest = new UEditRequest(this);
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    ui_editRequest = new UEditRequest(dbUserID, sendID, this);
+    QObject::connect(ui_editRequest, SIGNAL(db_RequestUpdate()), this, SLOT(on_act_Refresh_triggered()));
     ui_editRequest->open();
 }

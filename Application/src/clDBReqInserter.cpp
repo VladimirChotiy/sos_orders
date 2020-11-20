@@ -56,6 +56,30 @@ int db::clDBReqInserter::AddData(QVariantList arg, DBTypes::DBInsertType type)
     return resultQuery.value(0).toInt();
 }
 
+void db::clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType type)
+{
+    DBProcessor *m_Prosessor {new DBProcessor()};
+    DBTypes::DBResult result {DBTypes::DBResult::OK};
+    QSqlQuery resultQuery {};
+    QString textQuery {};
+    QString errorType;
+
+    switch (type) {
+    case DBTypes::DBUpdateType::Request: {
+        textQuery = QString("UPDATE tbl_requests SET obj_id=?, type_id=?, context=?, comment=? WHERE id=%1").arg(id);
+        errorType = "Request";
+        break;
+    }
+    default: textQuery = "";
+    }
+
+    std::tie(result, resultQuery) = m_Prosessor->Execute(textQuery, arg);
+    if (isError(result)) {
+        qDebug() << "Error updating " << errorType;
+    }
+    delete m_Prosessor;
+}
+
 bool db::clDBReqInserter::UpdateUser(int user_id, int index)
 {
     DBProcessor *m_Prosessor {new DBProcessor()};

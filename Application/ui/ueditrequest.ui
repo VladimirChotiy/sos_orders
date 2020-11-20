@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>671</width>
-    <height>504</height>
+    <width>600</width>
+    <height>425</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_6">
+  <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="lay_MainHor" stretch="0,1">
      <item>
@@ -91,132 +91,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="gbox_Person">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>202</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>true</underline>
-          </font>
-         </property>
-         <property name="title">
-          <string>Заказчик:</string>
-         </property>
-         <property name="flat">
-          <bool>false</bool>
-         </property>
-         <property name="checkable">
-          <bool>false</bool>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout">
-          <item>
-           <widget class="QComboBox" name="cb_Person">
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>22</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <pointsize>9</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
-              <underline>false</underline>
-             </font>
-            </property>
-            <property name="editable">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QHBoxLayout" name="lay_PersonHor">
-            <item>
-             <widget class="QPushButton" name="btn_AddEdit">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>22</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>9</pointsize>
-                <weight>50</weight>
-                <bold>false</bold>
-                <underline>false</underline>
-               </font>
-              </property>
-              <property name="text">
-               <string>Добавить</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="Line" name="line_Person">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="lbl_Telephone">
-            <property name="text">
-             <string>Телефон:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="ed_Telephone">
-            <property name="font">
-             <font>
-              <pointsize>9</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
-              <underline>false</underline>
-             </font>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="lbl_Email">
-            <property name="text">
-             <string>Email адрес:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLineEdit" name="ed_Email">
-            <property name="font">
-             <font>
-              <pointsize>9</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
-              <underline>false</underline>
-             </font>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="QGroupBox" name="gbox_Type">
          <property name="minimumSize">
           <size>
@@ -244,6 +118,12 @@
           </property>
           <item>
            <widget class="QComboBox" name="cb_Type">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>22</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>9</pointsize>
@@ -251,6 +131,68 @@
               <bold>false</bold>
               <underline>false</underline>
              </font>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="gbox_Status">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>9</pointsize>
+           <weight>75</weight>
+           <bold>true</bold>
+           <underline>true</underline>
+          </font>
+         </property>
+         <property name="title">
+          <string>Текущий статус:</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <property name="topMargin">
+           <number>1</number>
+          </property>
+          <property name="bottomMargin">
+           <number>1</number>
+          </property>
+          <item>
+           <widget class="QLineEdit" name="ed_Status">
+            <property name="enabled">
+             <bool>true</bool>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>22</height>
+             </size>
+            </property>
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+              <weight>50</weight>
+              <bold>false</bold>
+              <underline>false</underline>
+             </font>
+            </property>
+            <property name="readOnly">
+             <bool>true</bool>
+            </property>
+            <property name="clearButtonEnabled">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -274,7 +216,7 @@
           </font>
          </property>
          <property name="title">
-          <string>Дата:</string>
+          <string>Дата изменения статуса:</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <property name="topMargin">
@@ -285,18 +227,39 @@
           </property>
           <item>
            <widget class="QDateEdit" name="ed_Date">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>23</height>
+             </size>
+            </property>
             <property name="font">
              <font>
               <pointsize>9</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
+              <weight>75</weight>
+              <bold>true</bold>
               <underline>false</underline>
              </font>
+            </property>
+            <property name="autoFillBackground">
+             <bool>false</bool>
+            </property>
+            <property name="frame">
+             <bool>true</bool>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
             <property name="readOnly">
              <bool>true</bool>
             </property>
+            <property name="buttonSymbols">
+             <enum>QAbstractSpinBox::NoButtons</enum>
+            </property>
             <property name="accelerated">
+             <bool>false</bool>
+            </property>
+            <property name="showGroupSeparator" stdset="0">
              <bool>false</bool>
             </property>
            </widget>
@@ -320,7 +283,7 @@
       </layout>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="lay_RightVert" stretch="0,0,0">
+      <layout class="QVBoxLayout" name="lay_RightVert" stretch="0,0">
        <item>
         <widget class="QGroupBox" name="gbox_Object">
          <property name="sizePolicy">
@@ -352,7 +315,7 @@
          <property name="checkable">
           <bool>false</bool>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0,1,0">
+         <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0">
           <item>
            <widget class="QComboBox" name="cb_Object">
             <property name="minimumSize">
@@ -370,102 +333,66 @@
              </font>
             </property>
             <property name="editable">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
           <item>
-           <layout class="QHBoxLayout" name="lay_ObjectHor">
-            <item>
-             <spacer name="horizontalSpacer">
-              <property name="orientation">
-               <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>40</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item>
-             <widget class="QPushButton" name="btn_ObjectAdd">
-              <property name="minimumSize">
-               <size>
-                <width>0</width>
-                <height>22</height>
-               </size>
-              </property>
-              <property name="font">
-               <font>
-                <pointsize>9</pointsize>
-                <weight>50</weight>
-                <bold>false</bold>
-                <underline>false</underline>
-               </font>
-              </property>
-              <property name="text">
-               <string>Добавить</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
-          <item>
-           <widget class="Line" name="line_Object">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="lbl_Address">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="text">
-             <string>Адрес:</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QTextEdit" name="txt_Adress">
-            <property name="tabChangesFocus">
-             <bool>true</bool>
-            </property>
-            <property name="documentTitle">
-             <string/>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
-        <widget class="QGroupBox" name="gbox_Request">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>true</underline>
-          </font>
-         </property>
-         <property name="title">
-          <string>Описание заявки:</string>
-         </property>
-         <layout class="QVBoxLayout" name="verticalLayout_5">
-          <item>
-           <widget class="QTextEdit" name="textEdit">
+           <widget class="QGroupBox" name="gbox_Request">
             <property name="font">
              <font>
               <pointsize>9</pointsize>
-              <weight>50</weight>
-              <bold>false</bold>
-              <underline>false</underline>
+              <weight>75</weight>
+              <bold>true</bold>
+              <underline>true</underline>
              </font>
             </property>
+            <property name="title">
+             <string>Описание заявки:</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_5">
+             <item>
+              <widget class="QTextEdit" name="txt_Context">
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                 <underline>false</underline>
+                </font>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="gbox_Comment">
+            <property name="font">
+             <font>
+              <pointsize>9</pointsize>
+              <weight>75</weight>
+              <bold>true</bold>
+              <underline>true</underline>
+             </font>
+            </property>
+            <property name="title">
+             <string>Комментарий к заявке:</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_6">
+             <item>
+              <widget class="QTextEdit" name="txt_Comment">
+               <property name="font">
+                <font>
+                 <pointsize>9</pointsize>
+                 <weight>50</weight>
+                 <bold>false</bold>
+                 <underline>false</underline>
+                </font>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </widget>
           </item>
          </layout>
@@ -489,12 +416,15 @@
     </layout>
    </item>
    <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
+    <widget class="QDialogButtonBox" name="bb_Dialog">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>false</bool>
      </property>
     </widget>
    </item>
@@ -503,7 +433,7 @@
  <resources/>
  <connections>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>bb_Dialog</sender>
    <signal>accepted()</signal>
    <receiver>ueditrequest</receiver>
    <slot>accept()</slot>
@@ -519,7 +449,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>buttonBox</sender>
+   <sender>bb_Dialog</sender>
    <signal>rejected()</signal>
    <receiver>ueditrequest</receiver>
    <slot>reject()</slot>

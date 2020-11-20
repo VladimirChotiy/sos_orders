@@ -14,19 +14,13 @@ public:
     ~clDBReqInserter();
 
     int AddData(QVariantList arg, DBTypes::DBInsertType type);
+    void UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType type);
     bool UpdateUser(int user_id, int index);
 
 private:
     bool isError(DBTypes::DBResult result);
 
     const QString textGetLastID {"SELECT LAST_INSERT_ID()"};
-    //---------------------
-    QString obj_name {};
-    QString obj_address {};
-    int obj_parentID {-1};
-    //---------------------
-    int request_type {0};
-    QString request_context {};
 };
 
 }

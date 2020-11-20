@@ -36,6 +36,7 @@ private:
     db::clDBMainQueryModel* mainTableModel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     int dbUserID;
+    QModelIndex editID;
     QString dbUserName;
     void RunConnectionDialog(ConnectionDlgMode mode);
     void ConfigStatusBar();

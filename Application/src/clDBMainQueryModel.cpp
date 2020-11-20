@@ -1,6 +1,5 @@
 #include "clDBMainQueryModel.h"
 #include "DBProcessor.h"
-#include "dbtypes.h"
 #include <QSqlError>
 #include <QDebug>
 #include <QFont>
@@ -8,29 +7,16 @@
 
 namespace db
 {
-clDBMainQueryModel::clDBMainQueryModel(int reqID, QObject *parent)
+clDBMainQueryModel::clDBMainQueryModel(QObject *parent)
     : QSqlQueryModel(parent)
 {
     DBProcessor* m_dbProcessor {new DBProcessor()};
-    DBTypes::DBResult result {DBTypes::DBResult::OK};
-
-    QString sendQueryText;
-    if (reqID > 0) {
-        sendQueryText = queryText + " WHERE tbl_requests.id = " + QString::number(reqID);
-    }else {
-        sendQueryText = queryText;
+    this->setQuery(m_dbProcessor->prepareQuery(DBTypes::QueryType::RequestMain));
+    if (this->lastError().isValid()) {
+        qDebug() << this->lastError().text();
+        this->clear();
     }
-    std::tie(result, resultQuery) = m_dbProcessor->Execute(sendQueryText);
     delete m_dbProcessor;
-    if (result == DBTypes::DBResult::OK) {
-        this->setQuery(resultQuery);
-        if (this->lastError().isValid()) {
-            qDebug() << this->lastError().text();
-            this->clear();
-        }
-    }else {
-        qDebug() << "Error execute query from DBProcessor";
-    }
 }
 
 clDBMainQueryModel::~clDBMainQueryModel()
@@ -93,7 +79,7 @@ QVariant clDBMainQueryModel::GetDataTextAlign(int column) const
     if ((column == 0) || (column == 3) || ((column >= 6) && (column <=11))) {
         return QVariant(Qt::AlignCenter);
     }else{
-        return QVariant(Qt::AlignLeft | Qt::AlignTop);
+        return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
     }
 }
 
@@ -122,7 +108,7 @@ QVariant clDBMainQueryModel::data(const QModelIndex &index, int role) const
     //case Qt::BackgroundRole: return QBrush(Qt::red);
     case Qt::TextAlignmentRole: return GetDataTextAlign(index.column());
     case Qt::FontRole: return QFont("MS Shell Dlg 2", 9);
-    default: return QVariant();
+    default: return QSqlQueryModel::data(index, role);
     }
 }
 }

@@ -18,7 +18,20 @@ enum class DBState {
 enum class DBInsertType {
     Person,
     Object,
+    Request,
+
+};
+
+enum class DBUpdateType {
     Request
+};
+
+enum class QueryType {
+    SystemType,
+    Person,
+    Object,
+    RequestEdit,
+    RequestMain
 };
 
 }
