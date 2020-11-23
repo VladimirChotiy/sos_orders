@@ -2,10 +2,8 @@
 #define UREGISTERNEWREQUEST_H
 
 #include <QDialog>
-#include <QSqlTableModel>
 #include <QSqlQueryModel>
 #include <QDataWidgetMapper>
-#include <QSqlQuery>
 
 namespace Ui {
 class URegisterNewRequest;

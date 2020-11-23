@@ -10,6 +10,7 @@
 #include "editotderstatus.h"
 #include "ueditrequest.h"
 #include "clDBMainQueryModel.h"
+#include "uiaddnewwizard.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -33,6 +34,7 @@ private:
     ChooseEngineer *ui_chooseEng;
     EditOtderStatus *ui_editOrderStatus;
     UEditRequest *ui_editRequest;
+    uiAddNewWizard *ui_AddNewWizard;
     db::clDBMainQueryModel* mainTableModel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     int dbUserID;
