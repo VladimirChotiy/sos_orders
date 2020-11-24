@@ -19,7 +19,7 @@ enum class DBInsertType {
     Person,
     Object,
     Request,
-
+    Status
 };
 
 enum class DBUpdateType {

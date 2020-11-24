@@ -51,7 +51,7 @@
        <bool>true</bool>
       </property>
       <attribute name="horizontalHeaderVisible">
-       <bool>true</bool>
+       <bool>false</bool>
       </attribute>
       <attribute name="horizontalHeaderCascadingSectionResizes">
        <bool>false</bool>
@@ -62,13 +62,6 @@
       <attribute name="verticalHeaderVisible">
        <bool>false</bool>
       </attribute>
-     </widget>
-    </item>
-    <item>
-     <widget class="QPushButton" name="pushButton">
-      <property name="text">
-       <string>PushButton</string>
-      </property>
      </widget>
     </item>
    </layout>
@@ -112,56 +105,17 @@
     <property name="title">
      <string>Заявки</string>
     </property>
-    <widget class="QMenu" name="menuEdit">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
+    <widget class="QMenu" name="menu">
      <property name="title">
-      <string>Обработка</string>
+      <string>Заявка</string>
      </property>
-     <addaction name="act_Accept"/>
-     <addaction name="act_Survey"/>
-     <addaction name="act_SendCalc"/>
-    </widget>
-    <widget class="QMenu" name="menuWork">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="title">
-      <string>Монтаж</string>
-     </property>
-     <addaction name="act_Accept_on_assembling"/>
-     <addaction name="act_Assembling"/>
-    </widget>
-    <widget class="QMenu" name="menuAdvanced">
-     <property name="font">
-      <font>
-       <weight>75</weight>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="title">
-      <string>Счета</string>
-     </property>
-     <addaction name="act_AddOrders"/>
-     <addaction name="act_OrdersReady"/>
+     <addaction name="act_Register"/>
+     <addaction name="act_ReqEdit"/>
     </widget>
     <addaction name="act_Refresh"/>
     <addaction name="separator"/>
-    <addaction name="act_Register"/>
-    <addaction name="menuEdit"/>
-    <addaction name="menuWork"/>
-    <addaction name="menuAdvanced"/>
+    <addaction name="menu"/>
     <addaction name="separator"/>
-    <addaction name="act_Done"/>
-    <addaction name="act_Cancel"/>
-    <addaction name="act_NotAnswer"/>
    </widget>
    <addaction name="menuMain"/>
    <addaction name="menuFirstAction"/>
@@ -212,21 +166,9 @@
    <addaction name="act_Refresh"/>
    <addaction name="separator"/>
    <addaction name="act_Register"/>
+   <addaction name="act_ReqEdit"/>
    <addaction name="separator"/>
-   <addaction name="act_Accept"/>
-   <addaction name="act_Survey"/>
-   <addaction name="act_SendCalc"/>
-   <addaction name="separator"/>
-   <addaction name="act_Accept_on_assembling"/>
-   <addaction name="act_Assembling"/>
-   <addaction name="separator"/>
-   <addaction name="act_AddOrders"/>
-   <addaction name="act_OrdersReady"/>
-   <addaction name="separator"/>
-   <addaction name="act_Done"/>
-   <addaction name="act_Cancel"/>
-   <addaction name="act_NotAnswer"/>
-   <addaction name="separator"/>
+   <addaction name="act_AcceptRequest"/>
   </widget>
   <action name="act_DBConnection">
    <property name="icon">
@@ -287,13 +229,16 @@
     <string>Зарегистрировать</string>
    </property>
   </action>
-  <action name="act_Accept">
+  <action name="act_ReqEdit">
    <property name="icon">
     <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/accept.ico</normaloff>:/icons/Icons/accept.ico</iconset>
    </property>
    <property name="text">
-    <string>Принять в обработку</string>
+    <string>Редактировать заявку</string>
+   </property>
+   <property name="toolTip">
+    <string>Редактировать заявку</string>
    </property>
   </action>
   <action name="act_Survey">
@@ -381,6 +326,18 @@
    </property>
    <property name="text">
     <string>Нет ответа</string>
+   </property>
+  </action>
+  <action name="act_AcceptRequest">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/req_accept.ico</normaloff>:/icons/Icons/req_accept.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Принять в обработку</string>
+   </property>
+   <property name="toolTip">
+    <string>Принять текущую заявку в обработку</string>
    </property>
   </action>
  </widget>

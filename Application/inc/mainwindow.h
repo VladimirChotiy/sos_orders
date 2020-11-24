@@ -48,12 +48,12 @@ public slots:
 
 private slots:
     void upd_statusBar_dbConnection(bool status);
+    void usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous);
     void on_act_DBConnection_triggered();
     void on_act_Exit_triggered();
     void on_act_Register_triggered();
-    void on_act_Accept_triggered();
-    void on_act_Survey_triggered();
     void on_act_Refresh_triggered();
-    void on_pushButton_clicked();
+    void on_act_ReqEdit_triggered();
+    void on_act_AcceptRequest_triggered();
 };
 #endif // MAINWINDOW_H

@@ -194,38 +194,6 @@
          </property>
         </widget>
        </item>
-       <item>
-        <widget class="QLabel" name="lbl_Comment">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>true</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>Комментарий к заявке:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextEdit" name="txt_Comment">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="readOnly">
-          <bool>false</bool>
-         </property>
-         <property name="placeholderText">
-          <string>Введите комментарий к заявке</string>
-         </property>
-        </widget>
-       </item>
       </layout>
      </item>
      <item>

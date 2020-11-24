@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "clDBReqInserter.h"
 #include "DBProcessor.h"
+#include <QMessageBox>
 #include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
@@ -17,6 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     ConfigStatusBar();
     ui->tbl_Requests->setModel(mainTableModel);
+    ui->tbl_Requests->hideColumn(12);
     ui->tbl_Requests->setWordWrap(true);
     //ui->tbl_Requests->resizeColumnsToContents();
     ui->tbl_Requests->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
@@ -25,6 +28,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tbl_Requests->horizontalHeader()->setSectionsMovable(true);
     ui->tbl_Requests->horizontalHeader()->setVisible(true);
     ui->tbl_Requests->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
 }
 
 MainWindow::~MainWindow()
@@ -84,6 +88,17 @@ void MainWindow::upd_statusBar_dbConnection(bool status)
     }
 }
 
+void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous)
+{
+    Q_UNUSED(previous);
+    int statusID {mainTableModel->data(mainTableModel->index(current.row(), 12), Qt::DisplayRole).toInt()};
+    if (statusID == 1) {
+        ui->act_AcceptRequest->setEnabled(true);
+    }else {
+        ui->act_AcceptRequest->setEnabled(false);
+    }
+}
+
 void MainWindow::on_act_DBConnection_triggered()
 {
     RunConnectionDialog(ConnectionDlgMode::RunMode);
@@ -102,26 +117,36 @@ void MainWindow::on_act_Register_triggered()
     ui_AddNewWizard->open();
 }
 
-void MainWindow::on_act_Accept_triggered()
-{
-    ui_chooseEng = new ChooseEngineer(this);
-    ui_chooseEng->open();
-}
-
-void MainWindow::on_act_Survey_triggered()
-{
-    RunEditDlg();
-}
-
 void MainWindow::on_act_Refresh_triggered()
 {
     mainTableModel->RefreshQuery();
 }
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_act_ReqEdit_triggered()
 {
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_editRequest = new UEditRequest(dbUserID, sendID, this);
+    ui_editRequest->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_editRequest, SIGNAL(db_RequestUpdate()), this, SLOT(on_act_Refresh_triggered()));
     ui_editRequest->open();
+}
+
+void MainWindow::on_act_AcceptRequest_triggered()
+{
+    ui->act_AcceptRequest->setEnabled(false);
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    QMessageBox engAcceptBox(QMessageBox::Question, "Принять в обработку", QString("Вы действительно хотите принять в обработку заявку №%1").arg(sendID), QMessageBox::Ok | QMessageBox::Cancel, this);
+    if (engAcceptBox.exec() == QMessageBox::Ok) {
+        db::clDBReqInserter *m_ReqInserter {new db::clDBReqInserter(this)};
+        QVariantList sendArgs {};
+        sendArgs << 2 << sendID << "Авто: Впервые принят в обработку";
+        int lastID {m_ReqInserter->AddData(sendArgs, DBTypes::DBInsertType::Status)};
+        if (lastID > -1) {
+            qDebug() << "lastID: " << lastID;
+            qDebug() << "userI: D" << dbUserID;
+            m_ReqInserter->UpdateStatusUser(dbUserID, lastID);
+        }
+        delete m_ReqInserter;
+        on_act_Refresh_triggered();
+    }
 }
