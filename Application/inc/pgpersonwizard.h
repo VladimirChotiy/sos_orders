@@ -34,7 +34,6 @@ private:
 
     void SwitchPersonMode(PersonMode mode);
     void StartInit();
-    int dbUserID;
     int personID {-1};
 
 signals:

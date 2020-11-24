@@ -3,7 +3,6 @@
 #include "DBProcessor.h"
 #include "clDBReqInserter.h"
 #include <QSortFilterProxyModel>
-#include <QDebug>
 #include <QMessageBox>
 
 pgPersonWizard::pgPersonWizard(QWidget *parent) :
@@ -59,7 +58,6 @@ void pgPersonWizard::SwitchPersonMode(pgPersonWizard::PersonMode mode)
 
 void pgPersonWizard::StartInit()
 {
-    this->setTitle("Добавление / выбор заказчика");
     ui->pb_SavePerson->setHidden(true);
     ui->pb_SavePerson->setEnabled(false);
 

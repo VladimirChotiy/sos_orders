@@ -5,6 +5,8 @@
 #include <QSqlQueryModel>
 #include <QDataWidgetMapper>
 #include "pgpersonwizard.h"
+#include "pgobjectwizard.h"
+#include "pgrequestwizard.h"
 
 namespace Ui {
 class uiAddNewWizard;
@@ -19,13 +21,23 @@ public:
     ~uiAddNewWizard();
 
 
+private slots:
+    void on_uiAddNewWizard_currentIdChanged(int id);
+    void on_uiAddNewWizard_rejected();
+    void on_uiAddNewWizard_accepted();
+
 private:
     Ui::uiAddNewWizard *ui;
     pgPersonWizard *personPage;
+    pgObjectWizard *objectPage;
+    pgRequestWizard *requestPage;
 
     void SaveDialogSettings();
     void LoadDialogSettings();
     int dbUserID;
+
+signals:
+    void usr_NewRequest_added();
 };
 
 #endif // UIADDNEWWIZARD_H

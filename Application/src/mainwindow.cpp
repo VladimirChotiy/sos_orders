@@ -96,9 +96,10 @@ void MainWindow::on_act_Exit_triggered()
 
 void MainWindow::on_act_Register_triggered()
 {
-    URegisterRequest = new URegisterNewRequest(dbUserID, this);
-    connect(URegisterRequest, SIGNAL(db_NewRequest_Add()), this, SLOT(on_act_Refresh_triggered()));
-    URegisterRequest->open();
+    ui_AddNewWizard = new uiAddNewWizard(dbUserID, this);
+    ui_AddNewWizard->setAttribute(Qt::WA_DeleteOnClose, true);
+    QObject::connect(ui_AddNewWizard, SIGNAL(usr_NewRequest_added()), this, SLOT(on_act_Refresh_triggered()));
+    ui_AddNewWizard->open();
 }
 
 void MainWindow::on_act_Accept_triggered()
@@ -119,10 +120,8 @@ void MainWindow::on_act_Refresh_triggered()
 
 void MainWindow::on_pushButton_clicked()
 {
-//    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
-//    ui_editRequest = new UEditRequest(dbUserID, sendID, this);
-//    QObject::connect(ui_editRequest, SIGNAL(db_RequestUpdate()), this, SLOT(on_act_Refresh_triggered()));
-//    ui_editRequest->open();
-    ui_AddNewWizard = new uiAddNewWizard(dbUserID, this);
-    ui_AddNewWizard->open();
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    ui_editRequest = new UEditRequest(dbUserID, sendID, this);
+    QObject::connect(ui_editRequest, SIGNAL(db_RequestUpdate()), this, SLOT(on_act_Refresh_triggered()));
+    ui_editRequest->open();
 }

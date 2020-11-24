@@ -5,7 +5,6 @@
 #include <QLabel>
 #include <QString>
 #include "uconnect_db.h"
-#include "uregisternewrequest.h"
 #include "chooseengineer.h"
 #include "editotderstatus.h"
 #include "ueditrequest.h"
@@ -27,7 +26,6 @@ public:
 private:
     Ui::MainWindow *ui;
     UConnect_db *ui_connect;
-    URegisterNewRequest *URegisterRequest;
     QLabel *sts_connection;
     QLabel *sts_username;
     QString curUser;
@@ -47,6 +45,7 @@ private:
 public slots:
     void ConnectToDB();
     void NoChangesConnectionDlg();
+
 private slots:
     void upd_statusBar_dbConnection(bool status);
     void on_act_DBConnection_triggered();

@@ -26,8 +26,6 @@
   <property name="options">
    <set>QWizard::NoBackButtonOnStartPage</set>
   </property>
-  <widget class="QWizardPage" name="pg_AddObject"/>
-  <widget class="QWizardPage" name="pg_Request"/>
  </widget>
  <resources>
   <include location="../Res.qrc"/>

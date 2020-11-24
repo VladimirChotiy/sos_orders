@@ -9,6 +9,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/pgrequestwizard.cpp \
+    src/pgobjectwizard.cpp \
     src/pgpersonwizard.cpp \
     src/ConnectionManager.cpp \
     src/DBProcessor.cpp \
@@ -19,7 +21,6 @@ SOURCES += \
     main.cpp \
     src/mainwindow.cpp \
     src/uconnect_db.cpp \
-    src/uregisternewrequest.cpp \
     src/ueditrequest.cpp \
     src/uiaddnewwizard.cpp
 
@@ -35,20 +36,22 @@ HEADERS += \
     inc/chooseengineer.h \
     inc/editotderstatus.h \
     inc/mainwindow.h \
+    inc/pgobjectwizard.h \
     inc/pgpersonwizard.h \
+    inc/pgrequestwizard.h \
     inc/uconnect_db.h \
-    inc/uregisternewrequest.h \
     inc/ueditrequest.h \
     inc/uiaddnewwizard.h
 
 FORMS += \
+    ui/pgrequestwizard.ui \
+    ui/pgobjectwizard.ui \
     ui/pgpersonwizard.ui \
     ui/ueditrequest.ui \
     ui/chooseengineer.ui \
     ui/editotderstatus.ui \
     ui/mainwindow.ui \
     ui/uconnect_db.ui \
-    ui/uregisternewrequest.ui \
     ui/uiaddnewwizard.ui
 
 # Default rules for deployment.
