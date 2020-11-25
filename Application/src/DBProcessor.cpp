@@ -100,6 +100,10 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index)
             "LEFT JOIN tbl_users ON tbl_changes.user_id = tbl_users.id ");
         break;
     }
+    case QueryType::Engineer: {
+        textQuery = QString("SELECT * FROM tbl_users WHERE tbl_users.spec_id = %1").arg(index);
+        break;
+    }
     default: textQuery = "";
     }
 

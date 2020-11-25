@@ -1,5 +1,6 @@
 #include "clDBReqInserter.h"
 #include "DBProcessor.h"
+#include <QDebug>
 
 namespace db {
 
@@ -75,6 +76,11 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
     case DBTypes::DBUpdateType::Request: {
         textQuery = QString("UPDATE tbl_requests SET obj_id=?, type_id=?, context=? WHERE id=%1").arg(id);
         errorType = "Request";
+        break;
+    }
+    case DBTypes::DBUpdateType::Engineer: {
+        textQuery = QString("UPDATE tbl_requests SET resp_id=? WHERE id=%1").arg(id);
+        errorType = "Engineer";
         break;
     }
     default: textQuery = "";

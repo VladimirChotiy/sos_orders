@@ -152,7 +152,8 @@ void MainWindow::on_act_AcceptRequest_triggered()
 void MainWindow::on_act_ChangeEngineer_triggered()
 {
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
-    ui_ChooseEngineer = new uiChooseEngineer(sendID, this);
+    ui_ChooseEngineer = new uiChooseEngineer(std::make_pair(sendID, dbUserID), this);
     ui_ChooseEngineer->setAttribute(Qt::WA_DeleteOnClose);
+    QObject::connect(ui_ChooseEngineer, SIGNAL(usr_Engineer_update()), this, SLOT(on_act_Refresh_triggered()));
     ui_ChooseEngineer->open();
 }

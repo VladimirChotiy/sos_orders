@@ -1,6 +1,4 @@
 #pragma once
-#include <QMap>
-#include <QDebug>
 #include <QSqlQuery>
 #include "ConnectionManager.h"
 
