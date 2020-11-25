@@ -39,7 +39,7 @@ int clDBReqInserter::AddData(QVariantList arg, DBTypes::DBInsertType type)
         break;
     }
     case DBTypes::DBInsertType::Status: {
-        textQuery = "INSERT INTO tbl_changes (status_id, parent_id, comment, user_id) VALUES (?, ?, ?, 1)";
+        textQuery = "INSERT INTO tbl_changes (status_id, parent_id, comment, user_id) VALUES (?, ?, ?, ?)";
         errorType = "CHANGE";
         break;
     }
@@ -73,7 +73,7 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
 
     switch (type) {
     case DBTypes::DBUpdateType::Request: {
-        textQuery = QString("UPDATE tbl_requests SET obj_id=?, type_id=?, context=?, comment=? WHERE id=%1").arg(id);
+        textQuery = QString("UPDATE tbl_requests SET obj_id=?, type_id=?, context=? WHERE id=%1").arg(id);
         errorType = "Request";
         break;
     }
@@ -93,23 +93,6 @@ bool clDBReqInserter::UpdateUser(int user_id, int index)
     DBTypes::DBResult result {DBTypes::DBResult::OK};
     QSqlQuery resultQuery {};
     QString textQuery {QString("UPDATE tbl_changes SET user_id=%1 WHERE parent_id=%2 ORDER BY id DESC LIMIT 1").arg(user_id).arg(index)};
-
-    std::tie(result, resultQuery) = m_Prosessor->Execute(textQuery);
-    if (isError(result)) {
-        qDebug() << "Error updating status";
-        delete m_Prosessor;
-        return false;
-    }
-    delete  m_Prosessor;
-    return true;
-}
-
-bool clDBReqInserter::UpdateStatusUser(int user_id, int index)
-{
-    DBProcessor *m_Prosessor {new DBProcessor()};
-    DBTypes::DBResult result {DBTypes::DBResult::OK};
-    QSqlQuery resultQuery {};
-    QString textQuery {QString("UPDATE tbl_changes SET user_id=%1 WHERE id=%2").arg(user_id).arg(index)};
 
     std::tie(result, resultQuery) = m_Prosessor->Execute(textQuery);
     if (isError(result)) {

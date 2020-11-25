@@ -68,6 +68,12 @@ QVariant clDBMainQueryModel::GetHeaderNames(int column) const
     case 11:{
             return "Кем внесены изменения";
         }
+    case 12:{
+            return "change_id (hide)";
+        }
+    case 13: {
+            return "Ответственное лицо";
+        }
     default:{
             return QVariant();
         }
@@ -90,9 +96,9 @@ QVariant clDBMainQueryModel::headerData(int section, Qt::Orientation orientation
     }
     switch (role) {
     case Qt::DisplayRole: return GetHeaderNames(section);
-    //case Qt::TextAlignmentRole: return QVariant(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
+    case Qt::TextAlignmentRole: return QVariant(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
     case Qt::FontRole: return QFont("MS Shell Dlg 2", 10, QFont::Bold);
-    default: return QVariant();
+    default: return QSqlQueryModel::headerData(section, orientation, role);
     }
 
 }

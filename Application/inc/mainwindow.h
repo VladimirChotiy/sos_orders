@@ -5,11 +5,10 @@
 #include <QLabel>
 #include <QString>
 #include "uconnect_db.h"
-#include "chooseengineer.h"
-#include "editotderstatus.h"
 #include "ueditrequest.h"
 #include "clDBMainQueryModel.h"
 #include "uiaddnewwizard.h"
+#include "uichooseengineer.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -29,10 +28,9 @@ private:
     QLabel *sts_connection;
     QLabel *sts_username;
     QString curUser;
-    ChooseEngineer *ui_chooseEng;
-    EditOtderStatus *ui_editOrderStatus;
     UEditRequest *ui_editRequest;
     uiAddNewWizard *ui_AddNewWizard;
+    uiChooseEngineer *ui_ChooseEngineer;
     db::clDBMainQueryModel* mainTableModel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     int dbUserID;
@@ -40,7 +38,6 @@ private:
     QString dbUserName;
     void RunConnectionDialog(ConnectionDlgMode mode);
     void ConfigStatusBar();
-    void RunEditDlg();
 
 public slots:
     void ConnectToDB();
@@ -55,5 +52,6 @@ private slots:
     void on_act_Refresh_triggered();
     void on_act_ReqEdit_triggered();
     void on_act_AcceptRequest_triggered();
+    void on_act_ChangeEngineer_triggered();
 };
 #endif // MAINWINDOW_H

@@ -89,7 +89,7 @@
      </font>
     </property>
     <property name="title">
-     <string>Файл</string>
+     <string>&amp;Файл</string>
     </property>
     <addaction name="act_DBConnection"/>
     <addaction name="separator"/>
@@ -103,7 +103,7 @@
      </font>
     </property>
     <property name="title">
-     <string>Заявки</string>
+     <string>&amp;Заявки</string>
     </property>
     <widget class="QMenu" name="menu">
      <property name="title">
@@ -169,6 +169,7 @@
    <addaction name="act_ReqEdit"/>
    <addaction name="separator"/>
    <addaction name="act_AcceptRequest"/>
+   <addaction name="act_ChangeEngineer"/>
   </widget>
   <action name="act_DBConnection">
    <property name="icon">
@@ -176,7 +177,7 @@
      <normaloff>:/icons/Icons/Data_settings.ico</normaloff>:/icons/Icons/Data_settings.ico</iconset>
    </property>
    <property name="text">
-    <string>Настройки</string>
+    <string>Сое&amp;динение</string>
    </property>
    <property name="toolTip">
     <string>Настройки подключения к БД</string>
@@ -188,6 +189,9 @@
      <bold>true</bold>
     </font>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
    <property name="menuRole">
     <enum>QAction::PreferencesRole</enum>
    </property>
@@ -198,7 +202,7 @@
      <normaloff>:/icons/Icons/powercircleand.ico</normaloff>:/icons/Icons/powercircleand.ico</iconset>
    </property>
    <property name="text">
-    <string>Выход</string>
+    <string>В&amp;ыход</string>
    </property>
    <property name="font">
     <font>
@@ -207,6 +211,9 @@
      <bold>true</bold>
     </font>
    </property>
+   <property name="shortcut">
+    <string>Alt+X</string>
+   </property>
   </action>
   <action name="act_Refresh">
    <property name="icon">
@@ -214,7 +221,13 @@
      <normaloff>:/icons/Icons/refresh.ico</normaloff>:/icons/Icons/refresh.ico</iconset>
    </property>
    <property name="text">
-    <string>Обновить</string>
+    <string>&amp;Обновить</string>
+   </property>
+   <property name="toolTip">
+    <string>Обновить данные</string>
+   </property>
+   <property name="shortcut">
+    <string>F5</string>
    </property>
   </action>
   <action name="act_Register">
@@ -338,6 +351,18 @@
    </property>
    <property name="toolTip">
     <string>Принять текущую заявку в обработку</string>
+   </property>
+  </action>
+  <action name="act_ChangeEngineer">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/req_change.ico</normaloff>:/icons/Icons/req_change.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Изменить инженера</string>
+   </property>
+   <property name="toolTip">
+    <string>Изменить инженера, ответственного за завку</string>
    </property>
   </action>
  </widget>

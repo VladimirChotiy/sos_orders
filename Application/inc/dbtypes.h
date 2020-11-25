@@ -23,7 +23,8 @@ enum class DBInsertType {
 };
 
 enum class DBUpdateType {
-    Request
+    Request,
+    Status
 };
 
 enum class QueryType {

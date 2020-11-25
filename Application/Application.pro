@@ -9,15 +9,14 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/uichooseengineer.cpp \
     src/pgrequestwizard.cpp \
     src/pgobjectwizard.cpp \
     src/pgpersonwizard.cpp \
     src/ConnectionManager.cpp \
     src/DBProcessor.cpp \
-    src/chooseengineer.cpp \
     src/clDBMainQueryModel.cpp \
     src/clDBReqInserter.cpp \
-    src/editotderstatus.cpp \
     main.cpp \
     src/mainwindow.cpp \
     src/uconnect_db.cpp \
@@ -33,23 +32,21 @@ HEADERS += \
     inc/clDBMainQueryModel.h \
     inc/clDBReqInserter.h \
     inc/dbtypes.h \
-    inc/chooseengineer.h \
-    inc/editotderstatus.h \
     inc/mainwindow.h \
     inc/pgobjectwizard.h \
     inc/pgpersonwizard.h \
     inc/pgrequestwizard.h \
     inc/uconnect_db.h \
     inc/ueditrequest.h \
-    inc/uiaddnewwizard.h
+    inc/uiaddnewwizard.h \
+    inc/uichooseengineer.h
 
 FORMS += \
+    ui/uichooseengineer.ui \
     ui/pgrequestwizard.ui \
     ui/pgobjectwizard.ui \
     ui/pgpersonwizard.ui \
     ui/ueditrequest.ui \
-    ui/chooseengineer.ui \
-    ui/editotderstatus.ui \
     ui/mainwindow.ui \
     ui/uconnect_db.ui \
     ui/uiaddnewwizard.ui

@@ -60,12 +60,6 @@ void MainWindow::ConfigStatusBar()
     ui->statusbar->addPermanentWidget(sts_connection);
 }
 
-void MainWindow::RunEditDlg()
-{
-    ui_editOrderStatus = new EditOtderStatus(this);
-    ui_editOrderStatus->open();
-}
-
 void MainWindow::ConnectToDB()
 {
     db::DBProcessor* m_DBProcessor {new db::DBProcessor()};
@@ -135,18 +129,30 @@ void MainWindow::on_act_AcceptRequest_triggered()
 {
     ui->act_AcceptRequest->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
-    QMessageBox engAcceptBox(QMessageBox::Question, "Принять в обработку", QString("Вы действительно хотите принять в обработку заявку №%1").arg(sendID), QMessageBox::Ok | QMessageBox::Cancel, this);
+    QMessageBox engAcceptBox(QMessageBox::Question, "Принять в обработку", QString("Вы действительно хотите принять в обработку заявку №%1?").arg(sendID), QMessageBox::Ok | QMessageBox::Cancel, this);
     if (engAcceptBox.exec() == QMessageBox::Ok) {
         db::clDBReqInserter *m_ReqInserter {new db::clDBReqInserter(this)};
         QVariantList sendArgs {};
-        sendArgs << 2 << sendID << "Авто: Впервые принят в обработку";
+        sendArgs << 2 << sendID << "Авто: Впервые принят в обработку" << 1;
         int lastID {m_ReqInserter->AddData(sendArgs, DBTypes::DBInsertType::Status)};
-        if (lastID > -1) {
-            qDebug() << "lastID: " << lastID;
-            qDebug() << "userI: D" << dbUserID;
-            m_ReqInserter->UpdateStatusUser(dbUserID, lastID);
+        if (lastID == -1) {
+            QMessageBox m_MsgBox(QMessageBox::Critical, "Ошибка!", "Не удалось изменить статус заявки", QMessageBox::Ok, this);
+            m_MsgBox.exec();
+        }else {
+            if (!(m_ReqInserter->UpdateUser(dbUserID, sendID))) {
+                QMessageBox m_MsgBox(QMessageBox::Critical, "Ошибка!", "Не удалось обновить статус", QMessageBox::Ok, this);
+                m_MsgBox.exec();
+            }
         }
         delete m_ReqInserter;
         on_act_Refresh_triggered();
     }
+}
+
+void MainWindow::on_act_ChangeEngineer_triggered()
+{
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    ui_ChooseEngineer = new uiChooseEngineer(sendID, this);
+    ui_ChooseEngineer->setAttribute(Qt::WA_DeleteOnClose);
+    ui_ChooseEngineer->open();
 }

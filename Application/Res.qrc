@@ -25,5 +25,6 @@
         <file>Icons/addnewfile.ico</file>
         <file>Icons/edit.ico</file>
         <file>Icons/req_accept.ico</file>
+        <file>Icons/req_change.ico</file>
     </qresource>
 </RCC>

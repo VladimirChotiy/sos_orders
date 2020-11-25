@@ -82,7 +82,7 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index)
         break;
     }
     case QueryType::RequestEdit: {
-        textQuery = QString("SELECT tbl_requests.id, tbl_requests.context, tbl_requests.comment, tbl_requests.type_id, tbl_requests.obj_id, tbl_requests.change_id, tbl_status.name, tbl_changes.date " \
+        textQuery = QString("SELECT tbl_requests.id, tbl_requests.context, tbl_changes.comment, tbl_requests.type_id, tbl_requests.obj_id, tbl_requests.change_id, tbl_status.name, tbl_changes.date " \
             "FROM tbl_requests " \
             "LEFT JOIN tbl_changes ON tbl_requests.change_id = tbl_changes.id " \
             "LEFT JOIN tbl_status ON tbl_changes.status_id = tbl_status.id " \
@@ -91,7 +91,7 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index)
         break;
     }
     case QueryType::RequestMain: {
-        textQuery = QString("SELECT tbl_requests.id AS reqid, tbl_requests.context, tbl_changes.comment, tbl_types.name AS typename, tbl_objects.name AS objname, tbl_objects.address, tbl_person.name AS persname, tbl_person.telephone, tbl_person.email, tbl_changes.date, tbl_status.name AS statusname, tbl_users.disp_name, tbl_status.id AS statusid FROM tbl_requests " \
+        textQuery = QString("SELECT tbl_requests.id AS reqid, tbl_requests.context, tbl_changes.comment, tbl_types.name AS typename, tbl_objects.name AS objname, tbl_objects.address, tbl_person.name AS persname, tbl_person.telephone, tbl_person.email, tbl_changes.date, tbl_status.name AS statusname, tbl_users.disp_name, tbl_status.id AS statusid, (SELECT tbl_users.disp_name FROM tbl_users WHERE tbl_users.id = tbl_requests.resp_id) AS respuser FROM tbl_requests " \
             "LEFT JOIN tbl_types ON tbl_requests.type_id = tbl_types.id " \
             "LEFT JOIN tbl_objects ON tbl_requests.obj_id = tbl_objects.id " \
             "LEFT JOIN tbl_person ON tbl_objects.parent_id = tbl_person.id " \

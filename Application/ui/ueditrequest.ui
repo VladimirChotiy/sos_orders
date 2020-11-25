@@ -226,11 +226,11 @@
            <number>1</number>
           </property>
           <item>
-           <widget class="QDateEdit" name="ed_Date">
+           <widget class="QDateTimeEdit" name="ed_Date">
             <property name="minimumSize">
              <size>
               <width>0</width>
-              <height>23</height>
+              <height>22</height>
              </size>
             </property>
             <property name="font">
@@ -241,12 +241,6 @@
               <underline>false</underline>
              </font>
             </property>
-            <property name="autoFillBackground">
-             <bool>false</bool>
-            </property>
-            <property name="frame">
-             <bool>true</bool>
-            </property>
             <property name="alignment">
              <set>Qt::AlignCenter</set>
             </property>
@@ -255,12 +249,6 @@
             </property>
             <property name="buttonSymbols">
              <enum>QAbstractSpinBox::NoButtons</enum>
-            </property>
-            <property name="accelerated">
-             <bool>false</bool>
-            </property>
-            <property name="showGroupSeparator" stdset="0">
-             <bool>false</bool>
             </property>
            </widget>
           </item>

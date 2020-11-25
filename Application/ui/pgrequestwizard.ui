@@ -13,6 +13,12 @@
   <property name="windowTitle">
    <string>WizardPage</string>
   </property>
+  <property name="title">
+   <string>Добавление заявки</string>
+  </property>
+  <property name="subTitle">
+   <string>Введите данные заявки</string>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="vl_CurrentPage">

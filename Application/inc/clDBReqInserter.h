@@ -16,7 +16,6 @@ public:
     int AddData(QVariantList arg, DBTypes::DBInsertType type);
     void UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType type);
     bool UpdateUser(int user_id, int index);
-    bool UpdateStatusUser(int user_id, int index);
 
 private:
     bool isError(DBTypes::DBResult result);
