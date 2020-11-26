@@ -9,6 +9,7 @@
 #include "clDBMainQueryModel.h"
 #include "uiaddnewwizard.h"
 #include "uichooseengineer.h"
+#include "uichangestatus.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,6 +32,7 @@ private:
     UEditRequest *ui_editRequest;
     uiAddNewWizard *ui_AddNewWizard;
     uiChooseEngineer *ui_ChooseEngineer;
+    uiChangeStatus *ui_ChangeStatus;
     db::clDBMainQueryModel* mainTableModel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     int dbUserID;
@@ -53,5 +55,7 @@ private slots:
     void on_act_ReqEdit_triggered();
     void on_act_AcceptRequest_triggered();
     void on_act_ChangeEngineer_triggered();
+    void on_act_ChangeStatus_triggered();
+    void on_act_ReqClose_triggered();
 };
 #endif // MAINWINDOW_H

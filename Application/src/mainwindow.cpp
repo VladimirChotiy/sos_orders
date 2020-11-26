@@ -19,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
     ConfigStatusBar();
     ui->tbl_Requests->setModel(mainTableModel);
-    ui->tbl_Requests->hideColumn(12);
+    ui->tbl_Requests->hideColumn(13);
     ui->tbl_Requests->setWordWrap(true);
     //ui->tbl_Requests->resizeColumnsToContents();
     ui->tbl_Requests->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
@@ -85,11 +85,23 @@ void MainWindow::upd_statusBar_dbConnection(bool status)
 void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
-    int statusID {mainTableModel->data(mainTableModel->index(current.row(), 12), Qt::DisplayRole).toInt()};
+    int statusID {mainTableModel->data(mainTableModel->index(current.row(), 13), Qt::DisplayRole).toInt()};
     if (statusID == 1) {
         ui->act_AcceptRequest->setEnabled(true);
     }else {
         ui->act_AcceptRequest->setEnabled(false);
+    }
+
+    if ((statusID > 1) && (statusID < 7)) {
+        ui->act_ChangeStatus->setEnabled(true);
+    }else {
+        ui->act_ChangeStatus->setEnabled(false);
+    }
+
+    if (statusID > 6) {
+        ui->act_ReqClose->setEnabled(false);
+    }else {
+        ui->act_ReqClose->setEnabled(true);
     }
 }
 
@@ -156,4 +168,25 @@ void MainWindow::on_act_ChangeEngineer_triggered()
     ui_ChooseEngineer->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_ChooseEngineer, SIGNAL(usr_Engineer_update()), this, SLOT(on_act_Refresh_triggered()));
     ui_ChooseEngineer->open();
+}
+
+void MainWindow::on_act_ChangeStatus_triggered()
+{
+    ui->act_ChangeStatus->setEnabled(false);
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int stateID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 13), Qt::DisplayRole).toInt()};
+    ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), stateID, this);
+    ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
+    QObject::connect(ui_ChangeStatus, SIGNAL(usr_ReqStatus_update()), this, SLOT(on_act_Refresh_triggered()));
+    ui_ChangeStatus->open();
+}
+
+void MainWindow::on_act_ReqClose_triggered()
+{
+    ui->act_ReqClose->setEnabled(false);
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), 6, this);
+    ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
+    QObject::connect(ui_ChangeStatus, SIGNAL(usr_ReqStatus_update()), this, SLOT(on_act_Refresh_triggered()));
+    ui_ChangeStatus->open();
 }

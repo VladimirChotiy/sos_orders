@@ -112,10 +112,19 @@
      <addaction name="act_Register"/>
      <addaction name="act_ReqEdit"/>
     </widget>
+    <widget class="QMenu" name="menu_2">
+     <property name="title">
+      <string>Процесс</string>
+     </property>
+     <addaction name="act_ChangeStatus"/>
+    </widget>
     <addaction name="act_Refresh"/>
     <addaction name="separator"/>
     <addaction name="menu"/>
     <addaction name="separator"/>
+    <addaction name="menu_2"/>
+    <addaction name="separator"/>
+    <addaction name="act_ReqClose"/>
    </widget>
    <addaction name="menuMain"/>
    <addaction name="menuFirstAction"/>
@@ -123,10 +132,16 @@
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBarMain">
    <property name="windowTitle">
-    <string>toolBar</string>
+    <string>Основная панель инструментов</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
    </property>
    <property name="allowedAreas">
     <set>Qt::TopToolBarArea</set>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonIconOnly</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
@@ -143,7 +158,7 @@
   </widget>
   <widget class="QToolBar" name="toolBarOrder">
    <property name="windowTitle">
-    <string>toolBar_2</string>
+    <string>Панель работы с заявками</string>
    </property>
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
@@ -153,6 +168,9 @@
    </property>
    <property name="allowedAreas">
     <set>Qt::TopToolBarArea</set>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonIconOnly</enum>
    </property>
    <property name="floatable">
     <bool>false</bool>
@@ -170,11 +188,15 @@
    <addaction name="separator"/>
    <addaction name="act_AcceptRequest"/>
    <addaction name="act_ChangeEngineer"/>
+   <addaction name="separator"/>
+   <addaction name="act_ChangeStatus"/>
+   <addaction name="separator"/>
+   <addaction name="act_ReqClose"/>
   </widget>
   <action name="act_DBConnection">
    <property name="icon">
     <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/Data_settings.ico</normaloff>:/icons/Icons/Data_settings.ico</iconset>
+     <normaloff>:/icons/Icons/data_icon.ico</normaloff>:/icons/Icons/data_icon.ico</iconset>
    </property>
    <property name="text">
     <string>Сое&amp;динение</string>
@@ -254,94 +276,10 @@
     <string>Редактировать заявку</string>
    </property>
   </action>
-  <action name="act_Survey">
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/survey.ico</normaloff>:/icons/Icons/survey.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Выезд на обследование</string>
-   </property>
-  </action>
-  <action name="act_SendCalc">
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/send.ico</normaloff>:/icons/Icons/send.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Отправить КП</string>
-   </property>
-  </action>
-  <action name="act_Accept_on_assembling">
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/accept_to_assembling.ico</normaloff>:/icons/Icons/accept_to_assembling.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Принять в монтаж</string>
-   </property>
-  </action>
-  <action name="act_Assembling">
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/assembling.ico</normaloff>:/icons/Icons/assembling.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Монтаж</string>
-   </property>
-  </action>
-  <action name="act_AddOrders">
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/add_orders.ico</normaloff>:/icons/Icons/add_orders.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Прикрепить счета</string>
-   </property>
-  </action>
-  <action name="act_OrdersReady">
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/building.ico</normaloff>:/icons/Icons/building.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Счета сформированы</string>
-   </property>
-  </action>
-  <action name="act_Done">
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/ok.ico</normaloff>:/icons/Icons/ok.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Завершено</string>
-   </property>
-  </action>
-  <action name="act_Cancel">
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/Error.ico</normaloff>:/icons/Icons/Error.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Отменено</string>
-   </property>
-  </action>
-  <action name="act_NotAnswer">
-   <property name="checkable">
+  <action name="act_AcceptRequest">
+   <property name="enabled">
     <bool>false</bool>
    </property>
-   <property name="enabled">
-    <bool>true</bool>
-   </property>
-   <property name="icon">
-    <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/not_answer.ico</normaloff>:/icons/Icons/not_answer.ico</iconset>
-   </property>
-   <property name="text">
-    <string>Нет ответа</string>
-   </property>
-  </action>
-  <action name="act_AcceptRequest">
    <property name="icon">
     <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/req_accept.ico</normaloff>:/icons/Icons/req_accept.ico</iconset>
@@ -363,6 +301,36 @@
    </property>
    <property name="toolTip">
     <string>Изменить инженера, ответственного за завку</string>
+   </property>
+  </action>
+  <action name="act_ChangeStatus">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/req_status.ico</normaloff>:/icons/Icons/req_status.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Изменить статус</string>
+   </property>
+   <property name="toolTip">
+    <string>Изменить статус текущей заявки</string>
+   </property>
+  </action>
+  <action name="act_ReqClose">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/Error.ico</normaloff>:/icons/Icons/Error.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Закрыть заявку</string>
+   </property>
+   <property name="toolTip">
+    <string>Закрыть текущую заявку</string>
    </property>
   </action>
  </widget>

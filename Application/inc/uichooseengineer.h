@@ -18,7 +18,6 @@ public:
 
 private slots:
     void on_uiChooseEngineer_accepted();
-
     void on_uiChooseEngineer_rejected();
 
 private:

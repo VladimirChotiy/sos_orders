@@ -9,6 +9,7 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/uichangestatus.cpp \
     src/uichooseengineer.cpp \
     src/pgrequestwizard.cpp \
     src/pgobjectwizard.cpp \
@@ -39,9 +40,11 @@ HEADERS += \
     inc/uconnect_db.h \
     inc/ueditrequest.h \
     inc/uiaddnewwizard.h \
+    inc/uichangestatus.h \
     inc/uichooseengineer.h
 
 FORMS += \
+    ui/uichangestatus.ui \
     ui/uichooseengineer.ui \
     ui/pgrequestwizard.ui \
     ui/pgobjectwizard.ui \

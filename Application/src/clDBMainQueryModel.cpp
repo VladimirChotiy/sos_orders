@@ -68,10 +68,10 @@ QVariant clDBMainQueryModel::GetHeaderNames(int column) const
     case 11:{
             return "Кем внесены изменения";
         }
-    case 12:{
-            return "change_id (hide)";
+    case 13:{
+            return "status_id_id (hide)";
         }
-    case 13: {
+    case 12: {
             return "Ответственное лицо";
         }
     default:{
@@ -82,7 +82,7 @@ QVariant clDBMainQueryModel::GetHeaderNames(int column) const
 
 QVariant clDBMainQueryModel::GetDataTextAlign(int column) const
 {
-    if ((column == 0) || (column == 3) || ((column >= 6) && (column <=11))) {
+    if ((column == 0) || (column == 3) || ((column >= 6) && (column <=12))) {
         return QVariant(Qt::AlignCenter);
     }else{
         return QVariant(Qt::AlignLeft | Qt::AlignVCenter);

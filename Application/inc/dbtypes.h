@@ -34,7 +34,8 @@ enum class QueryType {
     Object,
     RequestEdit,
     RequestMain,
-    Engineer
+    Engineer,
+    Status
 };
 
 }
