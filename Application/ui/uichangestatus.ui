@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../Res.qrc">
+    <normaloff>:/icons/Icons/req_status.ico</normaloff>:/icons/Icons/req_status.ico</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="gbox_Status">
@@ -130,7 +134,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>bb_DIalog</sender>

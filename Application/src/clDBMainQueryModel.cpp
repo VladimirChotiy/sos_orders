@@ -71,8 +71,11 @@ QVariant clDBMainQueryModel::GetHeaderNames(int column) const
     case 13:{
             return "status_id_id (hide)";
         }
-    case 12: {
+    case 12:{
             return "Ответственное лицо";
+        }
+    case 14:{
+            return "cost_id (hide)";
         }
     default:{
             return QVariant();

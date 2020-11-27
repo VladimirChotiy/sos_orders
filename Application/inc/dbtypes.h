@@ -19,13 +19,15 @@ enum class DBInsertType {
     Person,
     Object,
     Request,
-    Status
+    Status,
+    Cost
 };
 
 enum class DBUpdateType {
     Request,
     Status,
-    Engineer
+    Engineer,
+    Cost
 };
 
 enum class QueryType {
@@ -35,7 +37,9 @@ enum class QueryType {
     RequestEdit,
     RequestMain,
     Engineer,
-    Status
+    Status,
+    Cost,
+    Changes
 };
 
 }

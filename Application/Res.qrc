@@ -27,5 +27,6 @@
         <file>Icons/req_accept.ico</file>
         <file>Icons/req_change.ico</file>
         <file>Icons/req_status.ico</file>
+        <file>Icons/req_cost.ico</file>
     </qresource>
 </RCC>

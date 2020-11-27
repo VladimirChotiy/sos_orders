@@ -26,7 +26,6 @@ void UEditRequest::UpdateRequest(int userIndex)
     sendArgs << m_ObjectModel->query().value(0).toInt();
     sendArgs << m_SystemType->query().value(0).toInt();
     sendArgs << ui->txt_Context->toPlainText();
-    //sendArgs << ui->txt_Comment->toPlainText();
 
     db::clDBReqInserter *m_ReqInserter {new db::clDBReqInserter(this)};
     m_ReqInserter->UpdateData(requestID, sendArgs, DBTypes::DBUpdateType::Request);

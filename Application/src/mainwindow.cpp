@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     ConfigStatusBar();
     ui->tbl_Requests->setModel(mainTableModel);
     ui->tbl_Requests->hideColumn(13);
+    ui->tbl_Requests->hideColumn(14);
     ui->tbl_Requests->setWordWrap(true);
     //ui->tbl_Requests->resizeColumnsToContents();
     ui->tbl_Requests->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
@@ -100,8 +101,10 @@ void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QMo
 
     if (statusID > 6) {
         ui->act_ReqClose->setEnabled(false);
+        ui->act_SetCost->setEnabled(false);
     }else {
         ui->act_ReqClose->setEnabled(true);
+        ui->act_SetCost->setEnabled(true);
     }
 }
 
@@ -189,4 +192,14 @@ void MainWindow::on_act_ReqClose_triggered()
     ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_ChangeStatus, SIGNAL(usr_ReqStatus_update()), this, SLOT(on_act_Refresh_triggered()));
     ui_ChangeStatus->open();
+}
+
+void MainWindow::on_act_SetCost_triggered()
+{
+    ui->act_SetCost->setEnabled(false);
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 14), Qt::DisplayRole).toInt()};
+    ui_SetCost = new uiSetCost(std::make_pair(sendID, dbUserID), this);
+    ui_SetCost->setAttribute(Qt::WA_DeleteOnClose);
+    QObject::connect(ui_SetCost, SIGNAL(usr_ReqCost_update()), this, SLOT(on_act_Refresh_triggered()));
+    ui_SetCost->open();
 }

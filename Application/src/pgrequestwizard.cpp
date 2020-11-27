@@ -24,24 +24,32 @@ bool pgRequestWizard::AddRequest()
     db::clDBReqInserter *m_ReqInserter {new db::clDBReqInserter(this)};
     QVariantList sendArgs {};
 
-    sendArgs << objectID << typeID << field("context").toString();
+    sendArgs << 0 << 0;
+    int costID {m_ReqInserter->AddData(sendArgs, DBTypes::DBInsertType::Cost)};
+    if (costID == -1) {
+        delete m_ReqInserter;
+        QMessageBox m_MsgBox(QMessageBox::Critical, "Ошибка!", "Не удалось добавить заявку", QMessageBox::Ok, this);
+        m_MsgBox.exec();
+        return false;
+    }
+
+    sendArgs.clear();
+    sendArgs << objectID << typeID << field("context").toString() << costID;
     int requestID {m_ReqInserter->AddData(sendArgs, DBTypes::DBInsertType::Request)};
     if (requestID == -1) {
         delete m_ReqInserter;
         QMessageBox m_MsgBox(QMessageBox::Critical, "Ошибка!", "Не удалось добавить заявку", QMessageBox::Ok, this);
         m_MsgBox.exec();
         return false;
-    }else {
-        if (!(m_ReqInserter->UpdateUser(userID, requestID))) {
-            delete m_ReqInserter;
-            QMessageBox m_MsgBox(QMessageBox::Critical, "Ошибка!", "Не удалось обновить статус заявки", QMessageBox::Ok, this);
-            m_MsgBox.exec();
-            return false;
-        }else {
-            delete  m_ReqInserter;
-            return true;
-        }
     }
+    if (!(m_ReqInserter->UpdateUser(userID, requestID))) {
+        delete m_ReqInserter;
+        QMessageBox m_MsgBox(QMessageBox::Critical, "Ошибка!", "Не удалось обновить статус заявки", QMessageBox::Ok, this);
+        m_MsgBox.exec();
+        return false;
+    }
+    delete  m_ReqInserter;
+    return true;
 }
 
 void pgRequestWizard::setUserID(int value)

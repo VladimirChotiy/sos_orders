@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../Res.qrc">
+    <normaloff>:/icons/Icons/req_change.ico</normaloff>:/icons/Icons/req_change.ico</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QLabel" name="lbl_Engineer">
@@ -78,7 +82,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>bb_Buttons</sender>

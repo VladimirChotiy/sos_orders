@@ -13,6 +13,10 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="../Res.qrc">
+    <normaloff>:/icons/Icons/accept.ico</normaloff>:/icons/Icons/accept.ico</iconset>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="lay_MainHor" stretch="0,1">
@@ -418,7 +422,9 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../Res.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>bb_Dialog</sender>

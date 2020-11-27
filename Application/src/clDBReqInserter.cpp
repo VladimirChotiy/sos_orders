@@ -35,13 +35,18 @@ int clDBReqInserter::AddData(QVariantList arg, DBTypes::DBInsertType type)
         break;
     }
     case DBTypes::DBInsertType::Request: {
-        textQuery = "INSERT INTO tbl_requests (obj_id, type_id, context) VALUES (?, ?, ?)";
+        textQuery = "INSERT INTO tbl_requests (obj_id, type_id, context, cost_id) VALUES (?, ?, ?, ?)";
         errorType = "REQUEST";
         break;
     }
     case DBTypes::DBInsertType::Status: {
         textQuery = "INSERT INTO tbl_changes (status_id, parent_id, comment, user_id) VALUES (?, ?, ?, ?)";
         errorType = "CHANGE";
+        break;
+    }
+    case DBTypes::DBInsertType::Cost: {
+        textQuery = "INSERT INTO tbl_cost (m_cost, w_cost) VALUES (?, ?)";
+        errorType = "COST";
         break;
     }
     default: textQuery = "";
@@ -82,10 +87,15 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
         textQuery = QString("UPDATE tbl_requests SET resp_id=? WHERE id=%1").arg(id);
         errorType = "Engineer";
         break;
-    }
-    default: textQuery = "";
+    }   
+    case DBTypes::DBUpdateType::Cost: {
+        textQuery = QString("UPDATE tbl_cost SET m_cost=?, w_cost=? WHERE id = %1").arg(id);
+        errorType = "Cost";
+        break;
     }
 
+    default: textQuery = "";
+    }
     std::tie(result, resultQuery) = m_Prosessor->Execute(textQuery, arg);
     if (isError(result)) {
         qDebug() << "Error updating " << errorType;

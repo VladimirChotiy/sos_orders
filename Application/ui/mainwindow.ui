@@ -190,13 +190,14 @@
    <addaction name="act_ChangeEngineer"/>
    <addaction name="separator"/>
    <addaction name="act_ChangeStatus"/>
+   <addaction name="act_SetCost"/>
    <addaction name="separator"/>
    <addaction name="act_ReqClose"/>
   </widget>
   <action name="act_DBConnection">
    <property name="icon">
     <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/data_icon.ico</normaloff>:/icons/Icons/data_icon.ico</iconset>
+     <normaloff>:/icons/Icons/Data_settings.ico</normaloff>:/icons/Icons/Data_settings.ico</iconset>
    </property>
    <property name="text">
     <string>Сое&amp;динение</string>
@@ -331,6 +332,21 @@
    </property>
    <property name="toolTip">
     <string>Закрыть текущую заявку</string>
+   </property>
+  </action>
+  <action name="act_SetCost">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/req_cost.ico</normaloff>:/icons/Icons/req_cost.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Стоимость</string>
+   </property>
+   <property name="toolTip">
+    <string>Стоимость работ и материалов</string>
    </property>
   </action>
  </widget>
