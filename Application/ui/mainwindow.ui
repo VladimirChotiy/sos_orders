@@ -75,20 +75,28 @@
      <x>0</x>
      <y>0</y>
      <width>825</width>
-     <height>20</height>
+     <height>19</height>
     </rect>
    </property>
    <property name="font">
     <font>
-     <weight>75</weight>
-     <bold>true</bold>
+     <family>MS Shell Dlg 2</family>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
+   </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
    </property>
    <widget class="QMenu" name="menu_File">
     <property name="font">
      <font>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>MS Shell Dlg 2</family>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="title">
@@ -101,8 +109,9 @@
    <widget class="QMenu" name="menuRequests">
     <property name="font">
      <font>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>MS Shell Dlg 2</family>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="title">
@@ -146,19 +155,60 @@
     <addaction name="act_ReqClose"/>
    </widget>
    <widget class="QMenu" name="menu_View">
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+     </font>
+    </property>
     <property name="title">
-     <string>Вид</string>
+     <string>&amp;Вид</string>
     </property>
     <widget class="QMenu" name="menu_Columns">
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+      </font>
+     </property>
      <property name="title">
       <string>Столбцы</string>
      </property>
+     <addaction name="act_ColNumber"/>
+     <addaction name="act_ColContext"/>
+     <addaction name="act_ColComment"/>
+     <addaction name="act_ColType"/>
+     <addaction name="act_ColObject"/>
+     <addaction name="act_ColAddress"/>
+     <addaction name="act_ColPerson"/>
+     <addaction name="act_ColTel"/>
+     <addaction name="act_ColEmail"/>
+     <addaction name="act_ColData"/>
+     <addaction name="act_ColStatus"/>
+     <addaction name="act_ColUser"/>
+     <addaction name="act_ColEng"/>
+     <addaction name="act_ColMCost"/>
+     <addaction name="act_ColWCost"/>
+     <addaction name="act_ColSum"/>
+     <addaction name="separator"/>
+     <addaction name="act_ColAll"/>
     </widget>
     <addaction name="menu_Columns"/>
    </widget>
    <widget class="QMenu" name="menu_6">
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="tearOffEnabled">
+     <bool>true</bool>
+    </property>
     <property name="title">
-     <string>Инфо</string>
+     <string>&amp;Инфо</string>
+    </property>
+    <property name="separatorsCollapsible">
+     <bool>false</bool>
     </property>
     <addaction name="act_About"/>
     <addaction name="separator"/>
@@ -245,8 +295,8 @@
    <property name="font">
     <font>
      <pointsize>9</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="shortcut">
@@ -267,12 +317,15 @@
    <property name="font">
     <font>
      <pointsize>9</pointsize>
-     <weight>75</weight>
-     <bold>true</bold>
+     <weight>50</weight>
+     <bold>false</bold>
     </font>
    </property>
    <property name="shortcut">
     <string>Alt+X</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::QuitRole</enum>
    </property>
   </action>
   <action name="act_Refresh">
@@ -285,6 +338,11 @@
    </property>
    <property name="toolTip">
     <string>Обновить данные</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
    <property name="shortcut">
     <string>F5</string>
@@ -301,6 +359,11 @@
    <property name="text">
     <string>Зарегистрировать</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="act_ReqEdit">
    <property name="icon">
@@ -312,6 +375,11 @@
    </property>
    <property name="toolTip">
     <string>Редактировать заявку</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="act_AcceptRequest">
@@ -328,6 +396,11 @@
    <property name="toolTip">
     <string>Принять текущую заявку в обработку</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="act_ChangeEngineer">
    <property name="icon">
@@ -339,6 +412,11 @@
    </property>
    <property name="toolTip">
     <string>Изменить инженера, ответственного за завку</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="act_ChangeStatus">
@@ -355,6 +433,11 @@
    <property name="toolTip">
     <string>Изменить статус текущей заявки</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="act_ReqClose">
    <property name="enabled">
@@ -369,6 +452,11 @@
    </property>
    <property name="toolTip">
     <string>Закрыть текущую заявку</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="act_SetCost">
@@ -385,6 +473,11 @@
    <property name="toolTip">
     <string>Стоимость работ и материалов</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="act_History">
    <property name="icon">
@@ -396,6 +489,11 @@
    </property>
    <property name="toolTip">
     <string>История изменений статуса завяки</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="act_About">
@@ -409,6 +507,14 @@
    <property name="toolTip">
     <string>Информация о программе</string>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutRole</enum>
+   </property>
   </action>
   <action name="act_AboutQT">
    <property name="icon">
@@ -420,6 +526,282 @@
    </property>
    <property name="toolTip">
     <string>Информация о об версии библиотеки QT</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutQtRole</enum>
+   </property>
+  </action>
+  <action name="act_ColNumber">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>№ п/п</string>
+   </property>
+   <property name="toolTip">
+    <string>Столбец &quot;№ п/п&quot;</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColContext">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Описание</string>
+   </property>
+   <property name="toolTip">
+    <string>Описание заявки</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColComment">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Комментарий</string>
+   </property>
+   <property name="toolTip">
+    <string>Комментарий к последнему изменению</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColType">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Тип</string>
+   </property>
+   <property name="toolTip">
+    <string>Тип системы</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColObject">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Объект</string>
+   </property>
+   <property name="toolTip">
+    <string>Объект заявки</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColAddress">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Адрес</string>
+   </property>
+   <property name="toolTip">
+    <string>Адрес объекта</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColPerson">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Заказчик</string>
+   </property>
+   <property name="toolTip">
+    <string>Заказчик</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColTel">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Телефон</string>
+   </property>
+   <property name="toolTip">
+    <string>Телефон заказчика</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColEmail">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Почта</string>
+   </property>
+   <property name="toolTip">
+    <string>Электронная почта заказчика</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColStatus">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Статус</string>
+   </property>
+   <property name="toolTip">
+    <string>Текущий статус заявки</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColUser">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Кем внесены</string>
+   </property>
+   <property name="toolTip">
+    <string>Кем внесены последние изменения статуса</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColEng">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Ответственный</string>
+   </property>
+   <property name="toolTip">
+    <string>Ответственный за заявку инженер</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColMCost">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Материалы, руб.</string>
+   </property>
+   <property name="toolTip">
+    <string>Стоимость материалов, руб.</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColWCost">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Работа, руб.</string>
+   </property>
+   <property name="toolTip">
+    <string>Стоимость работ, руб.</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColSum">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Всего, руб.</string>
+   </property>
+   <property name="toolTip">
+    <string>Общая стоимость, руб.</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColAll">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/table_all.ico</normaloff>:/icons/Icons/table_all.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Все доступные</string>
+   </property>
+   <property name="toolTip">
+    <string>Отобразить все доступные столбцы</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="act_ColData">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Дата</string>
+   </property>
+   <property name="toolTip">
+    <string>Дата последнего изменения</string>
    </property>
   </action>
  </widget>

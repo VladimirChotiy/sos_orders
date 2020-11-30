@@ -32,5 +32,6 @@
         <file>Icons/req_info.ico</file>
         <file>Icons/About.ico</file>
         <file>Icons/About_QT.ico</file>
+        <file>Icons/table_all.ico</file>
     </qresource>
 </RCC>

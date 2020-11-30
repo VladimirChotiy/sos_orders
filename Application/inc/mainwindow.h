@@ -42,15 +42,15 @@ private:
     db::clDBAccessLevel * m_AccessLevel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     int dbUserID;
-    QModelIndex editID;
     QString dbUserName;
     QList<QAction*> m_ActionsList;
-    QList<QAction*> m_ColumnViewActions;
-    QList<bool> userShowColumns;
+    QList<QAction*> m_ColumnsActions;
     void RunConnectionDialog(ConnectionDlgMode mode);
     void ConfigStatusBar();
     void SaveDialogSettings();
     void LoadDialogSettings();
+    void SaveTableSettings();
+    void LoadTableSettings();
     void getColumnsEnabled();
     void getActionsEnabled();
 
@@ -74,6 +74,40 @@ private slots:
     void on_act_History_triggered();
     void on_act_AboutQT_triggered();
     void on_act_About_triggered();
+
+    void on_act_ColNumber_triggered(bool checked);
+
+    void on_act_ColContext_triggered(bool checked);
+
+    void on_act_ColComment_triggered(bool checked);
+
+    void on_act_ColType_triggered(bool checked);
+
+    void on_act_ColObject_triggered(bool checked);
+
+    void on_act_ColAddress_triggered(bool checked);
+
+    void on_act_ColPerson_triggered(bool checked);
+
+    void on_act_ColTel_triggered(bool checked);
+
+    void on_act_ColEmail_triggered(bool checked);
+
+    void on_act_ColStatus_triggered(bool checked);
+
+    void on_act_ColUser_triggered(bool checked);
+
+    void on_act_ColEng_triggered(bool checked);
+
+    void on_act_ColMCost_triggered(bool checked);
+
+    void on_act_ColWCost_triggered(bool checked);
+
+    void on_act_ColSum_triggered(bool checked);
+
+    void on_act_ColData_triggered(bool checked);
+
+    void on_act_ColAll_triggered();
 
 protected:
     void closeEvent(QCloseEvent *event);

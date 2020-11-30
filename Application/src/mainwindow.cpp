@@ -35,6 +35,23 @@ MainWindow::MainWindow(QWidget *parent)
     m_ActionsList.append(ui->act_SetCost);
     m_ActionsList.append(ui->act_History);
     m_ActionsList.append(ui->act_ReqClose);
+
+    m_ColumnsActions.append(ui->act_ColNumber);
+    m_ColumnsActions.append(ui->act_ColContext);
+    m_ColumnsActions.append(ui->act_ColComment);
+    m_ColumnsActions.append(ui->act_ColType);
+    m_ColumnsActions.append(ui->act_ColObject);
+    m_ColumnsActions.append(ui->act_ColAddress);
+    m_ColumnsActions.append(ui->act_ColPerson);
+    m_ColumnsActions.append(ui->act_ColTel);
+    m_ColumnsActions.append(ui->act_ColEmail);
+    m_ColumnsActions.append(ui->act_ColData);
+    m_ColumnsActions.append(ui->act_ColStatus);
+    m_ColumnsActions.append(ui->act_ColUser);
+    m_ColumnsActions.append(ui->act_ColEng);
+    m_ColumnsActions.append(ui->act_ColMCost);
+    m_ColumnsActions.append(ui->act_ColWCost);
+    m_ColumnsActions.append(ui->act_ColSum);
 }
 
 MainWindow::~MainWindow()
@@ -75,9 +92,10 @@ void MainWindow::SaveDialogSettings()
     m_settings->setGroupName("MainWindow");
     m_settings->OpenGroup();
     m_settings->setParam("Geometry", this->saveGeometry());
-    m_settings->setParam("MainTableGeometry", ui->tbl_Requests->horizontalHeader()->saveState());
     m_settings->CloseGroup();
     delete m_settings;
+
+    SaveTableSettings();
 }
 
 void MainWindow::LoadDialogSettings()
@@ -86,24 +104,54 @@ void MainWindow::LoadDialogSettings()
     m_settings->setGroupName("MainWindow");
     m_settings->OpenGroup();
     this->restoreGeometry(m_settings->getParam("Geometry").toByteArray());
+    m_settings->CloseGroup();
+    delete m_settings;
+}
+
+void MainWindow::SaveTableSettings()
+{
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("MainWindow");
+    m_settings->OpenGroup();
+    m_settings->setParam("MainTableGeometry", ui->tbl_Requests->horizontalHeader()->saveState());
+    m_settings->CloseGroup();
+    delete m_settings;
+}
+
+void MainWindow::LoadTableSettings()
+{
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("MainWindow");
+    m_settings->OpenGroup();
     ui->tbl_Requests->horizontalHeader()->restoreState(m_settings->getParam("MainTableGeometry").toByteArray());
     m_settings->CloseGroup();
     delete m_settings;
 }
 
 void MainWindow::getColumnsEnabled()
-{
-    m_ColumnViewActions.clear();
+{  
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("MainWindow");
+    m_settings->OpenGroup();
+    bool isConfig = m_settings->getParam("isConfig").toBool();
+    ui->tbl_Requests->horizontalHeader()->restoreState(m_settings->getParam("MainTableGeometry").toByteArray());
+
     for (int i = 0; i < m_AccessLevel->getColumnCount(); i++) {
         if (m_AccessLevel->getColumnsList()->value(i)) {
-            QAction *addAction = ui->menu_Columns->addAction(mainTableModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString());
-            addAction->setVisible(true);
-            addAction->setCheckable(true);
-            m_ColumnViewActions.append(addAction);
+            if (isConfig) {
+                m_ColumnsActions.value(i)->setChecked(!ui->tbl_Requests->horizontalHeader()->isSectionHidden(i));
+            }else {
+                ui->tbl_Requests->setColumnHidden(i, false);
+            }
         }else {
             ui->tbl_Requests->setColumnHidden(i, true);
+            if (m_ColumnsActions.value(i) != nullptr) m_ColumnsActions.value(i)->setVisible(false);
         }
     }
+    m_settings->setParam("isConfig", true);
+    m_settings->setParam("MainTableGeometry", ui->tbl_Requests->horizontalHeader()->saveState());
+    m_settings->CloseGroup();
+    delete m_settings;
 }
 
 void MainWindow::getActionsEnabled()
@@ -305,4 +353,94 @@ void MainWindow::on_act_AboutQT_triggered()
 void MainWindow::on_act_About_triggered()
 {
     QMessageBox::about(this, "Информация о программе", "Программа для работы с заявками. \nСалон Охранных Систем");
+}
+
+void MainWindow::on_act_ColNumber_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(0, !checked);
+}
+
+void MainWindow::on_act_ColContext_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(1, !checked);
+}
+
+void MainWindow::on_act_ColComment_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(2, !checked);
+}
+
+void MainWindow::on_act_ColType_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(3, !checked);
+}
+
+void MainWindow::on_act_ColObject_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(4, !checked);
+}
+
+void MainWindow::on_act_ColAddress_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(5, !checked);
+}
+
+void MainWindow::on_act_ColPerson_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(6, !checked);
+}
+
+void MainWindow::on_act_ColTel_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(7, !checked);
+}
+
+void MainWindow::on_act_ColEmail_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(8, !checked);
+}
+
+void MainWindow::on_act_ColData_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(9, !checked);
+}
+
+void MainWindow::on_act_ColStatus_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(10, !checked);
+}
+
+void MainWindow::on_act_ColUser_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(11, !checked);
+}
+
+void MainWindow::on_act_ColEng_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(12, !checked);
+}
+
+void MainWindow::on_act_ColMCost_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(13, !checked);
+}
+
+void MainWindow::on_act_ColWCost_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(14, !checked);
+}
+
+void MainWindow::on_act_ColSum_triggered(bool checked)
+{
+    ui->tbl_Requests->setColumnHidden(15, !checked);
+}
+
+void MainWindow::on_act_ColAll_triggered()
+{
+    for (int i = 0; i < m_ColumnsActions.size(); i++) {
+        if (m_ColumnsActions.value(i)->isVisible()) {
+            m_ColumnsActions.value(i)->triggered(true);
+            m_ColumnsActions.value(i)->setChecked(true);
+        }
+    }
 }
