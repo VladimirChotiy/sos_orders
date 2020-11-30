@@ -28,5 +28,9 @@
         <file>Icons/req_change.ico</file>
         <file>Icons/req_status.ico</file>
         <file>Icons/req_cost.ico</file>
+        <file>Icons/req_history.ico</file>
+        <file>Icons/req_info.ico</file>
+        <file>Icons/About.ico</file>
+        <file>Icons/About_QT.ico</file>
     </qresource>
 </RCC>

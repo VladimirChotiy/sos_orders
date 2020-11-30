@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 #include "clDBReqInserter.h"
 #include "DBProcessor.h"
+#include "settings.h"
+#include <QCloseEvent>
 #include <QMessageBox>
 #include <QDebug>
 
@@ -11,25 +13,28 @@ MainWindow::MainWindow(QWidget *parent)
       mainTableModel (new db::clDBMainQueryModel(this))
 {
     ui->setupUi(this);
+    LoadDialogSettings();
     RunConnectionDialog(ConnectionDlgMode::StartMode);
 
-    curUser = qgetenv("USER");
-    if (curUser.isEmpty()){
-        curUser = qgetenv("USERNAME");
-    }
     ConfigStatusBar();
     ui->tbl_Requests->setModel(mainTableModel);
-    ui->tbl_Requests->hideColumn(13);
-    ui->tbl_Requests->hideColumn(14);
+    ui->tbl_Requests->horizontalHeader()->setMinimumHeight(ui->tbl_Requests->horizontalHeader()->height() * 2);
     ui->tbl_Requests->setWordWrap(true);
-    //ui->tbl_Requests->resizeColumnsToContents();
     ui->tbl_Requests->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
     ui->tbl_Requests->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
     ui->tbl_Requests->horizontalHeader()->setStretchLastSection(true);
     ui->tbl_Requests->horizontalHeader()->setSectionsMovable(true);
     ui->tbl_Requests->horizontalHeader()->setVisible(true);
     ui->tbl_Requests->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
+
+    m_ActionsList.append(ui->act_Register);
+    m_ActionsList.append(ui->act_ReqEdit);
+    m_ActionsList.append(ui->act_AcceptRequest);
+    m_ActionsList.append(ui->act_ChangeEngineer);
+    m_ActionsList.append(ui->act_ChangeStatus);
+    m_ActionsList.append(ui->act_SetCost);
+    m_ActionsList.append(ui->act_History);
+    m_ActionsList.append(ui->act_ReqClose);
 }
 
 MainWindow::~MainWindow()
@@ -54,19 +59,78 @@ void MainWindow::RunConnectionDialog(ConnectionDlgMode mode)
 void MainWindow::ConfigStatusBar()
 {
     sts_connection = new QLabel();
+    sts_accsess = new QLabel();
     sts_username = new QLabel();
     sts_username->setText("");
+    sts_accsess->setText("");
     sts_connection->setText("DIS");
     ui->statusbar->addPermanentWidget(sts_username);
+    ui->statusbar->addPermanentWidget(sts_accsess);
     ui->statusbar->addPermanentWidget(sts_connection);
+}
+
+void MainWindow::SaveDialogSettings()
+{
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("MainWindow");
+    m_settings->OpenGroup();
+    m_settings->setParam("Geometry", this->saveGeometry());
+    m_settings->setParam("MainTableGeometry", ui->tbl_Requests->horizontalHeader()->saveState());
+    m_settings->CloseGroup();
+    delete m_settings;
+}
+
+void MainWindow::LoadDialogSettings()
+{
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("MainWindow");
+    m_settings->OpenGroup();
+    this->restoreGeometry(m_settings->getParam("Geometry").toByteArray());
+    ui->tbl_Requests->horizontalHeader()->restoreState(m_settings->getParam("MainTableGeometry").toByteArray());
+    m_settings->CloseGroup();
+    delete m_settings;
+}
+
+void MainWindow::getColumnsEnabled()
+{
+    m_ColumnViewActions.clear();
+    for (int i = 0; i < m_AccessLevel->getColumnCount(); i++) {
+        if (m_AccessLevel->getColumnsList()->value(i)) {
+            QAction *addAction = ui->menu_Columns->addAction(mainTableModel->headerData(i, Qt::Horizontal, Qt::DisplayRole).toString());
+            addAction->setVisible(true);
+            addAction->setCheckable(true);
+            m_ColumnViewActions.append(addAction);
+        }else {
+            ui->tbl_Requests->setColumnHidden(i, true);
+        }
+    }
+}
+
+void MainWindow::getActionsEnabled()
+{
+    for (int i = 0; i < m_AccessLevel->getActionsCount(); i++) {
+        m_ActionsList.value(i)->setEnabled(m_AccessLevel->getActionAccessList()->value(i));
+        m_ActionsList.value(i)->setVisible(m_AccessLevel->getActionAccessList()->value(i));
+    }
 }
 
 void MainWindow::ConnectToDB()
 {
+    QString curUser = qgetenv("USER");
+    if (curUser.isEmpty()){
+        curUser = qgetenv("USERNAME");
+    }
     db::DBProcessor* m_DBProcessor {new db::DBProcessor()};
     std::tie(dbUserID, dbUserName) = m_DBProcessor->findUser(curUser);
     sts_username->setText(dbUserName);
     delete m_DBProcessor;
+
+    if (m_AccessLevel == nullptr) delete m_AccessLevel;
+    m_AccessLevel = new db::clDBAccessLevel(dbUserID, this);
+    sts_accsess->setText(m_AccessLevel->getAccessName());
+    getActionsEnabled();
+    QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
+    getColumnsEnabled();
 }
 
 void MainWindow::NoChangesConnectionDlg()
@@ -87,24 +151,36 @@ void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QMo
 {
     Q_UNUSED(previous);
     int statusID {mainTableModel->data(mainTableModel->index(current.row(), 13), Qt::DisplayRole).toInt()};
-    if (statusID == 1) {
-        ui->act_AcceptRequest->setEnabled(true);
-    }else {
-        ui->act_AcceptRequest->setEnabled(false);
+    if (m_AccessLevel->getActionAccessList()->value(2)) {
+        if (statusID == 1) {
+            ui->act_AcceptRequest->setEnabled(true);
+        }else {
+            ui->act_AcceptRequest->setEnabled(false);
+        }
     }
 
-    if ((statusID > 1) && (statusID < 7)) {
-        ui->act_ChangeStatus->setEnabled(true);
-    }else {
-        ui->act_ChangeStatus->setEnabled(false);
+    if (m_AccessLevel->getActionAccessList()->value(4)) {
+        if ((statusID > 1) && (statusID < 7)) {
+            ui->act_ChangeStatus->setEnabled(true);
+        }else {
+            ui->act_ChangeStatus->setEnabled(false);
+        }
     }
 
-    if (statusID > 6) {
-        ui->act_ReqClose->setEnabled(false);
-        ui->act_SetCost->setEnabled(false);
-    }else {
-        ui->act_ReqClose->setEnabled(true);
-        ui->act_SetCost->setEnabled(true);
+    if (m_AccessLevel->getActionAccessList()->value(5)) {
+        if (statusID > 6) {
+            ui->act_SetCost->setEnabled(false);
+        }else {
+            ui->act_SetCost->setEnabled(true);
+        }
+    }
+
+    if (m_AccessLevel->getActionAccessList()->value(7)) {
+        if (statusID > 6) {
+            ui->act_ReqClose->setEnabled(false);
+        }else {
+            ui->act_ReqClose->setEnabled(true);
+        }
     }
 }
 
@@ -115,6 +191,7 @@ void MainWindow::on_act_DBConnection_triggered()
 
 void MainWindow::on_act_Exit_triggered()
 {
+    SaveDialogSettings();
     close();
 }
 
@@ -128,7 +205,9 @@ void MainWindow::on_act_Register_triggered()
 
 void MainWindow::on_act_Refresh_triggered()
 {
+    QModelIndex cID {ui->tbl_Requests->selectionModel()->currentIndex()};
     mainTableModel->RefreshQuery();
+    ui->tbl_Requests->selectionModel()->setCurrentIndex(cID,QItemSelectionModel::Rows);
 }
 
 void MainWindow::on_act_ReqEdit_triggered()
@@ -175,7 +254,7 @@ void MainWindow::on_act_ChangeEngineer_triggered()
 
 void MainWindow::on_act_ChangeStatus_triggered()
 {
-    ui->act_ChangeStatus->setEnabled(false);
+    //ui->act_ChangeStatus->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     int stateID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 13), Qt::DisplayRole).toInt()};
     ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), stateID, this);
@@ -186,7 +265,7 @@ void MainWindow::on_act_ChangeStatus_triggered()
 
 void MainWindow::on_act_ReqClose_triggered()
 {
-    ui->act_ReqClose->setEnabled(false);
+    //ui->act_ReqClose->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), 6, this);
     ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
@@ -196,10 +275,34 @@ void MainWindow::on_act_ReqClose_triggered()
 
 void MainWindow::on_act_SetCost_triggered()
 {
-    ui->act_SetCost->setEnabled(false);
+    //ui->act_SetCost->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 14), Qt::DisplayRole).toInt()};
     ui_SetCost = new uiSetCost(std::make_pair(sendID, dbUserID), this);
     ui_SetCost->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_SetCost, SIGNAL(usr_ReqCost_update()), this, SLOT(on_act_Refresh_triggered()));
     ui_SetCost->open();
+}
+
+void MainWindow::on_act_History_triggered()
+{
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    ui_ProtocolView = new uiProtocolView(sendID, this);
+    ui_ProtocolView->setAttribute(Qt::WA_DeleteOnClose);
+    ui_ProtocolView->open();
+}
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    SaveDialogSettings();
+    event->accept();
+}
+
+void MainWindow::on_act_AboutQT_triggered()
+{
+    QMessageBox::aboutQt(this);
+}
+
+void MainWindow::on_act_About_triggered()
+{
+    QMessageBox::about(this, "Информация о программе", "Программа для работы с заявками. \nСалон Охранных Систем");
 }

@@ -67,6 +67,9 @@
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -81,7 +84,7 @@
      <bold>true</bold>
     </font>
    </property>
-   <widget class="QMenu" name="menuMain">
+   <widget class="QMenu" name="menu_File">
     <property name="font">
      <font>
       <weight>75</weight>
@@ -95,7 +98,7 @@
     <addaction name="separator"/>
     <addaction name="act_Exit"/>
    </widget>
-   <widget class="QMenu" name="menuFirstAction">
+   <widget class="QMenu" name="menuRequests">
     <property name="font">
      <font>
       <weight>75</weight>
@@ -105,29 +108,66 @@
     <property name="title">
      <string>&amp;Заявки</string>
     </property>
-    <widget class="QMenu" name="menu">
+    <widget class="QMenu" name="menu_RegEdit">
      <property name="title">
       <string>Заявка</string>
      </property>
      <addaction name="act_Register"/>
      <addaction name="act_ReqEdit"/>
     </widget>
-    <widget class="QMenu" name="menu_2">
+    <widget class="QMenu" name="menu_Eng">
      <property name="title">
       <string>Процесс</string>
      </property>
+     <addaction name="act_AcceptRequest"/>
+     <addaction name="act_ChangeEngineer"/>
      <addaction name="act_ChangeStatus"/>
+    </widget>
+    <widget class="QMenu" name="menu_Close">
+     <property name="title">
+      <string>Журнал</string>
+     </property>
+     <addaction name="act_History"/>
+    </widget>
+    <widget class="QMenu" name="menu_Data">
+     <property name="title">
+      <string>Данные</string>
+     </property>
+     <addaction name="act_SetCost"/>
     </widget>
     <addaction name="act_Refresh"/>
     <addaction name="separator"/>
-    <addaction name="menu"/>
+    <addaction name="menu_RegEdit"/>
     <addaction name="separator"/>
-    <addaction name="menu_2"/>
+    <addaction name="menu_Eng"/>
     <addaction name="separator"/>
+    <addaction name="menu_Data"/>
+    <addaction name="menu_Close"/>
     <addaction name="act_ReqClose"/>
    </widget>
-   <addaction name="menuMain"/>
-   <addaction name="menuFirstAction"/>
+   <widget class="QMenu" name="menu_View">
+    <property name="title">
+     <string>Вид</string>
+    </property>
+    <widget class="QMenu" name="menu_Columns">
+     <property name="title">
+      <string>Столбцы</string>
+     </property>
+    </widget>
+    <addaction name="menu_Columns"/>
+   </widget>
+   <widget class="QMenu" name="menu_6">
+    <property name="title">
+     <string>Инфо</string>
+    </property>
+    <addaction name="act_About"/>
+    <addaction name="separator"/>
+    <addaction name="act_AboutQT"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menuRequests"/>
+   <addaction name="menu_View"/>
+   <addaction name="menu_6"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBarMain">
@@ -154,7 +194,6 @@
    </attribute>
    <addaction name="act_DBConnection"/>
    <addaction name="act_Exit"/>
-   <addaction name="separator"/>
   </widget>
   <widget class="QToolBar" name="toolBarOrder">
    <property name="windowTitle">
@@ -185,13 +224,11 @@
    <addaction name="separator"/>
    <addaction name="act_Register"/>
    <addaction name="act_ReqEdit"/>
-   <addaction name="separator"/>
    <addaction name="act_AcceptRequest"/>
    <addaction name="act_ChangeEngineer"/>
-   <addaction name="separator"/>
    <addaction name="act_ChangeStatus"/>
    <addaction name="act_SetCost"/>
-   <addaction name="separator"/>
+   <addaction name="act_History"/>
    <addaction name="act_ReqClose"/>
   </widget>
   <action name="act_DBConnection">
@@ -347,6 +384,42 @@
    </property>
    <property name="toolTip">
     <string>Стоимость работ и материалов</string>
+   </property>
+  </action>
+  <action name="act_History">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/req_history.ico</normaloff>:/icons/Icons/req_history.ico</iconset>
+   </property>
+   <property name="text">
+    <string>История изменений</string>
+   </property>
+   <property name="toolTip">
+    <string>История изменений статуса завяки</string>
+   </property>
+  </action>
+  <action name="act_About">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/About.ico</normaloff>:/icons/Icons/About.ico</iconset>
+   </property>
+   <property name="text">
+    <string>О программе</string>
+   </property>
+   <property name="toolTip">
+    <string>Информация о программе</string>
+   </property>
+  </action>
+  <action name="act_AboutQT">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/About_QT.ico</normaloff>:/icons/Icons/About_QT.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Информация о QT</string>
+   </property>
+   <property name="toolTip">
+    <string>Информация о об версии библиотеки QT</string>
    </property>
   </action>
  </widget>

@@ -39,7 +39,8 @@ enum class QueryType {
     Engineer,
     Status,
     Cost,
-    Changes
+    Changes,
+    Accsess
 };
 
 }

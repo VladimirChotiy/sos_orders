@@ -7,10 +7,12 @@
 #include "uconnect_db.h"
 #include "ueditrequest.h"
 #include "clDBMainQueryModel.h"
+#include "cldbaccesslevel.h"
 #include "uiaddnewwizard.h"
 #include "uichooseengineer.h"
 #include "uichangestatus.h"
 #include "uisetcost.h"
+#include "uiprotocolview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,20 +30,29 @@ private:
     Ui::MainWindow *ui;
     UConnect_db *ui_connect;
     QLabel *sts_connection;
+    QLabel *sts_accsess;
     QLabel *sts_username;
-    QString curUser;
     UEditRequest *ui_editRequest;
     uiAddNewWizard *ui_AddNewWizard;
     uiChooseEngineer *ui_ChooseEngineer;
     uiChangeStatus *ui_ChangeStatus;
     uiSetCost *ui_SetCost;
+    uiProtocolView *ui_ProtocolView;
     db::clDBMainQueryModel* mainTableModel;
+    db::clDBAccessLevel * m_AccessLevel;
     enum class ConnectionDlgMode { StartMode, RunMode};
     int dbUserID;
     QModelIndex editID;
     QString dbUserName;
+    QList<QAction*> m_ActionsList;
+    QList<QAction*> m_ColumnViewActions;
+    QList<bool> userShowColumns;
     void RunConnectionDialog(ConnectionDlgMode mode);
     void ConfigStatusBar();
+    void SaveDialogSettings();
+    void LoadDialogSettings();
+    void getColumnsEnabled();
+    void getActionsEnabled();
 
 public slots:
     void ConnectToDB();
@@ -60,5 +71,11 @@ private slots:
     void on_act_ChangeStatus_triggered();
     void on_act_ReqClose_triggered();
     void on_act_SetCost_triggered();
+    void on_act_History_triggered();
+    void on_act_AboutQT_triggered();
+    void on_act_About_triggered();
+
+protected:
+    void closeEvent(QCloseEvent *event);
 };
 #endif // MAINWINDOW_H

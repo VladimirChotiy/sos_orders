@@ -68,13 +68,22 @@ QVariant clDBMainQueryModel::GetHeaderNames(int column) const
     case 11:{
             return "Кем внесены изменения";
         }
-    case 13:{
-            return "status_id_id (hide)";
-        }
     case 12:{
             return "Ответственное лицо";
         }
+    case 13:{
+            return "Стоимость материалов";
+        }
     case 14:{
+            return "Стоимость работ";
+        }
+    case 15:{
+            return "Общая сумма";
+        }
+    case 16:{
+            return "status_id (hide)";
+        }
+    case 17:{
             return "cost_id (hide)";
         }
     default:{
@@ -95,7 +104,7 @@ QVariant clDBMainQueryModel::GetDataTextAlign(int column) const
 QVariant clDBMainQueryModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (orientation != Qt::Horizontal){
-        return QVariant();
+        return QSqlQueryModel::headerData(section, orientation, role);
     }
     switch (role) {
     case Qt::DisplayRole: return GetHeaderNames(section);

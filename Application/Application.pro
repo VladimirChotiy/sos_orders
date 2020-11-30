@@ -9,6 +9,9 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    src/cldbaccesslevel.cpp \
+    src/cldbprotocolquerymodel.cpp \
+    src/uiprotocolview.cpp \
     src/uisetcost.cpp \
     src/uichangestatus.cpp \
     src/uichooseengineer.cpp \
@@ -33,6 +36,8 @@ HEADERS += \
     inc/DBProcessor.h \
     inc/clDBMainQueryModel.h \
     inc/clDBReqInserter.h \
+    inc/cldbaccesslevel.h \
+    inc/cldbprotocolquerymodel.h \
     inc/dbtypes.h \
     inc/mainwindow.h \
     inc/pgobjectwizard.h \
@@ -43,9 +48,11 @@ HEADERS += \
     inc/uiaddnewwizard.h \
     inc/uichangestatus.h \
     inc/uichooseengineer.h \
+    inc/uiprotocolview.h \
     inc/uisetcost.h
 
 FORMS += \
+    ui/uiprotocolview.ui \
     ui/uisetcost.ui \
     ui/uichangestatus.ui \
     ui/uichooseengineer.ui \
