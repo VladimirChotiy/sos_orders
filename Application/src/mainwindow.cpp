@@ -162,6 +162,15 @@ void MainWindow::getActionsEnabled()
     }
 }
 
+void MainWindow::setAccsessFilter()
+{
+    int minID;
+    int maxID;
+    std::tie(minID, maxID) = m_AccessLevel->getStatus();
+    filterString = QString("WHERE tbl_status.id > %1 AND tbl_status.id < %2").arg(minID).arg(maxID);
+    mainTableModel->SetFilter(filterString);
+}
+
 void MainWindow::ConnectToDB()
 {
     QString curUser = qgetenv("USER");
@@ -179,6 +188,7 @@ void MainWindow::ConnectToDB()
     getActionsEnabled();
     QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
     getColumnsEnabled();
+    setAccsessFilter();
 }
 
 void MainWindow::NoChangesConnectionDlg()

@@ -62,7 +62,7 @@ std::pair<DBResult, QSqlQuery> DBProcessor::Execute(const QString& queryText, co
     return std::make_pair(result, query);
 }
 
-QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index)
+QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &filter)
 {
     QSqlQuery resultQuery {};
     DBResult result {DBResult::OK};
@@ -126,7 +126,7 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index)
     }
     default: textQuery = "";
     }
-    std::tie(result, resultQuery) = Execute(textQuery);
+    std::tie(result, resultQuery) = Execute(textQuery + filter);
     if (result == DBResult::FAIL) {
         qDebug() << "Error prepare Query";
     }

@@ -29,6 +29,17 @@ void clDBMainQueryModel::RefreshQuery()
     this->setQuery(this->query().lastQuery());
 }
 
+void clDBMainQueryModel::SetFilter(const QString &filter)
+{
+    DBProcessor* m_dbProcessor {new DBProcessor()};
+    this->setQuery(m_dbProcessor->prepareQuery(DBTypes::QueryType::RequestMain, 0, filter));
+    if (this->lastError().isValid()) {
+        qDebug() << this->lastError().text();
+        this->clear();
+    }
+    delete m_dbProcessor;
+}
+
 QVariant clDBMainQueryModel::GetHeaderNames(int column) const
 {
     switch (column) {
