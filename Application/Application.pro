@@ -64,14 +64,29 @@ FORMS += \
     ui/uconnect_db.ui \
     ui/uiaddnewwizard.ui
 
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target
+## Default rules for deployment.
+#qnx: target.path = /tmp/$${TARGET}/bin
+#else: unix:!android: target.path = /opt/$${TARGET}/bin
+#!isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
     Res.qrc
 
 LIBS += -L$$PWD/../shared/lib/ -lStoreSettings
 
-#win32:RC_ICONS = $$PWD/Icons/three-bars.ico
+win32:RC_ICONS = $$PWD/Icons/three-bars.ico
+
+CONFIG(release, debug|release) {
+    DESTDIR = $$OUT_PWD/../../SOSRequsetRelease
+}
+
+MOC_DIR = ../common/build/moc
+RCC_DIR = ../common/build/rcc
+UI_DIR = ../common/build/ui
+unix:OBJECTS_DIR = ../common/build/o/unix
+win32:OBJECTS_DIR = ../common/build/o/win32
+macx:OBJECTS_DIR = ../common/build/o/mac
+
+CONFIG(release, debug|release) {
+    QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$OUT_PWD/../../SOSRequsetRelease
+}
