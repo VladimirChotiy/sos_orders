@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     RunConnectionDialog(ConnectionDlgMode::StartMode);
 
     ConfigStatusBar();
+    ui->tbl_Requests->setVisible(false);
     ui->tbl_Requests->setModel(mainTableModel);
     ui->tbl_Requests->horizontalHeader()->setMinimumHeight(ui->tbl_Requests->horizontalHeader()->height() * 2);
     ui->tbl_Requests->setWordWrap(true);
@@ -189,6 +190,7 @@ void MainWindow::ConnectToDB()
     QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
     getColumnsEnabled();
     setAccsessFilter();
+    ui->tbl_Requests->setVisible(true);
 }
 
 void MainWindow::NoChangesConnectionDlg()
@@ -265,7 +267,7 @@ void MainWindow::on_act_Refresh_triggered()
 {
     QModelIndex cID {ui->tbl_Requests->selectionModel()->currentIndex()};
     mainTableModel->RefreshQuery();
-    ui->tbl_Requests->selectionModel()->setCurrentIndex(cID,QItemSelectionModel::Rows);
+    ui->tbl_Requests->selectionModel()->setCurrentIndex(cID, QItemSelectionModel::Rows);
 }
 
 void MainWindow::on_act_ReqEdit_triggered()

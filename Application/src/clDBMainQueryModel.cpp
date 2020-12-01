@@ -134,7 +134,13 @@ QVariant clDBMainQueryModel::data(const QModelIndex &index, int role) const
 
     switch (role) {
     case Qt::DisplayRole: return QSqlQueryModel::data(index, role);
-    //case Qt::BackgroundRole: return QBrush(Qt::red);
+//    case Qt::BackgroundRole: {
+//        if (this->data(this->index(index.row(), 0), Qt::DisplayRole).toInt() == 1) {
+//            return QBrush(Qt::red);
+//        }else {
+//            return QSqlQueryModel::data(index, role);
+//        }
+//    }
     case Qt::TextAlignmentRole: return GetDataTextAlign(index.column());
     case Qt::FontRole: return QFont("MS Shell Dlg 2", 9);
     default: return QSqlQueryModel::data(index, role);
