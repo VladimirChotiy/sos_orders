@@ -24,5 +24,14 @@
         <file>Icons/home_outline.ico</file>
         <file>Icons/addnewfile.ico</file>
         <file>Icons/edit.ico</file>
+        <file>Icons/req_accept.ico</file>
+        <file>Icons/req_change.ico</file>
+        <file>Icons/req_status.ico</file>
+        <file>Icons/req_cost.ico</file>
+        <file>Icons/req_history.ico</file>
+        <file>Icons/req_info.ico</file>
+        <file>Icons/About.ico</file>
+        <file>Icons/About_QT.ico</file>
+        <file>Icons/table_all.ico</file>
     </qresource>
 </RCC>
