@@ -156,6 +156,9 @@
          <property name="text">
           <string>Наименование объекта:</string>
          </property>
+         <property name="buddy">
+          <cstring>cb_Object</cstring>
+         </property>
         </widget>
        </item>
       </layout>
@@ -212,6 +215,9 @@
          <property name="text">
           <string>Адрес объекта:</string>
          </property>
+         <property name="buddy">
+          <cstring>txt_Address</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -264,6 +270,12 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>cb_Object</tabstop>
+  <tabstop>txt_Address</tabstop>
+  <tabstop>pb_AddObject</tabstop>
+  <tabstop>pb_Switch</tabstop>
+ </tabstops>
  <resources>
   <include location="../Res.qrc"/>
  </resources>

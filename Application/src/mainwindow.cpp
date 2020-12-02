@@ -62,6 +62,7 @@ MainWindow::~MainWindow()
 void MainWindow::RunConnectionDialog(ConnectionDlgMode mode)
 {
     ui_connect = new UConnect_db(this);
+    ui_connect->setAttribute(Qt::WA_DeleteOnClose);
     ui_connect->open();
     QObject::connect(ui_connect, SIGNAL(accepted()), this, SLOT(ConnectToDB()));
     if(mode == ConnectionDlgMode::StartMode){
@@ -92,6 +93,8 @@ void MainWindow::SaveDialogSettings()
     m_settings->setGroupName("MainWindow");
     m_settings->OpenGroup();
     m_settings->setParam("Geometry", this->saveGeometry());
+    m_settings->setParam("MainToolBar", ui->toolBarMain->isVisible());
+    m_settings->setParam("RequestToolBar", ui->toolBarOrder->isVisible());
     m_settings->CloseGroup();
     delete m_settings;
 
@@ -104,6 +107,8 @@ void MainWindow::LoadDialogSettings()
     m_settings->setGroupName("MainWindow");
     m_settings->OpenGroup();
     this->restoreGeometry(m_settings->getParam("Geometry").toByteArray());
+    ui->toolBarMain->setVisible(m_settings->getParam("MainToolBar").toBool());
+    ui->toolBarOrder->setVisible(m_settings->getParam("RequestToolBar").toBool());
     m_settings->CloseGroup();
     delete m_settings;
 }
@@ -384,7 +389,7 @@ void MainWindow::on_act_AboutQT_triggered()
 
 void MainWindow::on_act_About_triggered()
 {
-    QMessageBox::about(this, "Информация о программе", "Программа для работы с заявками. \nСалон Охранных Систем \nВерсия 0.1.2");
+    QMessageBox::about(this, "Информация о программе", "Программа для работы с заявками. \nСалон Охранных Систем \nВерсия " + QApplication::applicationVersion());
 }
 
 void MainWindow::on_act_ColNumber_triggered(bool checked)
