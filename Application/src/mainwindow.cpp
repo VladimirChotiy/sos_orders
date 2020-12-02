@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     ConfigStatusBar();
     ui->tbl_Requests->setVisible(false);
     ui->tbl_Requests->setModel(mainTableModel);
-    ui->tbl_Requests->horizontalHeader()->setMinimumHeight(ui->tbl_Requests->horizontalHeader()->height() * 2);
     ui->tbl_Requests->setWordWrap(true);
     ui->tbl_Requests->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
     ui->tbl_Requests->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
@@ -158,7 +157,6 @@ void MainWindow::getColumnsEnabled()
 void MainWindow::getActionsEnabled()
 {
     for (int i = 0; i < m_AccessLevel->getActionsCount(); i++) {
-        m_ActionsList.value(i)->setEnabled(m_AccessLevel->getActionAccessList()->value(i));
         m_ActionsList.value(i)->setVisible(m_AccessLevel->getActionAccessList()->value(i));
     }
 }
@@ -190,6 +188,7 @@ void MainWindow::ConnectToDB()
     QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
     getColumnsEnabled();
     setAccsessFilter();
+    ui->tbl_Requests->selectRow(0);
     ui->tbl_Requests->setVisible(true);
 }
 
@@ -210,12 +209,29 @@ void MainWindow::upd_statusBar_dbConnection(bool status)
 void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
-    int statusID {mainTableModel->data(mainTableModel->index(current.row(), 13), Qt::DisplayRole).toInt()};
+    int statusID {mainTableModel->data(mainTableModel->index(current.row(), 16), Qt::DisplayRole).toInt()};
+
+    if (m_AccessLevel->getActionAccessList()->value(1)) {
+        if (ui->tbl_Requests->currentIndex().row() > -1) {
+            ui->act_ReqEdit->setEnabled(true);
+        }else {
+            ui->act_ReqEdit->setEnabled(false);
+        }
+    }
+
     if (m_AccessLevel->getActionAccessList()->value(2)) {
         if (statusID == 1) {
             ui->act_AcceptRequest->setEnabled(true);
         }else {
             ui->act_AcceptRequest->setEnabled(false);
+        }
+    }
+
+    if (m_AccessLevel->getActionAccessList()->value(3)) {
+        if (ui->tbl_Requests->currentIndex().row() > -1) {
+            ui->act_ChangeEngineer->setEnabled(true);
+        }else {
+            ui->act_ChangeEngineer->setEnabled(false);
         }
     }
 
@@ -232,6 +248,14 @@ void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QMo
             ui->act_SetCost->setEnabled(false);
         }else {
             ui->act_SetCost->setEnabled(true);
+        }
+    }
+
+    if (m_AccessLevel->getActionAccessList()->value(6)) {
+        if (ui->tbl_Requests->currentIndex().row() > -1) {
+            ui->act_History->setEnabled(true);
+        }else {
+            ui->act_History->setEnabled(false);
         }
     }
 
@@ -281,7 +305,6 @@ void MainWindow::on_act_ReqEdit_triggered()
 
 void MainWindow::on_act_AcceptRequest_triggered()
 {
-    ui->act_AcceptRequest->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     QMessageBox engAcceptBox(QMessageBox::Question, "Принять в обработку", QString("Вы действительно хотите принять в обработку заявку №%1?").arg(sendID), QMessageBox::Ok | QMessageBox::Cancel, this);
     if (engAcceptBox.exec() == QMessageBox::Ok) {
@@ -314,9 +337,8 @@ void MainWindow::on_act_ChangeEngineer_triggered()
 
 void MainWindow::on_act_ChangeStatus_triggered()
 {
-    //ui->act_ChangeStatus->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
-    int stateID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 13), Qt::DisplayRole).toInt()};
+    int stateID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 16), Qt::DisplayRole).toInt()};
     ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), stateID, this);
     ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_ChangeStatus, SIGNAL(usr_ReqStatus_update()), this, SLOT(on_act_Refresh_triggered()));
@@ -325,7 +347,6 @@ void MainWindow::on_act_ChangeStatus_triggered()
 
 void MainWindow::on_act_ReqClose_triggered()
 {
-    //ui->act_ReqClose->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), 6, this);
     ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
@@ -335,8 +356,7 @@ void MainWindow::on_act_ReqClose_triggered()
 
 void MainWindow::on_act_SetCost_triggered()
 {
-    //ui->act_SetCost->setEnabled(false);
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 14), Qt::DisplayRole).toInt()};
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 17), Qt::DisplayRole).toInt()};
     ui_SetCost = new uiSetCost(std::make_pair(sendID, dbUserID), this);
     ui_SetCost->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_SetCost, SIGNAL(usr_ReqCost_update()), this, SLOT(on_act_Refresh_triggered()));
@@ -364,7 +384,7 @@ void MainWindow::on_act_AboutQT_triggered()
 
 void MainWindow::on_act_About_triggered()
 {
-    QMessageBox::about(this, "Информация о программе", "Программа для работы с заявками. \nСалон Охранных Систем");
+    QMessageBox::about(this, "Информация о программе", "Программа для работы с заявками. \nСалон Охранных Систем \nВерсия 0.1.2");
 }
 
 void MainWindow::on_act_ColNumber_triggered(bool checked)

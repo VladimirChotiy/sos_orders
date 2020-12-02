@@ -158,6 +158,8 @@
     <property name="font">
      <font>
       <family>MS Shell Dlg 2</family>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="title">
@@ -167,6 +169,8 @@
      <property name="font">
       <font>
        <family>MS Shell Dlg 2</family>
+       <weight>50</weight>
+       <bold>false</bold>
       </font>
      </property>
      <property name="title">
@@ -366,6 +370,9 @@
    </property>
   </action>
   <action name="act_ReqEdit">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/accept.ico</normaloff>:/icons/Icons/accept.ico</iconset>
@@ -403,6 +410,9 @@
    </property>
   </action>
   <action name="act_ChangeEngineer">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/req_change.ico</normaloff>:/icons/Icons/req_change.ico</iconset>
@@ -480,6 +490,9 @@
    </property>
   </action>
   <action name="act_History">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="icon">
     <iconset resource="../Res.qrc">
      <normaloff>:/icons/Icons/req_history.ico</normaloff>:/icons/Icons/req_history.ico</iconset>

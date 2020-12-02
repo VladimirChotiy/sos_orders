@@ -87,6 +87,6 @@ unix:OBJECTS_DIR = ../common/build/o/unix
 win32:OBJECTS_DIR = ../common/build/o/win32
 macx:OBJECTS_DIR = ../common/build/o/mac
 
-CONFIG(release, debug|release) {
+CONFIG(release, debug|release) {    
     QMAKE_POST_LINK = $$(QTDIR)/bin/windeployqt $$OUT_PWD/../../SOSRequsetRelease
 }
