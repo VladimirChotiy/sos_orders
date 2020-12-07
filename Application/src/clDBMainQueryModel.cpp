@@ -10,13 +10,8 @@ namespace db
 clDBMainQueryModel::clDBMainQueryModel(QObject *parent)
     : QSqlQueryModel(parent)
 {
-    DBProcessor* m_dbProcessor {new DBProcessor()};
-    this->setQuery(m_dbProcessor->prepareQuery(DBTypes::QueryType::RequestMain));
-    if (this->lastError().isValid()) {
-        qDebug() << this->lastError().text();
-        this->clear();
-    }
-    delete m_dbProcessor;
+    columNames << "reqid" << "tbl_requests.context" << "tbl_changes.comment" << "typename" << "objname" << "tbl_objects.address" << "persname" << "tbl_objects.telephone" << "tbl_objects.email" << "tbl_changes.date" << "statusname" << "tbl_users.disp_name" << "respuser" << "tbl_cost.m_cost" << "tbl_cost.w_cost" << "tbl_cost.sum";
+    RefreshQuery();
 }
 
 clDBMainQueryModel::~clDBMainQueryModel()
@@ -26,13 +21,8 @@ clDBMainQueryModel::~clDBMainQueryModel()
 
 void clDBMainQueryModel::RefreshQuery()
 {
-    this->setQuery(this->query().lastQuery());
-}
-
-void clDBMainQueryModel::SetFilter(const QString &filter)
-{
     DBProcessor* m_dbProcessor {new DBProcessor()};
-    this->setQuery(m_dbProcessor->prepareQuery(DBTypes::QueryType::RequestMain, 0, filter));
+    this->setQuery(m_dbProcessor->prepareQuery(DBTypes::QueryType::RequestMain, 0, filterString, sortString));
     if (this->lastError().isValid()) {
         qDebug() << this->lastError().text();
         this->clear();
@@ -40,10 +30,16 @@ void clDBMainQueryModel::SetFilter(const QString &filter)
     delete m_dbProcessor;
 }
 
+void clDBMainQueryModel::SetFilter(const QString &filter)
+{
+    filterString = filter;
+    RefreshQuery();
+}
+
 QVariant clDBMainQueryModel::GetHeaderNames(int column) const
 {
     switch (column) {
-    case 0:{
+    case 0:{   
             return "№ п/п";
         }
     case 1:{
@@ -122,6 +118,7 @@ QVariant clDBMainQueryModel::headerData(int section, Qt::Orientation orientation
     case Qt::TextAlignmentRole: return QVariant(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
     case Qt::FontRole: return QFont("MS Shell Dlg 2", 10, QFont::Bold);
     case Qt::SizeHintRole: return QSize(50, 60);
+    case Qt::InitialSortOrderRole: return QVariant(Qt::DescendingOrder);
     default: return QSqlQueryModel::headerData(section, orientation, role);
     }
 
@@ -146,5 +143,17 @@ QVariant clDBMainQueryModel::data(const QModelIndex &index, int role) const
     case Qt::FontRole: return QFont("MS Shell Dlg 2", 9);
     default: return QSqlQueryModel::data(index, role);
     }
+}
+
+void clDBMainQueryModel::sort(int column, Qt::SortOrder order)
+{
+    //sortString = "ORDER BY " + this->headerData(column, Qt::Horizontal, Qt::DisplayRole).toString() + " ";
+    sortString = "ORDER BY " + columNames.value(column) + " ";
+    if (order == Qt::DescendingOrder) {
+        sortString += "DESC";
+    }else {
+        sortString += "ASC";
+    }
+    RefreshQuery();
 }
 }

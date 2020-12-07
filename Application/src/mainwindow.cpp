@@ -61,6 +61,7 @@ void MainWindow::StartInit()
     ui->tbl_Requests->horizontalHeader()->setVisible(true);
     ui->tbl_Requests->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
+
     m_ActionsList.append(ui->act_Register);
     m_ActionsList.append(ui->act_ReqEdit);
     m_ActionsList.append(ui->act_AcceptRequest);
