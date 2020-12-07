@@ -16,7 +16,6 @@ enum class DBState {
 };
 
 enum class DBInsertType {
-    Person,
     Object,
     Request,
     Status,
@@ -32,7 +31,6 @@ enum class DBUpdateType {
 
 enum class QueryType {
     SystemType,
-    Person,
     Object,
     RequestEdit,
     RequestMain,

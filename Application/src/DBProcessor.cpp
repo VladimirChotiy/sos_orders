@@ -73,10 +73,6 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &f
        textQuery = "SELECT * FROM tbl_types ORDER BY id";
        break;
     }
-    case QueryType::Person: {
-        textQuery = "SELECT * FROM tbl_person ORDER BY name";
-        break;
-    }
     case QueryType::Object: {
         textQuery = QString("SELECT * FROM tbl_objects ORDER BY name");
         break;
@@ -91,10 +87,9 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &f
         break;
     }
     case QueryType::RequestMain: {
-        textQuery = QString("SELECT tbl_requests.id AS reqid, tbl_requests.context, tbl_changes.comment, tbl_types.name AS typename, tbl_objects.name AS objname, tbl_objects.address, tbl_person.name AS persname, tbl_person.telephone, tbl_person.email, tbl_changes.date, tbl_status.name AS statusname, tbl_users.disp_name, (SELECT tbl_users.disp_name FROM tbl_users WHERE tbl_users.id = tbl_requests.resp_id) AS respuser, tbl_cost.m_cost, tbl_cost.w_cost, tbl_cost.sum, tbl_status.id AS statusid, tbl_requests.cost_id FROM tbl_requests " \
+        textQuery = QString("SELECT tbl_requests.id AS reqid, tbl_requests.context, tbl_changes.comment, tbl_types.name AS typename, tbl_objects.name AS objname, tbl_objects.address, tbl_objects.person AS persname, tbl_objects.telephone, tbl_objects.email, tbl_changes.date, tbl_status.name AS statusname, tbl_users.disp_name, (SELECT tbl_users.disp_name FROM tbl_users WHERE tbl_users.id = tbl_requests.resp_id) AS respuser, tbl_cost.m_cost, tbl_cost.w_cost, tbl_cost.sum, tbl_status.id AS statusid, tbl_requests.cost_id FROM tbl_requests " \
             "LEFT JOIN tbl_types ON tbl_requests.type_id = tbl_types.id " \
             "LEFT JOIN tbl_objects ON tbl_requests.obj_id = tbl_objects.id " \
-            "LEFT JOIN tbl_person ON tbl_objects.parent_id = tbl_person.id " \
             "LEFT JOIN tbl_changes ON tbl_requests.change_id = tbl_changes.id " \
             "LEFT JOIN tbl_status ON tbl_changes.status_id = tbl_status.id " \
             "LEFT JOIN tbl_users ON tbl_changes.user_id = tbl_users.id " \

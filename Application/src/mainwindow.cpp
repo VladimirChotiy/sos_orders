@@ -166,13 +166,9 @@ void MainWindow::getActionsEnabled()
     }
 }
 
-void MainWindow::setAccsessFilter()
+void MainWindow::usr_setAccsessFilter()
 {
-    int minID;
-    int maxID;
-    std::tie(minID, maxID) = m_AccessLevel->getStatus();
-    filterString = QString("WHERE tbl_status.id > %1 AND tbl_status.id < %2").arg(minID).arg(maxID);
-    mainTableModel->SetFilter(filterString);
+    mainTableModel->SetFilter(m_DBFilter->getFilter());
 }
 
 void MainWindow::ConnectToDB()
@@ -192,7 +188,9 @@ void MainWindow::ConnectToDB()
     getActionsEnabled();
     QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
     getColumnsEnabled();
-    setAccsessFilter();
+    m_DBFilter = new db::clDBFilter(m_AccessLevel->getStatus(), this);
+    QObject::connect(m_DBFilter, SIGNAL(filter_changed()), this, SLOT(usr_setAccsessFilter()));
+    usr_setAccsessFilter();
     ui->tbl_Requests->selectRow(0);
     ui->tbl_Requests->setVisible(true);
 }
@@ -480,4 +478,9 @@ void MainWindow::on_act_ColAll_triggered()
             m_ColumnsActions.value(i)->setChecked(true);
         }
     }
+}
+
+void MainWindow::on_act_Filter_triggered(bool checked)
+{
+    ui->filter_Widget->setVisible(checked);
 }

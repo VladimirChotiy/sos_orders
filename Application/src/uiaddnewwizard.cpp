@@ -11,10 +11,8 @@ uiAddNewWizard::uiAddNewWizard(int userID, QWidget *parent) :
     ui(new Ui::uiAddNewWizard),
     dbUserID(userID)
 {
-    personPage = new pgPersonWizard(this);
     objectPage = new pgObjectWizard(this);
     requestPage = new pgRequestWizard(this);
-    this->addPage(personPage);
     this->addPage(objectPage);
     this->addPage(requestPage);
     ui->setupUi(this);
@@ -25,7 +23,6 @@ uiAddNewWizard::uiAddNewWizard(int userID, QWidget *parent) :
     this->setButtonText(QWizard::FinishButton, "Завершить");
     requestPage->setUserID(userID);
     QWizard::setDefaultProperty("QTextEdit", "plainText", SIGNAL(textChanged()));
-    QObject::connect(personPage, SIGNAL(usr_PersonId_changed(int)), objectPage, SLOT(setPersonID(int)));
     QObject::connect(objectPage, SIGNAL(usr_ObjectId_changed(int)), requestPage, SLOT(setObjectID(int)));
 }
 
@@ -54,16 +51,6 @@ void uiAddNewWizard::LoadDialogSettings()
     this->resize(m_settings->getParam("Width").toInt(), m_settings->getParam("Heigth").toInt());
     m_settings->CloseGroup();
     delete m_settings;
-}
-
-void uiAddNewWizard::on_uiAddNewWizard_currentIdChanged(int id)
-{
-    switch (id) {
-    case 1: {
-        objectPage->RefreshObjectPage();
-        break;
-    }
-    }
 }
 
 void uiAddNewWizard::on_uiAddNewWizard_rejected()

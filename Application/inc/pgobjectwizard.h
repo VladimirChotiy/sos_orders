@@ -20,9 +20,6 @@ public:
     int getObjectID() const;
     void RefreshObjectPage();
 
-public slots:
-    void setPersonID(int value);
-
 private slots:
     void usr_ObjectIndex_changed(int index);
     void usr_ObjectText_changed(const QString &text);
@@ -32,7 +29,6 @@ private slots:
 private:
     Ui::pgObjectWizard *ui;
     QSqlQueryModel *m_ObjectModel;
-    QSortFilterProxyModel *m_ObjectProxy;
     QDataWidgetMapper *m_ObjectMapper;
 
     enum class ObjectMode {Add, Choose};
@@ -40,7 +36,6 @@ private:
 
     void SwitchObjectMode(ObjectMode mode);
     void StartInit();
-    int personID {-1};
     int objectID {-1};
 
 signals:

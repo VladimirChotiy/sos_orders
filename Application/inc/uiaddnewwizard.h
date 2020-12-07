@@ -4,7 +4,6 @@
 #include <QWizard>
 #include <QSqlQueryModel>
 #include <QDataWidgetMapper>
-#include "pgpersonwizard.h"
 #include "pgobjectwizard.h"
 #include "pgrequestwizard.h"
 
@@ -22,13 +21,11 @@ public:
 
 
 private slots:
-    void on_uiAddNewWizard_currentIdChanged(int id);
     void on_uiAddNewWizard_rejected();
     void on_uiAddNewWizard_accepted();
 
 private:
     Ui::uiAddNewWizard *ui;
-    pgPersonWizard *personPage;
     pgObjectWizard *objectPage;
     pgRequestWizard *requestPage;
 

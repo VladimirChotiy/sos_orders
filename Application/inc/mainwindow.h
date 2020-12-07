@@ -13,6 +13,7 @@
 #include "uichangestatus.h"
 #include "uisetcost.h"
 #include "uiprotocolview.h"
+#include "cldbfilter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,12 +39,12 @@ private:
     uiChangeStatus *ui_ChangeStatus;
     uiSetCost *ui_SetCost;
     uiProtocolView *ui_ProtocolView;
-    db::clDBMainQueryModel* mainTableModel;
-    db::clDBAccessLevel * m_AccessLevel;
+    db::clDBMainQueryModel *mainTableModel;
+    db::clDBAccessLevel *m_AccessLevel;
+    db::clDBFilter *m_DBFilter;
     enum class ConnectionDlgMode { StartMode, RunMode};
     int dbUserID;
     QString dbUserName;
-    QString filterString;
     QList<QAction*> m_ActionsList;
     QList<QAction*> m_ColumnsActions;
     void RunConnectionDialog(ConnectionDlgMode mode);
@@ -54,13 +55,13 @@ private:
     void LoadTableSettings();
     void getColumnsEnabled();
     void getActionsEnabled();
-    void setAccsessFilter();
 
 public slots:
     void ConnectToDB();
     void NoChangesConnectionDlg();
 
 private slots:
+    void usr_setAccsessFilter();
     void upd_statusBar_dbConnection(bool status);
     void usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous);
     void on_act_DBConnection_triggered();
@@ -93,6 +94,8 @@ private slots:
     void on_act_ColSum_triggered(bool checked);
     void on_act_ColData_triggered(bool checked);
     void on_act_ColAll_triggered();
+
+    void on_act_Filter_triggered(bool checked);
 
 protected:
     void closeEvent(QCloseEvent *event);
