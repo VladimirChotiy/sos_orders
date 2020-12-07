@@ -38,7 +38,7 @@ void clDBFilter::setEngineerFilter(int id)
     emit filter_changed();
 }
 
-void clDBFilter::setDateFilter(QDateTime begin, QDateTime end)
+void clDBFilter::setDateFilter(const QDateTime &begin, const QDateTime &end)
 {
     dateFilter ="AND tbl_changes.date >= (SELECT '" + begin.toString("yyyy-MM-dd hh:mm:ss") + "') AND tbl_changes.date <= (SELECT '" + end.toString("yyyy-MM-dd hh:mm:ss") + "') ";
     emit filter_changed();

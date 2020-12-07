@@ -119,6 +119,10 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &f
         textQuery = QString("SELECT * FROM tbl_specs WHERE tbl_specs.id = (SELECT tbl_users.spec_id FROM tbl_users WHERE tbl_users.id = %1)").arg(index);
         break;
     }
+    case QueryType::Dates: {
+        textQuery = "SELECT tbl_changes.date FROM tbl_changes ORDER BY tbl_changes.date";
+        break;
+    }
     default: textQuery = "";
     }
     std::tie(result, resultQuery) = Execute(textQuery + filter);

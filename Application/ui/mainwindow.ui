@@ -105,6 +105,20 @@
         </widget>
        </item>
        <item>
+        <widget class="QCheckBox" name="cb_OnlyResp">
+         <property name="text">
+          <string>Только мои заявки</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="pb_FilterClear">
+         <property name="text">
+          <string>Очистить</string>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="spacer_Filter">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -936,6 +950,14 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>cb_fStatus</tabstop>
+  <tabstop>ded_fBeginDate</tabstop>
+  <tabstop>ded_fEndDate</tabstop>
+  <tabstop>cb_OnlyResp</tabstop>
+  <tabstop>pb_FilterClear</tabstop>
+  <tabstop>tbl_Requests</tabstop>
+ </tabstops>
  <resources>
   <include location="../Res.qrc"/>
  </resources>

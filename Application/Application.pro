@@ -72,9 +72,7 @@ win32:RC_ICONS = $$PWD/Icons/three-bars.ico
 
 CONFIG(release, debug|release) {
     DESTDIR = $$OUT_PWD/../../SOSRequsetRelease
-    MOC_DIR = ../common/build/moc
-    RCC_DIR = ../common/build/rcc
-    UI_DIR = ../common/build/ui
+
 
     unix:OBJECTS_DIR = ../common/build/o/unix
     win32:OBJECTS_DIR = ../common/build/o/win32

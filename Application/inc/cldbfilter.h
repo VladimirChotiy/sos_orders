@@ -16,7 +16,7 @@ public:
     QString getFilter();
     void setStatusFilter(int id);
     void setEngineerFilter(int id);
-    void setDateFilter(QDateTime begin, QDateTime end);
+    void setDateFilter(const QDateTime &begin, const QDateTime &end);
     void setClosesFilter();
     void clearStatusFilter();
     void clearEngineerFilter();

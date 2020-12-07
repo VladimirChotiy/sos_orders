@@ -38,7 +38,8 @@ enum class QueryType {
     Status,
     Cost,
     Changes,
-    Accsess
+    Accsess,
+    Dates
 };
 
 }
