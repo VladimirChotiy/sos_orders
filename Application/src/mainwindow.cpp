@@ -16,10 +16,43 @@ MainWindow::MainWindow(QWidget *parent)
     LoadDialogSettings();
     RunConnectionDialog(ConnectionDlgMode::StartMode);
 
-    ConfigStatusBar();
+    StartInit();
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+void MainWindow::RunConnectionDialog(ConnectionDlgMode mode)
+{
+    ui_connect = new UConnect_db(this);
+    ui_connect->setAttribute(Qt::WA_DeleteOnClose);
+    ui_connect->open();
+    QObject::connect(ui_connect, SIGNAL(accepted()), this, SLOT(ConnectToDB()));
+    if(mode == ConnectionDlgMode::StartMode){
+        QObject::connect(ui_connect, SIGNAL(rejected()), this, SLOT(close()));
+        QObject::connect(ui_connect, SIGNAL(timerShot()), ui_connect, SLOT(checkAutoconnect()));
+    }else if (mode == ConnectionDlgMode::RunMode){
+        QObject::connect(ui_connect, SIGNAL(rejected()), this, SLOT(NoChangesConnectionDlg()));
+    }
+
+}
+
+void MainWindow::StartInit()
+{
+    sts_connection = new QLabel();
+    sts_accsess = new QLabel();
+    sts_username = new QLabel();
+    sts_username->setText("");
+    sts_accsess->setText("");
+    sts_connection->setText("DIS");
+    ui->statusbar->addPermanentWidget(sts_username);
+    ui->statusbar->addPermanentWidget(sts_accsess);
+    ui->statusbar->addPermanentWidget(sts_connection);
+
     ui->tbl_Requests->setVisible(false);
     ui->tbl_Requests->setModel(mainTableModel);
-    ui->tbl_Requests->horizontalHeader()->setMinimumHeight(ui->tbl_Requests->horizontalHeader()->height() * 2);
     ui->tbl_Requests->setWordWrap(true);
     ui->tbl_Requests->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
     ui->tbl_Requests->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
@@ -53,38 +86,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_ColumnsActions.append(ui->act_ColMCost);
     m_ColumnsActions.append(ui->act_ColWCost);
     m_ColumnsActions.append(ui->act_ColSum);
-}
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
-void MainWindow::RunConnectionDialog(ConnectionDlgMode mode)
-{
-    ui_connect = new UConnect_db(this);
-    ui_connect->open();
-    QObject::connect(ui_connect, SIGNAL(accepted()), this, SLOT(ConnectToDB()));
-    if(mode == ConnectionDlgMode::StartMode){
-        QObject::connect(ui_connect, SIGNAL(rejected()), this, SLOT(close()));
-        QObject::connect(ui_connect, SIGNAL(timerShot()), ui_connect, SLOT(checkAutoconnect()));
-    }else if (mode == ConnectionDlgMode::RunMode){
-        QObject::connect(ui_connect, SIGNAL(rejected()), this, SLOT(NoChangesConnectionDlg()));
-    }
-
-}
-
-void MainWindow::ConfigStatusBar()
-{
-    sts_connection = new QLabel();
-    sts_accsess = new QLabel();
-    sts_username = new QLabel();
-    sts_username->setText("");
-    sts_accsess->setText("");
-    sts_connection->setText("DIS");
-    ui->statusbar->addPermanentWidget(sts_username);
-    ui->statusbar->addPermanentWidget(sts_accsess);
-    ui->statusbar->addPermanentWidget(sts_connection);
+    ui->filter_Widget->setVisible(false);
 }
 
 void MainWindow::SaveDialogSettings()
@@ -93,6 +96,8 @@ void MainWindow::SaveDialogSettings()
     m_settings->setGroupName("MainWindow");
     m_settings->OpenGroup();
     m_settings->setParam("Geometry", this->saveGeometry());
+    m_settings->setParam("MainToolBar", ui->toolBarMain->isVisible());
+    m_settings->setParam("RequestToolBar", ui->toolBarOrder->isVisible());
     m_settings->CloseGroup();
     delete m_settings;
 
@@ -105,6 +110,8 @@ void MainWindow::LoadDialogSettings()
     m_settings->setGroupName("MainWindow");
     m_settings->OpenGroup();
     this->restoreGeometry(m_settings->getParam("Geometry").toByteArray());
+    ui->toolBarMain->setVisible(m_settings->getParam("MainToolBar").toBool());
+    ui->toolBarOrder->setVisible(m_settings->getParam("RequestToolBar").toBool());
     m_settings->CloseGroup();
     delete m_settings;
 }
@@ -158,18 +165,23 @@ void MainWindow::getColumnsEnabled()
 void MainWindow::getActionsEnabled()
 {
     for (int i = 0; i < m_AccessLevel->getActionsCount(); i++) {
-        m_ActionsList.value(i)->setEnabled(m_AccessLevel->getActionAccessList()->value(i));
         m_ActionsList.value(i)->setVisible(m_AccessLevel->getActionAccessList()->value(i));
     }
 }
 
-void MainWindow::setAccsessFilter()
+void MainWindow::usr_setAccsessFilter()
 {
-    int minID;
-    int maxID;
-    std::tie(minID, maxID) = m_AccessLevel->getStatus();
-    filterString = QString("WHERE tbl_status.id > %1 AND tbl_status.id < %2").arg(minID).arg(maxID);
-    mainTableModel->SetFilter(filterString);
+    mainTableModel->SetFilter(m_DBFilter->getFilter());
+}
+
+void MainWindow::usr_fStatusIndex_changed(int index)
+{
+    if (index == -1) {
+        m_DBFilter->clearStatusFilter();
+    } else {
+        int statusID {m_cbStatusModel->data(m_cbStatusModel->index(index, 0), Qt::DisplayRole).toInt()};
+        m_DBFilter->setStatusFilter(statusID);
+    }
 }
 
 void MainWindow::ConnectToDB()
@@ -181,6 +193,18 @@ void MainWindow::ConnectToDB()
     db::DBProcessor* m_DBProcessor {new db::DBProcessor()};
     std::tie(dbUserID, dbUserName) = m_DBProcessor->findUser(curUser);
     sts_username->setText(dbUserName);
+
+    m_cbStatusModel = new QSqlQueryModel(this);
+    m_cbStatusModel->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::Status, 0));
+    ui->cb_fStatus->setModel(m_cbStatusModel);
+    ui->cb_fStatus->setModelColumn(1);
+    ui->cb_fStatus->setCurrentIndex(-1);
+    QObject::connect(ui->cb_fStatus, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_fStatusIndex_changed(int)));
+
+    QSqlQuery dateTimeQuery {m_DBProcessor->prepareQuery(DBTypes::QueryType::Dates)};
+    dateTimeQuery.first();
+    firstStatusDateTime = dateTimeQuery.value(0).toDateTime();
+
     delete m_DBProcessor;
 
     if (m_AccessLevel == nullptr) delete m_AccessLevel;
@@ -189,8 +213,14 @@ void MainWindow::ConnectToDB()
     getActionsEnabled();
     QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
     getColumnsEnabled();
-    setAccsessFilter();
+    m_DBFilter = new db::clDBFilter(m_AccessLevel->getStatus(), this);
+    ui->ded_fBeginDate->setDateTime(firstStatusDateTime);
+    ui->ded_fEndDate->setDate(QDate::currentDate());
+    QObject::connect(m_DBFilter, SIGNAL(filter_changed()), this, SLOT(usr_setAccsessFilter()));
+    usr_setAccsessFilter();
+    ui->tbl_Requests->selectRow(0);
     ui->tbl_Requests->setVisible(true);
+
 }
 
 void MainWindow::NoChangesConnectionDlg()
@@ -210,12 +240,29 @@ void MainWindow::upd_statusBar_dbConnection(bool status)
 void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
-    int statusID {mainTableModel->data(mainTableModel->index(current.row(), 13), Qt::DisplayRole).toInt()};
+    int statusID {mainTableModel->data(mainTableModel->index(current.row(), 16), Qt::DisplayRole).toInt()};
+
+    if (m_AccessLevel->getActionAccessList()->value(1)) {
+        if (ui->tbl_Requests->currentIndex().row() > -1) {
+            ui->act_ReqEdit->setEnabled(true);
+        }else {
+            ui->act_ReqEdit->setEnabled(false);
+        }
+    }
+
     if (m_AccessLevel->getActionAccessList()->value(2)) {
         if (statusID == 1) {
             ui->act_AcceptRequest->setEnabled(true);
         }else {
             ui->act_AcceptRequest->setEnabled(false);
+        }
+    }
+
+    if (m_AccessLevel->getActionAccessList()->value(3)) {
+        if (ui->tbl_Requests->currentIndex().row() > -1) {
+            ui->act_ChangeEngineer->setEnabled(true);
+        }else {
+            ui->act_ChangeEngineer->setEnabled(false);
         }
     }
 
@@ -232,6 +279,14 @@ void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QMo
             ui->act_SetCost->setEnabled(false);
         }else {
             ui->act_SetCost->setEnabled(true);
+        }
+    }
+
+    if (m_AccessLevel->getActionAccessList()->value(6)) {
+        if (ui->tbl_Requests->currentIndex().row() > -1) {
+            ui->act_History->setEnabled(true);
+        }else {
+            ui->act_History->setEnabled(false);
         }
     }
 
@@ -281,7 +336,6 @@ void MainWindow::on_act_ReqEdit_triggered()
 
 void MainWindow::on_act_AcceptRequest_triggered()
 {
-    ui->act_AcceptRequest->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     QMessageBox engAcceptBox(QMessageBox::Question, "Принять в обработку", QString("Вы действительно хотите принять в обработку заявку №%1?").arg(sendID), QMessageBox::Ok | QMessageBox::Cancel, this);
     if (engAcceptBox.exec() == QMessageBox::Ok) {
@@ -314,9 +368,8 @@ void MainWindow::on_act_ChangeEngineer_triggered()
 
 void MainWindow::on_act_ChangeStatus_triggered()
 {
-    //ui->act_ChangeStatus->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
-    int stateID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 13), Qt::DisplayRole).toInt()};
+    int stateID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 16), Qt::DisplayRole).toInt()};
     ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), stateID, this);
     ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_ChangeStatus, SIGNAL(usr_ReqStatus_update()), this, SLOT(on_act_Refresh_triggered()));
@@ -325,7 +378,6 @@ void MainWindow::on_act_ChangeStatus_triggered()
 
 void MainWindow::on_act_ReqClose_triggered()
 {
-    //ui->act_ReqClose->setEnabled(false);
     int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), 6, this);
     ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
@@ -335,8 +387,7 @@ void MainWindow::on_act_ReqClose_triggered()
 
 void MainWindow::on_act_SetCost_triggered()
 {
-    //ui->act_SetCost->setEnabled(false);
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 14), Qt::DisplayRole).toInt()};
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 17), Qt::DisplayRole).toInt()};
     ui_SetCost = new uiSetCost(std::make_pair(sendID, dbUserID), this);
     ui_SetCost->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_SetCost, SIGNAL(usr_ReqCost_update()), this, SLOT(on_act_Refresh_triggered()));
@@ -364,7 +415,7 @@ void MainWindow::on_act_AboutQT_triggered()
 
 void MainWindow::on_act_About_triggered()
 {
-    QMessageBox::about(this, "Информация о программе", "Программа для работы с заявками. \nСалон Охранных Систем");
+    QMessageBox::about(this, "Информация о программе", "Программа для работы с заявками. \nСалон Охранных Систем \nВерсия " + QApplication::applicationVersion());
 }
 
 void MainWindow::on_act_ColNumber_triggered(bool checked)
@@ -454,5 +505,49 @@ void MainWindow::on_act_ColAll_triggered()
             m_ColumnsActions.value(i)->triggered(true);
             m_ColumnsActions.value(i)->setChecked(true);
         }
+    }
+}
+
+void MainWindow::on_act_Filter_triggered(bool checked)
+{
+    ui->filter_Widget->setVisible(checked);
+}
+
+void MainWindow::on_pb_FilterClear_clicked()
+{
+    ui->cb_fStatus->setCurrentIndex(-1);
+    ui->cb_OnlyResp->setChecked(false);
+    ui->ded_fBeginDate->setDateTime(firstStatusDateTime);
+    ui->ded_fEndDate->setDate(QDate::currentDate());
+}
+
+void MainWindow::on_cb_OnlyResp_toggled(bool checked)
+{
+    if (checked) {
+        m_DBFilter->setEngineerFilter(dbUserID);
+    }else {
+        m_DBFilter->clearEngineerFilter();
+    }
+}
+
+void MainWindow::on_ded_fBeginDate_dateTimeChanged(const QDateTime &dateTime)
+{
+    QDateTime endDateTime;
+    if (dateTime >= ui->ded_fEndDate->dateTime()) {
+        endDateTime = dateTime.addDays(1);
+        ui->ded_fEndDate->setDate(endDateTime.date());
+    }else {
+        m_DBFilter->setDateFilter(ui->ded_fBeginDate->dateTime(), ui->ded_fEndDate->dateTime());
+    }
+}
+
+void MainWindow::on_ded_fEndDate_dateTimeChanged(const QDateTime &dateTime)
+{
+    QDateTime beginDateTime;
+    if (dateTime < ui->ded_fBeginDate->dateTime()) {
+       beginDateTime = dateTime.addDays(-1);
+       ui->ded_fBeginDate->setDateTime(beginDateTime);
+    } else {
+        m_DBFilter->setDateFilter(ui->ded_fBeginDate->dateTime(), ui->ded_fEndDate->dateTime());
     }
 }

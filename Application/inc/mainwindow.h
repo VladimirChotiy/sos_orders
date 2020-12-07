@@ -13,6 +13,7 @@
 #include "uichangestatus.h"
 #include "uisetcost.h"
 #include "uiprotocolview.h"
+#include "cldbfilter.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -38,31 +39,34 @@ private:
     uiChangeStatus *ui_ChangeStatus;
     uiSetCost *ui_SetCost;
     uiProtocolView *ui_ProtocolView;
-    db::clDBMainQueryModel* mainTableModel;
-    db::clDBAccessLevel * m_AccessLevel;
+    db::clDBMainQueryModel *mainTableModel;
+    QSqlQueryModel *m_cbStatusModel;
+    db::clDBAccessLevel *m_AccessLevel;
+    db::clDBFilter *m_DBFilter;
+    QDateTime firstStatusDateTime;
     enum class ConnectionDlgMode { StartMode, RunMode};
     int dbUserID;
     QString dbUserName;
-    QString filterString;
     QList<QAction*> m_ActionsList;
     QList<QAction*> m_ColumnsActions;
     void RunConnectionDialog(ConnectionDlgMode mode);
-    void ConfigStatusBar();
+    void StartInit();
     void SaveDialogSettings();
     void LoadDialogSettings();
     void SaveTableSettings();
     void LoadTableSettings();
     void getColumnsEnabled();
     void getActionsEnabled();
-    void setAccsessFilter();
 
 public slots:
     void ConnectToDB();
     void NoChangesConnectionDlg();
 
 private slots:
-    void upd_statusBar_dbConnection(bool status);
     void usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous);
+    void usr_setAccsessFilter();
+    void usr_fStatusIndex_changed(int index);
+    void upd_statusBar_dbConnection(bool status);
     void on_act_DBConnection_triggered();
     void on_act_Exit_triggered();
     void on_act_Register_triggered();
@@ -93,6 +97,11 @@ private slots:
     void on_act_ColSum_triggered(bool checked);
     void on_act_ColData_triggered(bool checked);
     void on_act_ColAll_triggered();
+    void on_act_Filter_triggered(bool checked);
+    void on_pb_FilterClear_clicked();
+    void on_cb_OnlyResp_toggled(bool checked);
+    void on_ded_fBeginDate_dateTimeChanged(const QDateTime &dateTime);
+    void on_ded_fEndDate_dateTimeChanged(const QDateTime &dateTime);
 
 protected:
     void closeEvent(QCloseEvent *event);

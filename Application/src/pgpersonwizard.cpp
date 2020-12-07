@@ -122,7 +122,7 @@ void pgPersonWizard::on_pb_SavePerson_clicked()
     int lastID;
     m_PersonProxy->setSourceModel(m_PersonModel);
     m_PersonProxy->setFilterKeyColumn(1);
-    m_PersonProxy->setFilterRegExp(ui->cb_Person->lineEdit()->text());
+    m_PersonProxy->setFilterRegExp("^" + ui->cb_Person->lineEdit()->text() + "&");
     if (m_PersonProxy->rowCount() > 0) {
         QMessageBox m_MsgBox(QMessageBox::Warning, "Внимание!", "Данный пользователь уже существует в базе данных", QMessageBox::Ok, this);
         m_MsgBox.exec();

@@ -19,47 +19,17 @@
   <property name="subTitle">
    <string>Введите данные заявки</string>
   </property>
+  <attribute name="pageId">
+   <string notr="true">2</string>
+  </attribute>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="vl_CurrentPage">
      <item>
-      <widget class="QLabel" name="lbl_PersonPage">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-         <kerning>true</kerning>
-        </font>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:rgb(0, 0, 0)</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="text">
-        <string>  1. Заказчик</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLabel" name="lbl_ObjectPage">
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>100</width>
          <height>25</height>
         </size>
        </property>
@@ -83,7 +53,7 @@
         <number>1</number>
        </property>
        <property name="text">
-        <string>  2. Объект</string>
+        <string>  1. Объект</string>
        </property>
       </widget>
      </item>
@@ -112,7 +82,7 @@
         <number>1</number>
        </property>
        <property name="text">
-        <string>  3. Заявка</string>
+        <string>  2. Заявка</string>
        </property>
       </widget>
      </item>
@@ -156,6 +126,9 @@
          <property name="text">
           <string>Тип системы:</string>
          </property>
+         <property name="buddy">
+          <cstring>cb_Type</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -180,6 +153,9 @@
          </property>
          <property name="text">
           <string>Описание заявки:</string>
+         </property>
+         <property name="buddy">
+          <cstring>txt_Context</cstring>
          </property>
         </widget>
        </item>

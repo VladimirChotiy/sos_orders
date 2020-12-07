@@ -24,13 +24,8 @@ int clDBReqInserter::AddData(QVariantList arg, DBTypes::DBInsertType type)
     QString errorType;
 
     switch (type) {
-    case DBTypes::DBInsertType::Person: {
-        textQuery = "INSERT INTO tbl_person (name, telephone, email) VALUES (?, ?, ?)";
-        errorType = "PERSON";
-        break;
-    }
     case DBTypes::DBInsertType::Object: {
-        textQuery = "INSERT INTO tbl_objects (name, address, parent_id) VALUES (?, ?, ?)";
+        textQuery = "INSERT INTO tbl_objects (name, address, person, telephone, email) VALUES (?, ?, ?, ?, ?)";
         errorType = "OBJECT";
         break;
     }

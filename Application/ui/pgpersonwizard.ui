@@ -152,6 +152,9 @@
          <property name="text">
           <string>ФИО заказчика:</string>
          </property>
+         <property name="buddy">
+          <cstring>cb_Person</cstring>
+         </property>
         </widget>
        </item>
       </layout>
@@ -208,6 +211,9 @@
          <property name="text">
           <string>Телефонный номер:</string>
          </property>
+         <property name="buddy">
+          <cstring>ed_Telephon</cstring>
+         </property>
         </widget>
        </item>
        <item>
@@ -239,6 +245,9 @@
          </property>
          <property name="text">
           <string>Электронная почта:</string>
+         </property>
+         <property name="buddy">
+          <cstring>ed_Email</cstring>
          </property>
         </widget>
        </item>
@@ -281,6 +290,13 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>cb_Person</tabstop>
+  <tabstop>ed_Telephon</tabstop>
+  <tabstop>ed_Email</tabstop>
+  <tabstop>pb_SavePerson</tabstop>
+  <tabstop>pb_AddPerson</tabstop>
+ </tabstops>
  <resources>
   <include location="../Res.qrc"/>
  </resources>

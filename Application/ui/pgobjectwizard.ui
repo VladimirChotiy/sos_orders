@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>426</width>
+    <height>351</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,49 +20,16 @@
    <string>Выберете объект из базы данных</string>
   </property>
   <attribute name="pageId">
-   <string notr="true">2</string>
+   <string notr="true">1</string>
   </attribute>
   <layout class="QHBoxLayout" name="horizontalLayout_2">
    <item>
     <layout class="QVBoxLayout" name="vl_CurrentPage">
      <item>
-      <widget class="QLabel" name="lbl_PersonPage">
-       <property name="minimumSize">
-        <size>
-         <width>100</width>
-         <height>25</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-         <kerning>true</kerning>
-        </font>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color:rgb(0, 0, 0)</string>
-       </property>
-       <property name="frameShape">
-        <enum>QFrame::NoFrame</enum>
-       </property>
-       <property name="lineWidth">
-        <number>1</number>
-       </property>
-       <property name="text">
-        <string>  1. Заказчик</string>
-       </property>
-      </widget>
-     </item>
-     <item>
       <widget class="QLabel" name="lbl_ObjectPage">
        <property name="minimumSize">
         <size>
-         <width>0</width>
+         <width>100</width>
          <height>25</height>
         </size>
        </property>
@@ -86,7 +53,7 @@
         <number>1</number>
        </property>
        <property name="text">
-        <string>  2. Объект</string>
+        <string>  1. Объект</string>
        </property>
       </widget>
      </item>
@@ -112,7 +79,7 @@
         <number>1</number>
        </property>
        <property name="text">
-        <string>  3. Заявка</string>
+        <string>  2. Заявка</string>
        </property>
       </widget>
      </item>
@@ -139,7 +106,7 @@
     </widget>
    </item>
    <item>
-    <layout class="QVBoxLayout" name="verticalLayout_4">
+    <layout class="QVBoxLayout" name="verticalLayout">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
        <item>
@@ -156,79 +123,186 @@
          <property name="text">
           <string>Наименование объекта:</string>
          </property>
+         <property name="buddy">
+          <cstring>cb_Object</cstring>
+         </property>
         </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QComboBox" name="cb_Object">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>22</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pb_Switch">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="minimumSize">
+            <size>
+             <width>22</width>
+             <height>22</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset resource="../Res.qrc">
+             <normaloff>:/icons/Icons/register.ico</normaloff>:/icons/Icons/register.ico</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </item>
       </layout>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QComboBox" name="cb_Object">
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>22</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pb_Switch">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>22</width>
-           <height>22</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset resource="../Res.qrc">
-           <normaloff>:/icons/Icons/register.ico</normaloff>:/icons/Icons/register.ico</iconset>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QLabel" name="lbl_Address">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Адрес объекта:</string>
+       </property>
+       <property name="buddy">
+        <cstring>txt_Address</cstring>
+       </property>
+      </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
-        <widget class="QLabel" name="lbl_Address">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-           <underline>true</underline>
-          </font>
-         </property>
-         <property name="text">
-          <string>Адрес объекта:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextEdit" name="txt_Address">
-         <property name="font">
-          <font>
-           <pointsize>9</pointsize>
-           <weight>50</weight>
-           <bold>false</bold>
-          </font>
-         </property>
-         <property name="readOnly">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QTextEdit" name="txt_Address">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="placeholderText">
+        <string>Введите адрес объекта</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_Telephone">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Телефонный номер:</string>
+       </property>
+       <property name="buddy">
+        <cstring>ed_Telephon</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="ed_Telephon">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="placeholderText">
+        <string>Введите телефон для связи с заказчиком</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_Email">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Электронная почта:</string>
+       </property>
+       <property name="buddy">
+        <cstring>ed_Email</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="ed_Email">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="placeholderText">
+        <string>Введите электронный адрес</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="lbl_Person">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+         <underline>true</underline>
+        </font>
+       </property>
+       <property name="text">
+        <string>Контактное лицо:</string>
+       </property>
+       <property name="buddy">
+        <cstring>ed_Person</cstring>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="ed_Person">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>22</height>
+        </size>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <property name="placeholderText">
+        <string>Введите ФИО контактного лица</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pb_AddObject">
@@ -254,8 +328,8 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>20</width>
-         <height>40</height>
+         <width>260</width>
+         <height>13</height>
         </size>
        </property>
       </spacer>
@@ -264,6 +338,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>cb_Object</tabstop>
+  <tabstop>txt_Address</tabstop>
+  <tabstop>ed_Telephon</tabstop>
+  <tabstop>ed_Email</tabstop>
+  <tabstop>ed_Person</tabstop>
+  <tabstop>pb_AddObject</tabstop>
+  <tabstop>pb_Switch</tabstop>
+ </tabstops>
  <resources>
   <include location="../Res.qrc"/>
  </resources>

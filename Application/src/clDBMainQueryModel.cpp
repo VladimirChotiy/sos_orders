@@ -83,13 +83,13 @@ QVariant clDBMainQueryModel::GetHeaderNames(int column) const
             return "Ответственное лицо";
         }
     case 13:{
-            return "Стоимость материалов";
+            return "Стоимость материалов, руб.";
         }
     case 14:{
-            return "Стоимость работ";
+            return "Стоимость работ, руб.";
         }
     case 15:{
-            return "Общая сумма";
+            return "Общая сумма, руб.";
         }
     case 16:{
             return "status_id (hide)";
@@ -105,7 +105,7 @@ QVariant clDBMainQueryModel::GetHeaderNames(int column) const
 
 QVariant clDBMainQueryModel::GetDataTextAlign(int column) const
 {
-    if ((column == 0) || (column == 3) || ((column >= 6) && (column <=12))) {
+    if ((column == 0) || (column == 3) || ((column >= 6) && (column <=15))) {
         return QVariant(Qt::AlignCenter);
     }else{
         return QVariant(Qt::AlignLeft | Qt::AlignVCenter);
@@ -121,6 +121,7 @@ QVariant clDBMainQueryModel::headerData(int section, Qt::Orientation orientation
     case Qt::DisplayRole: return GetHeaderNames(section);
     case Qt::TextAlignmentRole: return QVariant(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
     case Qt::FontRole: return QFont("MS Shell Dlg 2", 10, QFont::Bold);
+    case Qt::SizeHintRole: return QSize(50, 60);
     default: return QSqlQueryModel::headerData(section, orientation, role);
     }
 
