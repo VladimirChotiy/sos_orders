@@ -23,3 +23,7 @@ headers.path = ../shared/inc/
 headers.files = inc/settings.h
 
 INSTALLS += headers
+
+CONFIG(release, debug|release) {
+    DESTDIR = $$OUT_PWD/../../SOSRequsetRelease
+}

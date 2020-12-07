@@ -15,5 +15,32 @@ enum class DBState {
     ERROR_OPENING
 };
 
+enum class DBInsertType {
+    Object,
+    Request,
+    Status,
+    Cost
+};
+
+enum class DBUpdateType {
+    Request,
+    Status,
+    Engineer,
+    Cost
+};
+
+enum class QueryType {
+    SystemType,
+    Object,
+    RequestEdit,
+    RequestMain,
+    Engineer,
+    Status,
+    Cost,
+    Changes,
+    Accsess,
+    Dates
+};
+
 }
 #endif // DBTYPES_H

@@ -67,7 +67,11 @@ bool ConnectionManager::DBManagerPrivate::setUp()
     m_database->setHostName(db_Hostname);
     m_database->setUserName(db_User);
     m_database->setPassword(db_Password);
+#ifdef QT_DEBUG
+    m_database->setDatabaseName("udb_orders_debug");
+#else
     m_database->setDatabaseName("udb_orders");
+#endif
 
     if (!m_database->open())
     {

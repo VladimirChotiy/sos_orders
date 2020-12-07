@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/icons">
-        <file>Icons/data_icon.ico</file>
         <file>Icons/settings.ico</file>
         <file>Icons/three-bars.ico</file>
         <file>Icons/close_big_icon.ico</file>
@@ -14,8 +13,6 @@
         <file>Icons/accept.ico</file>
         <file>Icons/survey.ico</file>
         <file>Icons/send.ico</file>
-        <file>Icons/accept_to_assembling.ico</file>
-        <file>Icons/assembling.ico</file>
         <file>Icons/add_orders.ico</file>
         <file>Icons/delivery.ico</file>
         <file>Icons/building.ico</file>
@@ -24,5 +21,15 @@
         <file>Icons/home_outline.ico</file>
         <file>Icons/addnewfile.ico</file>
         <file>Icons/edit.ico</file>
+        <file>Icons/req_accept.ico</file>
+        <file>Icons/req_change.ico</file>
+        <file>Icons/req_status.ico</file>
+        <file>Icons/req_cost.ico</file>
+        <file>Icons/req_history.ico</file>
+        <file>Icons/req_info.ico</file>
+        <file>Icons/About.ico</file>
+        <file>Icons/About_QT.ico</file>
+        <file>Icons/table_all.ico</file>
+        <file>Icons/req_filter.ico</file>
     </qresource>
 </RCC>
