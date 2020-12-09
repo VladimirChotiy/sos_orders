@@ -6,11 +6,13 @@
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QDebug>
+#include <QActionGroup>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      mainTableModel (new db::clDBMainQueryModel(this))
+      mainTableModel (new db::clDBMainQueryModel(this)),
+      m_FilterStatusGroup(new QActionGroup(this))
 {
     ui->setupUi(this);
     LoadDialogSettings();
@@ -89,6 +91,7 @@ void MainWindow::StartInit()
     m_ColumnsActions.append(ui->act_ColSum);
 
     ui->filter_Widget->setVisible(false);
+    m_FilterStatusGroup->setExclusionPolicy(QActionGroup::ExclusionPolicy::None);
 }
 
 void MainWindow::SaveDialogSettings()
@@ -191,6 +194,7 @@ void MainWindow::ConnectToDB()
     if (curUser.isEmpty()){
         curUser = qgetenv("USERNAME");
     }
+    //curUser = "a.p.novikov";
     db::DBProcessor* m_DBProcessor {new db::DBProcessor()};
     std::tie(dbUserID, dbUserName) = m_DBProcessor->findUser(curUser);
     sts_username->setText(dbUserName);
@@ -206,7 +210,19 @@ void MainWindow::ConnectToDB()
     dateTimeQuery.first();
     firstStatusDateTime = dateTimeQuery.value(0).toDateTime();
 
+    QMenu *m_fStatusMenu = new QMenu(this);
+    QSqlQuery statusQuery {m_DBProcessor->prepareQuery(DBTypes::QueryType::Status, 0)};
+    QAction *fStatusActionPattern;
+    while (statusQuery.next()) {
+        fStatusActionPattern = m_fStatusMenu->addAction(statusQuery.value(1).toString());
+        fStatusActionPattern->setCheckable(true);
+        fStatusActionPattern->setData(statusQuery.value(0));
+        m_FilterStatusGroup->addAction(fStatusActionPattern);
+    }
+
     delete m_DBProcessor;
+
+    ui->tb_fStatus->setMenu(m_fStatusMenu);
 
     if (m_AccessLevel == nullptr) delete m_AccessLevel;
     m_AccessLevel = new db::clDBAccessLevel(dbUserID, this);
@@ -214,7 +230,21 @@ void MainWindow::ConnectToDB()
     getActionsEnabled();
     QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
     getColumnsEnabled();
+
+    int sMin;
+    int sMax;
+    std::tie(sMin, sMax) = m_AccessLevel->getStatus();
+    const QList<QAction*> fStatusActions = m_FilterStatusGroup->actions();
+    for (int i = 0; i < fStatusActions.size(); i++) {
+        if ((i > (sMin - 1)) && (i < (sMax - 1))) {
+            fStatusActions.value(i)->setVisible(true);
+        }else {
+            fStatusActions.value(i)->setVisible(false);
+        }
+    }
+
     m_DBFilter = new db::clDBFilter(m_AccessLevel->getStatus(), this);
+
     ui->ded_fBeginDate->setDateTime(firstStatusDateTime);
     ui->ded_fEndDate->setDate(QDate::currentDate());
     QObject::connect(m_DBFilter, SIGNAL(filter_changed()), this, SLOT(usr_setAccsessFilter()));
@@ -222,6 +252,7 @@ void MainWindow::ConnectToDB()
     ui->tbl_Requests->selectRow(0);
     ui->tbl_Requests->setVisible(true);
 
+    QObject::connect(m_FilterStatusGroup, &QActionGroup::triggered, m_DBFilter, &db::clDBFilter::usr_fStatusFilter_changed);
 }
 
 void MainWindow::NoChangesConnectionDlg()

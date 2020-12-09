@@ -17,6 +17,7 @@
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
+class QActionGroup;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -49,6 +50,7 @@ private:
     QString dbUserName;
     QList<QAction*> m_ActionsList;
     QList<QAction*> m_ColumnsActions;
+    QActionGroup *m_FilterStatusGroup;
     void RunConnectionDialog(ConnectionDlgMode mode);
     void StartInit();
     void SaveDialogSettings();

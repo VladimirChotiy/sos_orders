@@ -49,6 +49,20 @@
         </widget>
        </item>
        <item>
+        <widget class="QToolButton" name="tb_fStatus">
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Res.qrc">
+           <normaloff>:/icons/Icons/checklist.ico</normaloff>:/icons/Icons/checklist.ico</iconset>
+         </property>
+         <property name="popupMode">
+          <enum>QToolButton::InstantPopup</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QComboBox" name="cb_fStatus"/>
        </item>
        <item>
