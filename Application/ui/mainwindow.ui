@@ -41,15 +41,23 @@
        <item>
         <widget class="QLabel" name="lbl_fStatus">
          <property name="text">
-          <string>Статус</string>
-         </property>
-         <property name="buddy">
-          <cstring>cb_fStatus</cstring>
+          <string>Статус:</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QComboBox" name="cb_fStatus"/>
+        <widget class="QToolButton" name="tb_fStatus">
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="../Res.qrc">
+           <normaloff>:/icons/Icons/checklist.ico</normaloff>:/icons/Icons/checklist.ico</iconset>
+         </property>
+         <property name="popupMode">
+          <enum>QToolButton::InstantPopup</enum>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QLabel" name="lbl_fBeginDate">
@@ -108,13 +116,6 @@
         <widget class="QCheckBox" name="cb_OnlyResp">
          <property name="text">
           <string>Только мои заявки</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="pb_FilterClear">
-         <property name="text">
-          <string>Очистить</string>
          </property>
         </widget>
        </item>
@@ -951,11 +952,9 @@
   </action>
  </widget>
  <tabstops>
-  <tabstop>cb_fStatus</tabstop>
   <tabstop>ded_fBeginDate</tabstop>
   <tabstop>ded_fEndDate</tabstop>
   <tabstop>cb_OnlyResp</tabstop>
-  <tabstop>pb_FilterClear</tabstop>
   <tabstop>tbl_Requests</tabstop>
  </tabstops>
  <resources>

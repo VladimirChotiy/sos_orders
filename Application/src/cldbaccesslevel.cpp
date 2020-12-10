@@ -16,6 +16,7 @@ clDBAccessLevel::clDBAccessLevel(int id, QObject *parent) :
     statusMin = accessQuery.value("status_min").toInt();
     statusMax = accessQuery.value("status_max").toInt();
 
+    accessID = accessQuery.value(0).toInt();
     accessName = accessQuery.value(1).toString();
 
     actions.append(accessQuery.value("act_ReqRegister").toBool());
@@ -82,6 +83,11 @@ QString clDBAccessLevel::getAccessName() const
 QList<bool> *clDBAccessLevel::getColumnsList()
 {
     return &columns;
+}
+
+int clDBAccessLevel::getAccessID() const
+{
+    return accessID;
 }
 
 QList<bool> *clDBAccessLevel::getActionAccessList()

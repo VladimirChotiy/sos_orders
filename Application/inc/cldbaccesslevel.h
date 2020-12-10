@@ -16,6 +16,7 @@ public:
     std::pair<int,int> getStatus() const;
     int getActionsCount() const;
     int getColumnCount() const;
+    int getAccessID() const;
     QString getAccessName() const;
     QList<bool> *getActionAccessList();
     QList<bool> *getColumnsList();
@@ -25,6 +26,7 @@ private:
     QList<bool> actions;
     QList<bool> columns;
     QString accessName;
+    int accessID;
 
     int statusMin;
     int statusMax;
