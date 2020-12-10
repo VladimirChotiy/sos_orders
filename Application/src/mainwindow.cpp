@@ -11,7 +11,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       ui(new Ui::MainWindow),
-      mainTableModel (new db::clDBMainQueryModel(this)),
+      //mainTableModel (new db::clDBMainQueryModel(this)),
       m_FilterStatusGroup(new QActionGroup(this))
 {
     ui->setupUi(this);
@@ -54,7 +54,7 @@ void MainWindow::StartInit()
     ui->statusbar->addPermanentWidget(sts_connection);
 
     ui->tbl_Requests->setVisible(false);
-    ui->tbl_Requests->setModel(mainTableModel);
+    //ui->tbl_Requests->setModel(mainTableModel);
     ui->tbl_Requests->setWordWrap(true);
     ui->tbl_Requests->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter | (Qt::Alignment)Qt::TextWordWrap);
     ui->tbl_Requests->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);
@@ -178,16 +178,6 @@ void MainWindow::usr_setAccsessFilter()
     mainTableModel->SetFilter(m_DBFilter->getFilter());
 }
 
-void MainWindow::usr_fStatusIndex_changed(int index)
-{
-    if (index == -1) {
-        m_DBFilter->clearStatusFilter();
-    } else {
-        int statusID {m_cbStatusModel->data(m_cbStatusModel->index(index, 0), Qt::DisplayRole).toInt()};
-        m_DBFilter->setStatusFilter(statusID);
-    }
-}
-
 void MainWindow::ConnectToDB()
 {
     QString curUser = qgetenv("USER");
@@ -199,13 +189,6 @@ void MainWindow::ConnectToDB()
     std::tie(dbUserID, dbUserName) = m_DBProcessor->findUser(curUser);
     sts_username->setText(dbUserName);
 
-    m_cbStatusModel = new QSqlQueryModel(this);
-    m_cbStatusModel->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::Status, 0));
-    ui->cb_fStatus->setModel(m_cbStatusModel);
-    ui->cb_fStatus->setModelColumn(1);
-    ui->cb_fStatus->setCurrentIndex(-1);
-    QObject::connect(ui->cb_fStatus, SIGNAL(currentIndexChanged(int)), this, SLOT(usr_fStatusIndex_changed(int)));
-
     QSqlQuery dateTimeQuery {m_DBProcessor->prepareQuery(DBTypes::QueryType::Dates)};
     dateTimeQuery.first();
     firstStatusDateTime = dateTimeQuery.value(0).toDateTime();
@@ -216,7 +199,7 @@ void MainWindow::ConnectToDB()
     while (statusQuery.next()) {
         fStatusActionPattern = m_fStatusMenu->addAction(statusQuery.value(1).toString());
         fStatusActionPattern->setCheckable(true);
-        fStatusActionPattern->setData(statusQuery.value(0));
+        fStatusActionPattern->setData(QString("tbl_status.id = %1 ").arg(statusQuery.value(0).toInt()));
         m_FilterStatusGroup->addAction(fStatusActionPattern);
     }
 
@@ -228,7 +211,6 @@ void MainWindow::ConnectToDB()
     m_AccessLevel = new db::clDBAccessLevel(dbUserID, this);
     sts_accsess->setText(m_AccessLevel->getAccessName());
     getActionsEnabled();
-    QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
     getColumnsEnabled();
 
     int sMin;
@@ -243,7 +225,22 @@ void MainWindow::ConnectToDB()
         }
     }
 
-    m_DBFilter = new db::clDBFilter(m_AccessLevel->getStatus(), this);
+    if ((m_AccessLevel->getAccessID() == 2) || (m_AccessLevel->getAccessID() == 7)) {
+        ui->cb_OnlyResp->setVisible(true);
+    }else {
+        ui->cb_OnlyResp->setVisible(false);
+    }
+
+    m_DBFilter = new db::clDBFilter(m_FilterStatusGroup->actions(), this);
+    for (QAction *a : fStatusActions){
+        a->setChecked(true);
+    }
+
+    m_DBFilter->usr_fStatusFilter_changed(nullptr);
+
+    mainTableModel = new db::clDBMainQueryModel(this);
+    ui->tbl_Requests->setModel(mainTableModel);
+    QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
 
     ui->ded_fBeginDate->setDateTime(firstStatusDateTime);
     ui->ded_fEndDate->setDate(QDate::currentDate());
@@ -543,14 +540,6 @@ void MainWindow::on_act_ColAll_triggered()
 void MainWindow::on_act_Filter_triggered(bool checked)
 {
     ui->filter_Widget->setVisible(checked);
-}
-
-void MainWindow::on_pb_FilterClear_clicked()
-{
-    ui->cb_fStatus->setCurrentIndex(-1);
-    ui->cb_OnlyResp->setChecked(false);
-    ui->ded_fBeginDate->setDateTime(firstStatusDateTime);
-    ui->ded_fEndDate->setDate(QDate::currentDate());
 }
 
 void MainWindow::on_cb_OnlyResp_toggled(bool checked)

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QLabel>
 #include <QString>
+#include <QDateTime>
 #include "uconnect_db.h"
 #include "ueditrequest.h"
 #include "clDBMainQueryModel.h"
@@ -41,7 +42,6 @@ private:
     uiSetCost *ui_SetCost;
     uiProtocolView *ui_ProtocolView;
     db::clDBMainQueryModel *mainTableModel;
-    QSqlQueryModel *m_cbStatusModel;
     db::clDBAccessLevel *m_AccessLevel;
     db::clDBFilter *m_DBFilter;
     QDateTime firstStatusDateTime;
@@ -67,7 +67,6 @@ public slots:
 private slots:
     void usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous);
     void usr_setAccsessFilter();
-    void usr_fStatusIndex_changed(int index);
     void upd_statusBar_dbConnection(bool status);
     void on_act_DBConnection_triggered();
     void on_act_Exit_triggered();
@@ -100,7 +99,6 @@ private slots:
     void on_act_ColData_triggered(bool checked);
     void on_act_ColAll_triggered();
     void on_act_Filter_triggered(bool checked);
-    void on_pb_FilterClear_clicked();
     void on_cb_OnlyResp_toggled(bool checked);
     void on_ded_fBeginDate_dateTimeChanged(const QDateTime &dateTime);
     void on_ded_fEndDate_dateTimeChanged(const QDateTime &dateTime);

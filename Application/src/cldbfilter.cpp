@@ -1,24 +1,14 @@
 #include "cldbfilter.h"
+#include <QString>
+#include <QDateTime>
 #include <QAction>
 #include <QDebug>
 namespace db {
 
-clDBFilter::clDBFilter(std::pair<int, int> range, QObject *parent) :
-    QObject(parent)
+clDBFilter::clDBFilter(QList<QAction*> actionList, QObject *parent) :
+    QObject(parent),
+    statusList(actionList)
 {
-    int minStatus;
-    int maxStatus;
-    int listSize;
-    std::tie(minStatus, maxStatus) = range;
-    //accessFilter = QString("tbl_status.id > %1 AND tbl_status.id < %2 ").arg(minStatus).arg(maxStatus);
-    listSize = (maxStatus - minStatus - 1);
-    prepareStatus.reserve(listSize);
-    for (int i = 0; i < listSize; i++){
-        prepareStatus.append("");
-    }
-    qDebug() << prepareStatus.size();
-    accessFilter = "tbl_status.id > 0 AND tbl_status.id < 10 ";
-    emit filter_changed();
 }
 
 clDBFilter::~clDBFilter()
@@ -28,14 +18,8 @@ clDBFilter::~clDBFilter()
 
 QString clDBFilter::getFilter()
 {
-    return "WHERE " + accessFilter + statusFilter + engineerFilter + dateFilter;
-}
-
-void clDBFilter::setStatusFilter(int id)
-{
-    statusFilter = QString("AND tbl_status.id = %1 ").arg(id);
-
-    emit filter_changed();
+    QString result {"WHERE " + dateFilter + statusFilter + engineerFilter};
+    return result;
 }
 
 void clDBFilter::setEngineerFilter(int id)
@@ -46,13 +30,7 @@ void clDBFilter::setEngineerFilter(int id)
 
 void clDBFilter::setDateFilter(const QDateTime &begin, const QDateTime &end)
 {
-    dateFilter ="AND tbl_changes.date >= (SELECT '" + begin.toString("yyyy-MM-dd hh:mm:ss") + "') AND tbl_changes.date <= (SELECT '" + end.toString("yyyy-MM-dd hh:mm:ss") + "') ";
-    emit filter_changed();
-}
-
-void clDBFilter::clearStatusFilter()
-{
-    statusFilter = "";
+    dateFilter ="tbl_changes.date >= (SELECT '" + begin.toString("yyyy-MM-dd hh:mm:ss") + "') AND tbl_changes.date <= (SELECT '" + end.toString("yyyy-MM-dd hh:mm:ss") + "') ";
     emit filter_changed();
 }
 
@@ -70,22 +48,29 @@ void clDBFilter::clearDateFilter()
 
 void clDBFilter::usr_fStatusFilter_changed(QAction *action)
 {
-    if (action->isChecked()) {
-        prepareStatus[action->data().toInt()] = QString("OR tbl_status.id = %1 ").arg(action->data().toInt());
-    }else {
-        prepareStatus.value(action->data().toInt()) = "";
+    Q_UNUSED(action);
+    bool isFirst {true};
+    bool isEmpty {true};
+    statusFilter.clear();
+    statusFilter = "AND (";
+    for (QAction *a : statusList){
+        if (a->isChecked() && a->isVisible()) {
+            if (isFirst) {
+                statusFilter += a->data().toString();
+                isFirst = false;
+            } else {
+                statusFilter += "OR " + a->data().toString();
+            }
+            isEmpty = false;
+        }
     }
-    qDebug() << prepareStatus.value(action->data().toInt());
-    usr_fStatusPrepared_changed();
-}
-
-void clDBFilter::usr_fStatusPrepared_changed()
-{
-    QString filter {""};
-    for (int i = 0; i < prepareStatus.size(); i++){
-        filter += prepareStatus.value(i);
+    if (isEmpty) {
+        statusFilter += "tbl_status.id = 0) ";
+    } else {
+        statusFilter.truncate(statusFilter.lastIndexOf(QChar(' ')));
+        statusFilter += ") ";
     }
-    qDebug() << filter;
+    emit filter_changed();
 }
 
 }
