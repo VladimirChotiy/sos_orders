@@ -67,6 +67,7 @@ public slots:
 private slots:
     void usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous);
     void usr_setAccsessFilter();
+    void usr_StatusActions_load(const QAction *action);
     void upd_statusBar_dbConnection(bool status);
     void on_act_DBConnection_triggered();
     void on_act_Exit_triggered();

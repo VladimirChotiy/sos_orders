@@ -178,6 +178,21 @@ void MainWindow::usr_setAccsessFilter()
     mainTableModel->SetFilter(m_DBFilter->getFilter());
 }
 
+void MainWindow::usr_StatusActions_load(const QAction *action)
+{
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    bool fStatusIsSaved {false};
+    m_settings->setGroupName("MainWindow");
+    m_settings->OpenGroup();
+    m_settings->setParam(action->text(), action->isChecked());
+    fStatusIsSaved = m_settings->getParam("StatusActionsSettings").toBool();
+    if (!fStatusIsSaved) {
+        m_settings->setParam("StatusActionsSettings", true);
+    }
+    m_settings->CloseGroup();
+    delete m_settings;
+}
+
 void MainWindow::ConnectToDB()
 {
     QString curUser = qgetenv("USER");
@@ -213,8 +228,12 @@ void MainWindow::ConnectToDB()
     getActionsEnabled();
     getColumnsEnabled();
 
-    int sMin;
-    int sMax;
+    int sMin; int sMax; bool fStatusIsSaved {false};
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("MainWindow");
+    m_settings->OpenGroup();
+    fStatusIsSaved = m_settings->getParam("StatusActionsSettings").toBool();
+
     std::tie(sMin, sMax) = m_AccessLevel->getStatus();
     const QList<QAction*> fStatusActions = m_FilterStatusGroup->actions();
     for (int i = 0; i < fStatusActions.size(); i++) {
@@ -223,7 +242,14 @@ void MainWindow::ConnectToDB()
         }else {
             fStatusActions.value(i)->setVisible(false);
         }
+        if (fStatusIsSaved) {
+            fStatusActions.value(i)->setChecked(m_settings->getParam(fStatusActions.value(i)->text()).toBool());
+        }else {
+            fStatusActions.value(i)->setChecked(true);
+        }
     }
+    m_settings->CloseGroup();
+    delete m_settings;
 
     if ((m_AccessLevel->getAccessID() == 2) || (m_AccessLevel->getAccessID() == 7)) {
         ui->cb_OnlyResp->setVisible(true);
@@ -232,10 +258,6 @@ void MainWindow::ConnectToDB()
     }
 
     m_DBFilter = new db::clDBFilter(m_FilterStatusGroup->actions(), this);
-    for (QAction *a : fStatusActions){
-        a->setChecked(true);
-    }
-
     m_DBFilter->usr_fStatusFilter_changed(nullptr);
 
     mainTableModel = new db::clDBMainQueryModel(this);
@@ -249,6 +271,7 @@ void MainWindow::ConnectToDB()
     ui->tbl_Requests->selectRow(0);
     ui->tbl_Requests->setVisible(true);
 
+    QObject::connect(m_FilterStatusGroup, &QActionGroup::triggered, this, &MainWindow::usr_StatusActions_load);
     QObject::connect(m_FilterStatusGroup, &QActionGroup::triggered, m_DBFilter, &db::clDBFilter::usr_fStatusFilter_changed);
 }
 

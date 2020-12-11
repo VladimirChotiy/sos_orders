@@ -9,7 +9,6 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/uistatusfilter.cpp \
     src/cldbfilter.cpp \
     src/cldbaccesslevel.cpp \
     src/cldbprotocolquerymodel.cpp \
@@ -50,11 +49,9 @@ HEADERS += \
     inc/uichangestatus.h \
     inc/uichooseengineer.h \
     inc/uiprotocolview.h \
-    inc/uisetcost.h \
-    inc/uistatusfilter.h
+    inc/uisetcost.h
 
 FORMS += \
-    ui/uistatusfilter.ui \
     ui/uiprotocolview.ui \
     ui/uisetcost.ui \
     ui/uichangestatus.ui \
