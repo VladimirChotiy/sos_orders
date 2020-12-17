@@ -1,4 +1,4 @@
-QT += core gui sql
+QT += core gui sql printsupport qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -73,6 +73,10 @@ win32:RC_ICONS = $$PWD/Icons/three-bars.ico
 CONFIG(release, debug|release) {
     DESTDIR = $$OUT_PWD/../../SOSRequsetRelease
 
+    win32: LIBS += -L$$PWD/../LimeReport/lib64/release/ -llimereport
+
+    INCLUDEPATH += $$PWD/../LimeReport/lib64/release
+    DEPENDPATH += $$PWD/../LimeReport/lib64/release
 
     unix:OBJECTS_DIR = ../common/build/o/unix
     win32:OBJECTS_DIR = ../common/build/o/win32
@@ -84,4 +88,9 @@ CONFIG(release, debug|release) {
     qnx: target.path = /tmp/$${TARGET}/bin
     else: unix:!android: target.path = /opt/$${TARGET}/bin
     !isEmpty(target.path): INSTALLS += target
+
+    win32: LIBS += -L$$PWD/../LimeReport/lib64/debug/ -llimereportd
+    INCLUDEPATH += $$PWD/../LimeReport/lib64/debug
+    DEPENDPATH += $$PWD/../LimeReport/lib64/debug
+
 }

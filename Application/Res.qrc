@@ -32,5 +32,6 @@
         <file>Icons/table_all.ico</file>
         <file>Icons/req_filter.ico</file>
         <file>Icons/checklist.ico</file>
+        <file>Icons/logo.png</file>
     </qresource>
 </RCC>
