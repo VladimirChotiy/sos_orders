@@ -78,13 +78,13 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &f
         break;
     }
     case QueryType::RequestEdit: {
-        textQuery = QString("SELECT tbl_requests.id, tbl_requests.context, tbl_changes.comment, tbl_requests.type_id, tbl_requests.obj_id, tbl_requests.change_id, tbl_status.name, tbl_changes.date " \
-            "FROM tbl_requests " \
+        textQuery = QString("SELECT tbl_requests.id AS reqid, tbl_requests.context, tbl_changes.comment, tbl_types.id AS typeid, tbl_objects.name AS objname, tbl_objects.address, tbl_objects.person AS persname, tbl_objects.telephone, tbl_objects.email, tbl_status.id AS statusid, tbl_requests.obj_id as objectid FROM tbl_requests " \
+            "LEFT JOIN tbl_types ON tbl_requests.type_id = tbl_types.id " \
+            "LEFT JOIN tbl_objects ON tbl_requests.obj_id = tbl_objects.id " \
             "LEFT JOIN tbl_changes ON tbl_requests.change_id = tbl_changes.id " \
             "LEFT JOIN tbl_status ON tbl_changes.status_id = tbl_status.id " \
-            "LEFT JOIN tbl_users ON tbl_changes.user_id = tbl_users.id " \
             "WHERE tbl_requests.id = %1").arg(index);
-        break;
+        break;;
     }
     case QueryType::RequestMain: {
         textQuery = QString("SELECT tbl_requests.id AS reqid, tbl_requests.context, tbl_changes.comment, tbl_types.name AS typename, tbl_objects.name AS objname, tbl_objects.address, tbl_objects.person AS persname, tbl_objects.telephone, tbl_objects.email, tbl_changes.date, tbl_status.name AS statusname, tbl_users.disp_name, (SELECT tbl_users.disp_name FROM tbl_users WHERE tbl_users.id = tbl_requests.resp_id) AS respuser, tbl_cost.m_cost, tbl_cost.w_cost, tbl_cost.sum, tbl_status.id AS statusid, tbl_requests.cost_id FROM tbl_requests " \
@@ -121,6 +121,20 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &f
     }
     case QueryType::Dates: {
         textQuery = "SELECT tbl_changes.date FROM tbl_changes ORDER BY tbl_changes.date";
+        break;
+    }
+    case QueryType::RepCovert: {
+        textQuery = QString("SELECT (SELECT tbl_changes.date FROM tbl_changes WHERE tbl_changes.parent_id = tbl_requests.id AND tbl_changes.status_id = 1) as regdata, tbl_objects.name, tbl_objects.address, tbl_types.name, tbl_objects.person, tbl_objects.telephone, tbl_objects.email, tbl_requests.id as reqid FROM tbl_requests " \
+                            "LEFT JOIN tbl_objects ON tbl_requests.obj_id=tbl_objects.id " \
+                            "LEFT JOIN tbl_types ON tbl_requests.type_id = tbl_types.id " \
+                            "WHERE tbl_requests.id = %1").arg(index);
+        break;
+    }
+    case QueryType::RepTitle: {
+        textQuery = QString("SELECT (SELECT tbl_changes.date FROM tbl_changes WHERE tbl_changes.parent_id = tbl_requests.id AND tbl_changes.status_id = 1) as regdata, tbl_objects.name, tbl_objects.address, tbl_types.description, tbl_objects.person, tbl_objects.telephone, tbl_objects.email FROM tbl_requests " \
+                            "LEFT JOIN tbl_objects ON tbl_requests.obj_id=tbl_objects.id " \
+                            "LEFT JOIN tbl_types ON tbl_requests.type_id = tbl_types.id " \
+                            "WHERE tbl_requests.id = %1").arg(index);
         break;
     }
     default: textQuery = "";

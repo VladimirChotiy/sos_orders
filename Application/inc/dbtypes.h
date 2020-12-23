@@ -26,7 +26,8 @@ enum class DBUpdateType {
     Request,
     Status,
     Engineer,
-    Cost
+    Cost,
+    Object
 };
 
 enum class QueryType {
@@ -39,7 +40,9 @@ enum class QueryType {
     Cost,
     Changes,
     Accsess,
-    Dates
+    Dates,
+    RepCovert,
+    RepTitle
 };
 
 }

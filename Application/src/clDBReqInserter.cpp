@@ -74,7 +74,7 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
 
     switch (type) {
     case DBTypes::DBUpdateType::Request: {
-        textQuery = QString("UPDATE tbl_requests SET obj_id=?, type_id=?, context=? WHERE id=%1").arg(id);
+        textQuery = QString("UPDATE tbl_requests SET type_id=?, context=? WHERE id=%1").arg(id);
         errorType = "Request";
         break;
     }
@@ -86,6 +86,11 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
     case DBTypes::DBUpdateType::Cost: {
         textQuery = QString("UPDATE tbl_cost SET m_cost=?, w_cost=? WHERE id = %1").arg(id);
         errorType = "Cost";
+        break;
+    }
+    case DBTypes::DBUpdateType::Object: {
+        textQuery = QString("UPDATE tbl_objects SET name=?, address=?, person=?, telephone=?, email=? WHERE id = %1").arg(id);
+        errorType = "Object";
         break;
     }
 

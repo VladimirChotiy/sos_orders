@@ -66,17 +66,18 @@ FORMS += \
 RESOURCES += \
     Res.qrc
 
-LIBS += -L$$PWD/../shared/lib/ -lStoreSettings
+win32: LIBS += -L$$PWD/../shared/lib/ -lStoreSettings
 
-win32:RC_ICONS = $$PWD/Icons/three-bars.ico
+#win32:RC_ICONS = $$PWD/Icons/three-bars.ico
+win32:RC_ICONS = $$PWD/Icons/app.ico
 
 CONFIG(release, debug|release) {
     DESTDIR = $$OUT_PWD/../../SOSRequsetRelease
 
     win32: LIBS += -L$$PWD/../LimeReport/lib64/release/ -llimereport
 
-    INCLUDEPATH += $$PWD/../LimeReport/lib64/release
-    DEPENDPATH += $$PWD/../LimeReport/lib64/release
+    INCLUDEPATH += $$PWD/../LimeReport/lib64/release/include
+    DEPENDPATH += $$PWD/../LimeReport/lib64/release/include
 
     unix:OBJECTS_DIR = ../common/build/o/unix
     win32:OBJECTS_DIR = ../common/build/o/win32
@@ -90,7 +91,7 @@ CONFIG(release, debug|release) {
     !isEmpty(target.path): INSTALLS += target
 
     win32: LIBS += -L$$PWD/../LimeReport/lib64/debug/ -llimereportd
-    INCLUDEPATH += $$PWD/../LimeReport/lib64/debug
-    DEPENDPATH += $$PWD/../LimeReport/lib64/debug
+    INCLUDEPATH += $$PWD/../LimeReport/lib64/debug/include
+    DEPENDPATH += $$PWD/../LimeReport/lib64/debug/include
 
 }

@@ -7,6 +7,8 @@
 #include <QMessageBox>
 #include <QDebug>
 #include <QActionGroup>
+#include <QDir>
+#include <QInputDialog>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -19,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
     RunConnectionDialog(ConnectionDlgMode::StartMode);
 
     StartInit();
+    m_LReport = new LimeReport::ReportEngine(this);
+    m_LReport->setCurrentReportsDir(QDir::currentPath() + "/ReportTemplates");
 }
 
 MainWindow::~MainWindow()
@@ -593,5 +597,55 @@ void MainWindow::on_ded_fEndDate_dateTimeChanged(const QDateTime &dateTime)
        ui->ded_fBeginDate->setDateTime(beginDateTime);
     } else {
         m_DBFilter->setDateFilter(ui->ded_fBeginDate->dateTime(), ui->ded_fEndDate->dateTime());
+    }
+}
+
+void MainWindow::on_act_RepDesigner_triggered()
+{
+    m_LReport->designReport();
+}
+
+void MainWindow::on_act_Card_triggered()
+{
+    QSqlQuery reportQuery {};
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    m_LReport->loadFromFile(QDir::currentPath() + "/ReportTemplates/Covert.lrxml");
+    db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
+    reportQuery = m_DBProcessor->prepareQuery(DBTypes::QueryType::RepCovert, sendID);
+    delete  m_DBProcessor;
+    reportQuery.next();
+    m_LReport->dataManager()->setReportVariable("sql_Date", reportQuery.value(0).toDate());
+    m_LReport->dataManager()->setReportVariable("sql_Object", reportQuery.value(1).toString());
+    m_LReport->dataManager()->setReportVariable("sql_Address", reportQuery.value(2).toString());
+    m_LReport->dataManager()->setReportVariable("sql_Type", reportQuery.value(3).toString());
+    m_LReport->dataManager()->setReportVariable("sql_Person", reportQuery.value(4).toString());
+    m_LReport->dataManager()->setReportVariable("sql_Telephone", reportQuery.value(5).toString());
+    m_LReport->dataManager()->setReportVariable("sql_Email", reportQuery.value(6).toString());
+    m_LReport->dataManager()->setReportVariable("sql_Id", reportQuery.value(7).toInt());
+    m_LReport->previewReport();
+}
+
+void MainWindow::on_act_LiterList_triggered()
+{
+    bool bOK {false};
+    QString litNumber = QInputDialog::getText(this, "Введите номер литерного дела", "Номер", QLineEdit::EchoMode::Normal, "", &bOK);
+    if (bOK && (!litNumber.isEmpty())) {
+        QSqlQuery reportQuery {};
+        int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+        m_LReport->loadFromFile(QDir::currentPath() + "/ReportTemplates/TitleList.lrxml");
+        db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
+        reportQuery = m_DBProcessor->prepareQuery(DBTypes::QueryType::RepTitle, sendID);
+        delete  m_DBProcessor;
+        reportQuery.next();
+        QDate regDate {reportQuery.value(0).toDate()};
+        m_LReport->dataManager()->setReportVariable("sql_Date", regDate.toString("MMMM yyyyг."));
+        m_LReport->dataManager()->setReportVariable("sql_Object", reportQuery.value(1).toString());
+        m_LReport->dataManager()->setReportVariable("sql_Address", reportQuery.value(2).toString());
+        m_LReport->dataManager()->setReportVariable("sql_Type", reportQuery.value(3).toString());
+        m_LReport->dataManager()->setReportVariable("sql_Person", reportQuery.value(4).toString());
+        m_LReport->dataManager()->setReportVariable("sql_Telephone", reportQuery.value(5).toString());
+        m_LReport->dataManager()->setReportVariable("sql_Email", reportQuery.value(6).toString());
+        m_LReport->dataManager()->setReportVariable("dlg_Number", litNumber);
+        m_LReport->previewReport();
     }
 }

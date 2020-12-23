@@ -33,5 +33,8 @@
         <file>Icons/req_filter.ico</file>
         <file>Icons/checklist.ico</file>
         <file>Icons/logo.png</file>
+        <file>Icons/app.ico</file>
+        <file>Icons/rep_designer.ico</file>
+        <file>Icons/rep_common.ico</file>
     </qresource>
 </RCC>
