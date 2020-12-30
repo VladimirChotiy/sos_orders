@@ -203,7 +203,7 @@ void MainWindow::ConnectToDB()
     if (curUser.isEmpty()){
         curUser = qgetenv("USERNAME");
     }
-    //curUser = "a.p.novikov";
+    //curUser = "v.v.frolov";
     db::DBProcessor* m_DBProcessor {new db::DBProcessor()};
     std::tie(dbUserID, dbUserName) = m_DBProcessor->findUser(curUser);
     sts_username->setText(dbUserName);
@@ -648,4 +648,8 @@ void MainWindow::on_act_LiterList_triggered()
         m_LReport->dataManager()->setReportVariable("dlg_Number", litNumber);
         m_LReport->previewReport();
     }
+}
+
+void MainWindow::on_act_ExportToExel_triggered()
+{
 }

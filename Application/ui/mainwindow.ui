@@ -225,6 +225,7 @@
      <string>&amp;Файл</string>
     </property>
     <addaction name="act_DBConnection"/>
+    <addaction name="act_ExportToExel"/>
     <addaction name="separator"/>
     <addaction name="act_Exit"/>
    </widget>
@@ -1000,6 +1001,18 @@
    </property>
    <property name="toolTip">
     <string>Сформировать титульный лист литерного дела</string>
+   </property>
+  </action>
+  <action name="act_ExportToExel">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/toExel.ico</normaloff>:/icons/Icons/toExel.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Экспортировать в Exel</string>
+   </property>
+   <property name="toolTip">
+    <string>Экспортировать данные в Exel</string>
    </property>
   </action>
  </widget>

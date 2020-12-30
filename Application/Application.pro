@@ -1,4 +1,4 @@
-QT += core gui sql printsupport qml
+QT += core gui sql printsupport qml axcontainer
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

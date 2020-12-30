@@ -36,5 +36,6 @@
         <file>Icons/app.ico</file>
         <file>Icons/rep_designer.ico</file>
         <file>Icons/rep_common.ico</file>
+        <file>Icons/toExel.ico</file>
     </qresource>
 </RCC>

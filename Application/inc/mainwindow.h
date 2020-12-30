@@ -112,6 +112,8 @@ private slots:
 
     void on_act_LiterList_triggered();
 
+    void on_act_ExportToExel_triggered();
+
 protected:
     void closeEvent(QCloseEvent *event);
 };
