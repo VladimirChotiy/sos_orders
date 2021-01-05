@@ -9,6 +9,7 @@
 #include <QActionGroup>
 #include <QDir>
 #include <QInputDialog>
+#include "clExelExport.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -652,4 +653,33 @@ void MainWindow::on_act_LiterList_triggered()
 
 void MainWindow::on_act_ExportToExel_triggered()
 {
+    try {
+        clExelExport toExel;
+
+        int rows {ui->tbl_Requests->verticalHeader()->count()};
+        int columns {ui->tbl_Requests->horizontalHeader()->count()};
+        int tblColumn {1};
+
+        for (int col = 0; col < columns; col++) {
+            if (!ui->tbl_Requests->isColumnHidden(col)) {
+                QString header = ui->tbl_Requests->model()->headerData(col, Qt::Horizontal).toString();
+                toExel.SetCellValue(1, tblColumn, header);
+                tblColumn++;
+            }
+        }
+
+        for (int row = 0; row < rows; row++) {
+            tblColumn = 1;
+            for (int col = 0; col < columns; col++) {
+                if (!ui->tbl_Requests->isColumnHidden(col)) {
+                    QVariant cellData = ui->tbl_Requests->model()->data(ui->tbl_Requests->model()->index(row, col));
+                    toExel.SetCellValue(row + 2, tblColumn, cellData);
+                    tblColumn++;
+                }
+            }
+        }
+    }  catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error - Demo", e.what());
+    }
+
 }
