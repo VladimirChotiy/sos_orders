@@ -225,7 +225,6 @@
      <string>&amp;Файл</string>
     </property>
     <addaction name="act_DBConnection"/>
-    <addaction name="act_ExportToExel"/>
     <addaction name="separator"/>
     <addaction name="act_Exit"/>
    </widget>
@@ -349,6 +348,7 @@
     <addaction name="act_LiterList"/>
     <addaction name="separator"/>
     <addaction name="act_RepDesigner"/>
+    <addaction name="act_ExportToExel"/>
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_View"/>
@@ -419,6 +419,8 @@
    <addaction name="act_ReqClose"/>
    <addaction name="separator"/>
    <addaction name="act_Filter"/>
+   <addaction name="act_ExportToExel"/>
+   <addaction name="act_OrdersList"/>
   </widget>
   <action name="act_DBConnection">
    <property name="icon">
@@ -1013,6 +1015,18 @@
    </property>
    <property name="toolTip">
     <string>Экспортировать данные в Exel</string>
+   </property>
+  </action>
+  <action name="act_OrdersList">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/orders.ico</normaloff>:/icons/Icons/orders.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Прикрепленные счета</string>
+   </property>
+   <property name="toolTip">
+    <string>Открыть список прикрепленных счетов</string>
    </property>
   </action>
  </widget>

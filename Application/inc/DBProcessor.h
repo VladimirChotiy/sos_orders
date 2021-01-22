@@ -13,7 +13,7 @@ public:
     std::pair<int, QString> findUser(const QString curUser);
     std::pair<DBTypes::DBResult, QSqlQuery> SelectMainQuery();
     std::pair<DBTypes::DBResult, QSqlQuery> Execute(const QString& queryText, const QVariantList& args = {});
-    QSqlQuery prepareQuery(DBTypes::QueryType qType, int index = -1, const QString &filter = nullptr, const QString &sort = nullptr);
+    QSqlQuery prepareQuery(DBTypes::QueryType qType, QVariant index = -1, const QString &filter = nullptr, const QString &sort = nullptr);
 
 private:
     ConnectionManager& m_connectionManager;

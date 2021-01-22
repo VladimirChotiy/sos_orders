@@ -37,5 +37,8 @@
         <file>Icons/rep_designer.ico</file>
         <file>Icons/rep_common.ico</file>
         <file>Icons/toExel.ico</file>
+        <file>Icons/attached.ico</file>
+        <file>Icons/orders.ico</file>
+        <file>Icons/pdf.ico</file>
     </qresource>
 </RCC>

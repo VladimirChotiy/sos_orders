@@ -559,7 +559,7 @@ void MainWindow::on_act_ColAll_triggered()
 {
     for (int i = 0; i < m_ColumnsActions.size(); i++) {
         if (m_ColumnsActions.value(i)->isVisible()) {
-            m_ColumnsActions.value(i)->triggered(true);
+            emit m_ColumnsActions.value(i)->triggered(true);
             m_ColumnsActions.value(i)->setChecked(true);
         }
     }
@@ -682,4 +682,12 @@ void MainWindow::on_act_ExportToExel_triggered()
         QMessageBox::critical(this, "Error - Demo", e.what());
     }
 
+}
+
+void MainWindow::on_act_OrdersList_triggered()
+{
+    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    ui_OrdersList = new uiOrders(sendID, this);
+    ui_OrdersList->setAttribute(Qt::WA_DeleteOnClose);
+    ui_OrdersList->open();
 }

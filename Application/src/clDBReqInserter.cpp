@@ -44,6 +44,11 @@ int clDBReqInserter::AddData(QVariantList arg, DBTypes::DBInsertType type)
         errorType = "COST";
         break;
     }
+    case DBTypes::DBInsertType::Order: {
+        textQuery = "INSERT INTO tbl_order (name, type, parent_id) VALUES(?, ?, ?)";
+        errorType = "ORDER";
+        break;
+    }
     default: textQuery = "";
     }
 
@@ -91,6 +96,11 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
     case DBTypes::DBUpdateType::Object: {
         textQuery = QString("UPDATE tbl_objects SET name=?, address=?, person=?, telephone=?, email=? WHERE id = %1").arg(id);
         errorType = "Object";
+        break;
+    }
+    case DBTypes::DBUpdateType::Order: {
+        textQuery = QString("UPDATE tbl_order SET name=?, type=?, parent_id=? WHERE id = %1").arg(id);
+        errorType = "Order";
         break;
     }
 

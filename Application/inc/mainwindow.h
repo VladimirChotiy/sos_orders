@@ -14,6 +14,7 @@
 #include "uichangestatus.h"
 #include "uisetcost.h"
 #include "uiprotocolview.h"
+#include "uiorders.h"
 #include "cldbfilter.h"
 #include <LimeReport>
 
@@ -42,6 +43,7 @@ private:
     uiChooseEngineer *ui_ChooseEngineer;
     uiChangeStatus *ui_ChangeStatus;
     uiSetCost *ui_SetCost;
+    uiOrders *ui_OrdersList;
     uiProtocolView *ui_ProtocolView;
     db::clDBMainQueryModel *mainTableModel;
     db::clDBAccessLevel *m_AccessLevel;
@@ -113,6 +115,8 @@ private slots:
     void on_act_LiterList_triggered();
 
     void on_act_ExportToExel_triggered();
+
+    void on_act_OrdersList_triggered();
 
 protected:
     void closeEvent(QCloseEvent *event);

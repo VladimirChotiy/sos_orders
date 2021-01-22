@@ -2,7 +2,10 @@
 #define UISETCOST_H
 
 #include <QDialog>
-#include <QAbstractButton>
+
+QT_BEGIN_NAMESPACE
+class QAbstractButton;
+QT_END_NAMESPACE
 
 namespace Ui {
 class uiSetCost;

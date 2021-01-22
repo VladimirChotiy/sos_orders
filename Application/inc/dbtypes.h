@@ -19,7 +19,8 @@ enum class DBInsertType {
     Object,
     Request,
     Status,
-    Cost
+    Cost,
+    Order
 };
 
 enum class DBUpdateType {
@@ -27,7 +28,8 @@ enum class DBUpdateType {
     Status,
     Engineer,
     Cost,
-    Object
+    Object,
+    Order
 };
 
 enum class QueryType {
@@ -42,7 +44,8 @@ enum class QueryType {
     Accsess,
     Dates,
     RepCovert,
-    RepTitle
+    RepTitle,
+    Order
 };
 
 }

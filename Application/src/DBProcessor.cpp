@@ -62,7 +62,7 @@ std::pair<DBResult, QSqlQuery> DBProcessor::Execute(const QString& queryText, co
     return std::make_pair(result, query);
 }
 
-QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &filter, const QString &sort)
+QSqlQuery DBProcessor::prepareQuery(QueryType qType, QVariant index, const QString &filter, const QString &sort)
 {
     QSqlQuery resultQuery {};
     DBResult result {DBResult::OK};
@@ -83,7 +83,7 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &f
             "LEFT JOIN tbl_objects ON tbl_requests.obj_id = tbl_objects.id " \
             "LEFT JOIN tbl_changes ON tbl_requests.change_id = tbl_changes.id " \
             "LEFT JOIN tbl_status ON tbl_changes.status_id = tbl_status.id " \
-            "WHERE tbl_requests.id = %1").arg(index);
+            "WHERE tbl_requests.id = %1").arg(index.toInt());
         break;;
     }
     case QueryType::RequestMain: {
@@ -97,26 +97,26 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &f
         break;
     }
     case QueryType::Engineer: {
-        textQuery = QString("SELECT * FROM tbl_users WHERE tbl_users.spec_id = %1").arg(index);
+        textQuery = QString("SELECT * FROM tbl_users WHERE tbl_users.spec_id = %1").arg(index.toInt());
         break;
     }
     case QueryType::Status: {
-        textQuery = QString("SELECT * FROM tbl_status WHERE tbl_status.id > %1 AND tbl_status.id < 10 ORDER BY tbl_status.id").arg(index);
+        textQuery = QString("SELECT * FROM tbl_status WHERE tbl_status.id > %1 AND tbl_status.id < 10 ORDER BY tbl_status.id").arg(index.toInt());
         break;
     }
     case QueryType::Cost: {
-        textQuery = QString("SELECT * FROM tbl_cost WHERE tbl_cost.id = %1").arg(index);
+        textQuery = QString("SELECT * FROM tbl_cost WHERE tbl_cost.id = %1").arg(index.toInt());
         break;
     }
     case QueryType::Changes: {
         textQuery = QString("SELECT tbl_changes.date, tbl_status.name, tbl_users.disp_name, tbl_changes.comment FROM tbl_changes " \
                             "LEFT JOIN tbl_users ON tbl_changes.user_id = tbl_users.id " \
                             "LEFT JOIN tbl_status ON tbl_changes.status_id = tbl_status.id " \
-                            "WHERE tbl_changes.parent_id = %1 ORDER BY tbl_changes.date").arg(index);
+                            "WHERE tbl_changes.parent_id = %1 ORDER BY tbl_changes.date").arg(index.toInt());
         break;
     }
     case QueryType::Accsess: {
-        textQuery = QString("SELECT * FROM tbl_specs WHERE tbl_specs.id = (SELECT tbl_users.spec_id FROM tbl_users WHERE tbl_users.id = %1)").arg(index);
+        textQuery = QString("SELECT * FROM tbl_specs WHERE tbl_specs.id = (SELECT tbl_users.spec_id FROM tbl_users WHERE tbl_users.id = %1)").arg(index.toInt());
         break;
     }
     case QueryType::Dates: {
@@ -127,14 +127,18 @@ QSqlQuery DBProcessor::prepareQuery(QueryType qType, int index, const QString &f
         textQuery = QString("SELECT (SELECT tbl_changes.date FROM tbl_changes WHERE tbl_changes.parent_id = tbl_requests.id AND tbl_changes.status_id = 1) as regdata, tbl_objects.name, tbl_objects.address, tbl_types.name, tbl_objects.person, tbl_objects.telephone, tbl_objects.email, tbl_requests.id as reqid FROM tbl_requests " \
                             "LEFT JOIN tbl_objects ON tbl_requests.obj_id=tbl_objects.id " \
                             "LEFT JOIN tbl_types ON tbl_requests.type_id = tbl_types.id " \
-                            "WHERE tbl_requests.id = %1").arg(index);
+                            "WHERE tbl_requests.id = %1").arg(index.toInt());
         break;
     }
     case QueryType::RepTitle: {
         textQuery = QString("SELECT (SELECT tbl_changes.date FROM tbl_changes WHERE tbl_changes.parent_id = tbl_requests.id AND tbl_changes.status_id = 1) as regdata, tbl_objects.name, tbl_objects.address, tbl_types.description, tbl_objects.person, tbl_objects.telephone, tbl_objects.email FROM tbl_requests " \
                             "LEFT JOIN tbl_objects ON tbl_requests.obj_id=tbl_objects.id " \
                             "LEFT JOIN tbl_types ON tbl_requests.type_id = tbl_types.id " \
-                            "WHERE tbl_requests.id = %1").arg(index);
+                            "WHERE tbl_requests.id = %1").arg(index.toInt());
+        break;
+    }
+    case QueryType::Order: {
+        textQuery = QString("SELECT * FROM tbl_order WHERE tbl_order.parent_id = %1 ORDER BY tbl_order.date").arg(index.toInt());
         break;
     }
     default: textQuery = "";
