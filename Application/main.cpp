@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("SOS");
     QCoreApplication::setOrganizationDomain("sos-dn.net");
     QCoreApplication::setApplicationName("Orders");
-    QCoreApplication::setApplicationVersion("0.1.3");
+    QCoreApplication::setApplicationVersion("0.1.4");
     MainWindow w;
     w.show();
     return a.exec();

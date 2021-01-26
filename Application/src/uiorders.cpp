@@ -163,7 +163,7 @@ std::pair<QString, uiOrders::DocType> uiOrders::AttachFile()
     m_settings->CloseGroup();
 
     if (!QDir(lastLocation).exists()) {
-        lastLocation = QStandardPaths::displayName(QStandardPaths::DocumentsLocation);
+        lastLocation = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
     }
 
     srcPath = QFileDialog::getOpenFileName(this, "Добавить файл", lastLocation, "All Files (*.*);;Microsoft Word Files (*.doc *.docx);;Microsoft Excel Files (*.xls *.xlsx);;PDF Files (*.pdf)");
