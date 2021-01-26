@@ -8,6 +8,7 @@
 QT_BEGIN_NAMESPACE
 class QDateTime;
 class QHBoxLayout;
+class QToolButton;
 //class QSqlQuery;
 QT_END_NAMESPACE
 
@@ -34,17 +35,22 @@ public:
 private slots:
     void on_pb_AddOrder_clicked();
 
+    void on_uiOrders_accepted();
+
 private:
     Ui::uiOrders *ui;
     void RefreshFilesList();
-    QHBoxLayout* CreateLayout(const QString fileName, QDateTime date, int docType = 0);
+    QHBoxLayout* CreateLayout(int id, const QString fileName, QDateTime date, int docType = 0);
     std::pair<QString, DocType> AttachFile();
     bool UpdateDBInfo(const QString fileName, DocType docType = DocType::dtDefault);
     void GetOrdersQuery();
-    void ClearLayout(QLayout *layout);
+    void deleteButton_clicked(QToolButton *tButton);
+    void SaveDialogSettings();
+    void LoadDialogSettings();
     int reqID;
     QString homeDir;
     QMap<QHBoxLayout*, int> layoutsMap;
+    QMap<QToolButton*, int> buttonsMap;
     QSqlQuery ordersQuery;
 };
 

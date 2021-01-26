@@ -32,6 +32,10 @@ enum class DBUpdateType {
     Order
 };
 
+enum class DBRemoveType {
+    Order
+};
+
 enum class QueryType {
     SystemType,
     Object,

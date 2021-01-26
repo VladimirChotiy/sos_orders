@@ -40,5 +40,7 @@
         <file>Icons/attached.ico</file>
         <file>Icons/orders.ico</file>
         <file>Icons/pdf.ico</file>
+        <file>Icons/excel_files.ico</file>
+        <file>Icons/word_files.ico</file>
     </qresource>
 </RCC>

@@ -1,9 +1,12 @@
 #include "uiorders.h"
 #include "ui_uiorders.h"
+#include "settings.h"
 #include "DBProcessor.h"
 #include "clDBReqInserter.h"
 #include <QDebug>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QScrollArea>
 #include <QLabel>
 #include <QDir>
 #include <QFileDialog>
@@ -13,6 +16,8 @@
 #include <QLayout>
 #include <QToolButton>
 #include <QDateTime>
+#include <QToolButton>
+#include <QStandardPaths>
 
 uiOrders::uiOrders(int id, QWidget *parent) :
     QDialog(parent),
@@ -20,11 +25,8 @@ uiOrders::uiOrders(int id, QWidget *parent) :
     reqID(id)
 {
     ui->setupUi(this);
-    ui->sa_ScrollFrame->setBackgroundRole(QPalette::Dark);
-    layoutsMap.clear();
-
+    LoadDialogSettings();
     homeDir = "//fs1.corp.sos-dn.net/DocShare/RequestFiles/" + QString::number(reqID) + "/";
-
     RefreshFilesList();
 }
 
@@ -46,25 +48,59 @@ void uiOrders::on_pb_AddOrder_clicked()
 
 void uiOrders::RefreshFilesList()
 {
-    GetOrdersQuery();
+
+    QMap<QHBoxLayout*, int>::iterator map_iterator = layoutsMap.begin();
+    for (; map_iterator != layoutsMap.end(); ++map_iterator) {
+        while (QLayoutItem *l_item = map_iterator.key()->takeAt(0)) {
+            if (l_item->widget()){
+                map_iterator.key()->removeWidget(l_item->widget());
+                delete l_item->widget();
+            }else {
+                map_iterator.key()->removeItem(l_item);
+                delete l_item;
+            }
+        }
+        delete map_iterator.key();
+    }
     layoutsMap.clear();
-    while (ordersQuery.next()) {
-        layoutsMap.insert(CreateLayout(ordersQuery.value(1).toString(), ordersQuery.value(4).toDateTime(), ordersQuery.value(2).toInt()), ordersQuery.value(0).toInt());
+    buttonsMap.clear();
+
+    while (QLayoutItem *docSpacer = ui->vl_DocumentLayout->takeAt(0)) {
+        if (docSpacer->spacerItem()) {
+            ui->vl_DocumentLayout->removeItem(docSpacer);
+        }
     }
 
-    for (auto m_Map : layoutsMap.keys()){
-        qDebug() << m_Map << " : " << layoutsMap.value(m_Map);
+    GetOrdersQuery();
+    while (ordersQuery.next()) {
+        CreateLayout(ordersQuery.value(0).toInt(), ordersQuery.value(1).toString(), ordersQuery.value(4).toDateTime(), ordersQuery.value(2).toInt());
     }
 
     ui->vl_DocumentLayout->addStretch();
 }
 
-QHBoxLayout* uiOrders::CreateLayout(const QString fileName, QDateTime date, int docType)
+QHBoxLayout* uiOrders::CreateLayout(int id, const QString fileName, QDateTime date, int docType)
 {
     QHBoxLayout *m_fileLayout = new QHBoxLayout;
 
     QLabel *m_icoLabel = new QLabel();
-    m_icoLabel->setPixmap(QPixmap(":/icons/Icons/attached.ico"));
+    switch (docType) {
+    case 1:{
+        m_icoLabel->setPixmap(QPixmap(":/icons/Icons/word_files.ico"));
+        break;
+    }
+    case 2: {
+        m_icoLabel->setPixmap(QPixmap(":/icons/Icons/excel_files.ico"));
+        break;
+    }
+    case 3: {
+        m_icoLabel->setPixmap(QPixmap(":/icons/Icons/pdf.ico"));
+        break;
+    }
+    default: {
+        m_icoLabel->setPixmap(QPixmap(":/icons/Icons/attached.ico"));
+    }
+    }
     m_icoLabel->setScaledContents(true);
     m_icoLabel->setMaximumSize(22, 22);
     m_fileLayout->addWidget(m_icoLabel);
@@ -75,6 +111,7 @@ QHBoxLayout* uiOrders::CreateLayout(const QString fileName, QDateTime date, int 
     m_fileLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     m_fileLabel->setOpenExternalLinks(true);
     m_fileLabel->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+    m_fileLabel->setFont(QFont("MS Shell Dlg 2", 10));
     m_fileLabel->setText("<a href='file://" + homeDir + fileName + "'>" + fileName + "</a>");
     m_fileLayout->addWidget(m_fileLabel);
 
@@ -91,7 +128,14 @@ QHBoxLayout* uiOrders::CreateLayout(const QString fileName, QDateTime date, int 
     m_delButton->setMaximumSize(24, 24);
     m_delButton->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     m_delButton->setIcon(QIcon(":/icons/Icons/Error.ico"));
+
+    QObject::connect(m_delButton, &QToolButton::clicked, [this, m_delButton](){
+        this->deleteButton_clicked(m_delButton);
+    });
     m_fileLayout->addWidget(m_delButton);
+
+    layoutsMap.insert(m_fileLayout, id);
+    buttonsMap.insert(m_delButton, id);
 
     ui->vl_DocumentLayout->addLayout(m_fileLayout);
 
@@ -111,8 +155,30 @@ std::pair<QString, uiOrders::DocType> uiOrders::AttachFile()
         }
     }
 
-    srcPath = QFileDialog::getOpenFileName(this, "Добавить файл", QDir::currentPath(), "All Files (*.*);;Microsoft Word Files (*.doc *.docx);;Microsoft Excel Files (*.xls *.xlsx);;PDF Files (*.pdf)");
+    QString lastLocation {};
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("OrdersDlg");
+    m_settings->OpenGroup();
+    lastLocation = m_settings->getParam("LastLocation").toString();
+    m_settings->CloseGroup();
+
+    if (!QDir(lastLocation).exists()) {
+        lastLocation = QStandardPaths::displayName(QStandardPaths::DocumentsLocation);
+    }
+
+    srcPath = QFileDialog::getOpenFileName(this, "Добавить файл", lastLocation, "All Files (*.*);;Microsoft Word Files (*.doc *.docx);;Microsoft Excel Files (*.xls *.xlsx);;PDF Files (*.pdf)");
     QFile srcFile(srcPath);
+
+    if (!srcFile.exists()) {
+        return std::make_pair("", DocType::dtError);
+    }
+
+    m_settings->setGroupName("OrdersDlg");
+    m_settings->OpenGroup();
+    m_settings->setParam("LastLocation", QFileInfo(srcFile).absolutePath());
+    m_settings->CloseGroup();
+    delete m_settings;
+
     dstPath = homeDir + QFileInfo(srcFile).fileName();
     QFile dstFile(dstPath);
     if (dstFile.exists()) {
@@ -197,7 +263,65 @@ void uiOrders::GetOrdersQuery()
     delete m_DBProcessor;
 }
 
-void uiOrders::ClearLayout(QLayout *layout)
+void uiOrders::deleteButton_clicked(QToolButton *tButton)
 {
+    QString remFileName;
+    ordersQuery.first();
+    if (ordersQuery.value(0).toInt() == buttonsMap.value(tButton)) {
+        remFileName = ordersQuery.value(1).toString();
+    }else {
+        while (ordersQuery.next()) {
+            if (ordersQuery.value(0).toInt() == buttonsMap.value(tButton)) {
+                remFileName = ordersQuery.value(1).toString();
+                break;
+            }
+        }
+    }
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::warning(this, "Внимание", "Вы дествительно хотите удалить файл " + remFileName + "?", QMessageBox::Yes|QMessageBox::No);
+    if (reply == QMessageBox::Yes) {
+        if(QFile(homeDir + remFileName).remove()) {
+            db::clDBReqInserter *m_DBInserter {new db::clDBReqInserter(this)};
+            m_DBInserter->DeleteRecord(buttonsMap.value(tButton), DBTypes::DBRemoveType::Order);
+            delete m_DBInserter;
+        }else {
+            QMessageBox::critical(this, "Ошибка", "Не удалось удалить файл " + remFileName, QMessageBox::Ok);
+        }
+    }
 
+    QStringList filesInfo = QDir(homeDir).entryList(QDir::Files|QDir::NoDotAndDotDot);
+    if (filesInfo.isEmpty()) {
+        if (!QDir(homeDir).rmdir(QDir(homeDir).absolutePath())) {
+            QMessageBox::critical(this, "Ошибка", "Не удалось удалить каталог" + QDir(homeDir).path(), QMessageBox::Ok);
+        }
+    }
+
+    RefreshFilesList();
+
+}
+
+void uiOrders::SaveDialogSettings()
+{
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("OrdersDlg");
+    m_settings->OpenGroup();
+    m_settings->setParam("Width", this->geometry().width());
+    m_settings->setParam("Heigth", this->geometry().height());
+    m_settings->CloseGroup();
+    delete m_settings;
+}
+
+void uiOrders::LoadDialogSettings()
+{
+    settings::StoreSettings *m_settings {new settings::StoreSettings()};
+    m_settings->setGroupName("OrdersDlg");
+    m_settings->OpenGroup();
+    this->resize(m_settings->getParam("Width").toInt(), m_settings->getParam("Heigth").toInt());
+    m_settings->CloseGroup();
+    delete m_settings;
+}
+
+void uiOrders::on_uiOrders_accepted()
+{
+    SaveDialogSettings();
 }

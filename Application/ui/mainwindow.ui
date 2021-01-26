@@ -274,6 +274,7 @@
     <addaction name="separator"/>
     <addaction name="menu_Data"/>
     <addaction name="menu_Close"/>
+    <addaction name="act_OrdersList"/>
     <addaction name="act_ReqClose"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -1020,13 +1021,13 @@
   <action name="act_OrdersList">
    <property name="icon">
     <iconset resource="../Res.qrc">
-     <normaloff>:/icons/Icons/orders.ico</normaloff>:/icons/Icons/orders.ico</iconset>
+     <normaloff>:/icons/Icons/attached.ico</normaloff>:/icons/Icons/attached.ico</iconset>
    </property>
    <property name="text">
-    <string>Прикрепленные счета</string>
+    <string>Прикрепленные файлы</string>
    </property>
    <property name="toolTip">
-    <string>Открыть список прикрепленных счетов</string>
+    <string>Открыть список прикрепленных файлов</string>
    </property>
   </action>
  </widget>

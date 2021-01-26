@@ -77,6 +77,8 @@ void MainWindow::StartInit()
     m_ActionsList.append(ui->act_SetCost);
     m_ActionsList.append(ui->act_History);
     m_ActionsList.append(ui->act_ReqClose);
+    m_ActionsList.append(ui->act_OrdersList);
+    m_ActionsList.append(ui->act_RepDesigner);
 
     m_ColumnsActions.append(ui->act_ColNumber);
     m_ColumnsActions.append(ui->act_ColContext);

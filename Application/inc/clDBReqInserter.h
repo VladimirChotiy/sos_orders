@@ -15,6 +15,7 @@ public:
 
     int AddData(QVariantList arg, DBTypes::DBInsertType type);
     void UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType type);
+    bool DeleteRecord(int id, DBTypes::DBRemoveType type);
     bool UpdateUser(int user_id, int index);
 
 private:

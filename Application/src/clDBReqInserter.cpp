@@ -113,6 +113,33 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
     delete m_Prosessor;
 }
 
+bool clDBReqInserter::DeleteRecord(int id, DBTypes::DBRemoveType type)
+{
+    DBProcessor *m_Prosessor {new DBProcessor()};
+    DBTypes::DBResult result {DBTypes::DBResult::OK};
+    QSqlQuery resultQuery {};
+    QString textQuery {};
+    QString errorType;
+    bool retResult {true};
+
+    switch (type) {
+    case DBTypes::DBRemoveType::Order: {
+        textQuery = QString("DELETE FROM tbl_order WHERE tbl_order.id = %1").arg(id);
+        errorType = "Order";
+        break;
+    }
+
+    default: textQuery = "";
+    }
+    std::tie(result, resultQuery) = m_Prosessor->Execute(textQuery);
+    if (isError(result)) {
+        qDebug() << "Error updating " << errorType;
+        retResult = false;
+    }
+    delete m_Prosessor;
+    return retResult;
+}
+
 bool clDBReqInserter::UpdateUser(int user_id, int index)
 {
     DBProcessor *m_Prosessor {new DBProcessor()};
