@@ -15,7 +15,13 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../Res.qrc">
-    <normaloff>:/icons/Icons/three-bars.ico</normaloff>:/icons/Icons/three-bars.ico</iconset>
+    <normaloff>:/icons/Icons/app.ico</normaloff>:/icons/Icons/app.ico</iconset>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>24</width>
+    <height>24</height>
+   </size>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="autoFillBackground">
@@ -268,6 +274,7 @@
     <addaction name="separator"/>
     <addaction name="menu_Data"/>
     <addaction name="menu_Close"/>
+    <addaction name="act_OrdersList"/>
     <addaction name="act_ReqClose"/>
    </widget>
    <widget class="QMenu" name="menu_View">
@@ -334,9 +341,20 @@
     <addaction name="separator"/>
     <addaction name="act_AboutQT"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>&amp;Отчеты</string>
+    </property>
+    <addaction name="act_Card"/>
+    <addaction name="act_LiterList"/>
+    <addaction name="separator"/>
+    <addaction name="act_RepDesigner"/>
+    <addaction name="act_ExportToExel"/>
+   </widget>
    <addaction name="menu_File"/>
-   <addaction name="menuRequests"/>
    <addaction name="menu_View"/>
+   <addaction name="menuRequests"/>
+   <addaction name="menu"/>
    <addaction name="menu_6"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -402,6 +420,8 @@
    <addaction name="act_ReqClose"/>
    <addaction name="separator"/>
    <addaction name="act_Filter"/>
+   <addaction name="act_ExportToExel"/>
+   <addaction name="act_OrdersList"/>
   </widget>
   <action name="act_DBConnection">
    <property name="icon">
@@ -948,6 +968,66 @@
    </property>
    <property name="toolTip">
     <string>Панель фильтров</string>
+   </property>
+  </action>
+  <action name="act_RepDesigner">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/rep_designer.ico</normaloff>:/icons/Icons/rep_designer.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Дизайнер отчетов</string>
+   </property>
+   <property name="toolTip">
+    <string>Открыть дизайнер отчетов</string>
+   </property>
+  </action>
+  <action name="act_Card">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/rep_common.ico</normaloff>:/icons/Icons/rep_common.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Карточка</string>
+   </property>
+   <property name="toolTip">
+    <string>Сформировать карточку заявки</string>
+   </property>
+  </action>
+  <action name="act_LiterList">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/rep_common.ico</normaloff>:/icons/Icons/rep_common.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Литерное дело</string>
+   </property>
+   <property name="toolTip">
+    <string>Сформировать титульный лист литерного дела</string>
+   </property>
+  </action>
+  <action name="act_ExportToExel">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/toExel.ico</normaloff>:/icons/Icons/toExel.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Экспортировать в Exel</string>
+   </property>
+   <property name="toolTip">
+    <string>Экспортировать данные в Exel</string>
+   </property>
+  </action>
+  <action name="act_OrdersList">
+   <property name="icon">
+    <iconset resource="../Res.qrc">
+     <normaloff>:/icons/Icons/attached.ico</normaloff>:/icons/Icons/attached.ico</iconset>
+   </property>
+   <property name="text">
+    <string>Прикрепленные файлы</string>
+   </property>
+   <property name="toolTip">
+    <string>Открыть список прикрепленных файлов</string>
    </property>
   </action>
  </widget>

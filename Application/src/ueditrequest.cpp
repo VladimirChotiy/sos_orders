@@ -3,6 +3,7 @@
 #include "DBProcessor.h"
 #include "settings.h"
 #include "clDBReqInserter.h"
+#include <QDebug>
 
 UEditRequest::UEditRequest(int curUser, int curReq, QWidget *parent) :
     QDialog(parent),
@@ -20,21 +21,41 @@ UEditRequest::~UEditRequest()
 
 void UEditRequest::UpdateRequest(int userIndex)
 {
-    Q_UNUSED(userIndex)
+    bool dataUpdate {false};
+    db::clDBReqInserter *m_DBInserter {new db::clDBReqInserter(this)};
 
     QVariantList sendArgs {};
-    sendArgs << m_ObjectModel->query().value(0).toInt();
-    sendArgs << m_SystemType->query().value(0).toInt();
-    sendArgs << ui->txt_Context->toPlainText();
+    if (CheckRequestChange()){
+        sendArgs.clear();
+        sendArgs << m_SystemType->data(m_SystemType->index(ui->cb_Type->currentIndex(), 0), Qt::DisplayRole).toInt();
+        sendArgs << ui->txt_Context->toPlainText();
+        m_DBInserter->UpdateData(requestID, sendArgs, DBTypes::DBUpdateType::Request);
+        dataUpdate = true;
+    }
 
-    db::clDBReqInserter *m_ReqInserter {new db::clDBReqInserter(this)};
-    m_ReqInserter->UpdateData(requestID, sendArgs, DBTypes::DBUpdateType::Request);
+    if (CheckObjectChange()) {
+        sendArgs.clear();
+        sendArgs << ui->ed_Object->text();
+        sendArgs << ui->txt_Address->toPlainText();
+        sendArgs << ui->ed_Person->text();
+        sendArgs << ui->ed_Telephone->text();
+        sendArgs << ui->ed_Email->text();
+        m_DBInserter->UpdateData(objectID, sendArgs, DBTypes::DBUpdateType::Object);
+        dataUpdate = true;
+    }
 
-    sendArgs.clear();
-    sendArgs << 11 << requestID << ui->txt_Comment->toPlainText() << userIndex;
-    m_ReqInserter->AddData(sendArgs, DBTypes::DBInsertType::Status);
-    delete m_ReqInserter;
+    if (dataUpdate){
+        sendArgs.clear();
+        sendArgs << 11;
+        sendArgs << requestID;
+        sendArgs << "Авто: Данные в заявке были изменены";
+        sendArgs << userIndex;
+        m_DBInserter->AddData(sendArgs, DBTypes::DBInsertType::Status);
+    }
+
+    delete m_DBInserter;
 }
+
 void UEditRequest::on_ueditrequest_accepted()
 {
     SaveDialogSettings();
@@ -46,21 +67,6 @@ void UEditRequest::on_ueditrequest_accepted()
 void UEditRequest::on_ueditrequest_rejected()
 {
     close();
-}
-
-void UEditRequest::upd_RequestModelIndex_changed(int index)
-{
-    //Q_UNUSED(index)
-
-    int typeID {m_RequestModel->data(m_RequestModel->index(index,3)).toInt()};
-    m_SystemProxy->setFilterRegExp(QString::number(typeID));
-    int cbRow {m_SystemProxy->mapToSource(m_SystemProxy->index(0,0)).row()};
-    ui->cb_Type->setCurrentIndex(cbRow);
-
-    int objID {m_RequestModel->data(m_RequestModel->index(index,4)).toInt()};
-    m_ObjectProxy->setFilterRegExp(QString::number(objID));
-    cbRow = m_ObjectProxy->mapToSource(m_ObjectProxy->index(0,0)).row();
-    ui->cb_Object->setCurrentIndex(cbRow);
 }
 
 void UEditRequest::SaveDialogSettings()
@@ -89,37 +95,82 @@ void UEditRequest::StartInit()
      ui->setupUi(this);
      LoadDialogSettings();
 
-     db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
+    db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
 
-     m_RequestModel = new QSqlQueryModel(this);
-     m_RequestModel->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::RequestEdit, requestID));
-     m_RequestMapper = new QDataWidgetMapper(this);
-     m_RequestMapper->setModel(m_RequestModel);
-     m_RequestMapper->addMapping(ui->ed_ID, 0);
-     m_RequestMapper->addMapping(ui->txt_Context, 1);
-     m_RequestMapper->addMapping(ui->txt_Comment, 2);
-     m_RequestMapper->addMapping(ui->ed_Status, 6);
-     m_RequestMapper->addMapping(ui->ed_Date, 7);
-     QObject::connect(m_RequestMapper, SIGNAL(currentIndexChanged(int)), this, SLOT(upd_RequestModelIndex_changed(int)));
+    m_SystemType = new QSqlQueryModel(this);
+    m_SystemType->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::SystemType));
+    ui->cb_Type->setModel(m_SystemType);
+    ui->cb_Type->setModelColumn(1);
 
+    m_StatusModel = new QSqlQueryModel(this);
+    m_StatusModel->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::Status, 1));
+    ui->cb_Status->setModel(m_StatusModel);
+    ui->cb_Status->setModelColumn(1);
 
-     m_SystemType = new QSqlQueryModel(this);
-     m_SystemType->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::SystemType));
-     ui->cb_Type->setModel(m_SystemType);
-     ui->cb_Type->setModelColumn(1);
-     m_SystemProxy = new QSortFilterProxyModel(this);
-     m_SystemProxy->setSourceModel(m_SystemType);
-     m_SystemProxy->setFilterKeyColumn(0);
+    QSqlQuery RequestQuery {m_DBProcessor->prepareQuery(DBTypes::QueryType::RequestEdit, requestID)};
+    delete m_DBProcessor;
+    RequestQuery.next();
+    ui->ed_ID->setText(RequestQuery.value(0).toString());
+    ui->txt_Context->setText(RequestQuery.value(1).toString());
+    ui->txt_Comment->setText(RequestQuery.value(2).toString());
+    ui->ed_Object->setText(RequestQuery.value(4).toString());
+    ui->txt_Address->setText(RequestQuery.value(5).toString());
+    ui->ed_Person->setText(RequestQuery.value(6).toString());
+    ui->ed_Telephone->setText(RequestQuery.value(7).toString());
+    ui->ed_Email->setText(RequestQuery.value(8).toString());
 
-     m_ObjectModel = new QSqlQueryModel(this);
-     m_ObjectModel->setQuery(m_DBProcessor->prepareQuery(DBTypes::QueryType::Object));
-     ui->cb_Object->setModel(m_ObjectModel);
-     ui->cb_Object->setModelColumn(1);
-     m_ObjectProxy = new QSortFilterProxyModel(this);
-     m_ObjectProxy->setSourceModel(m_ObjectModel);
-     m_SystemProxy->setFilterKeyColumn(0);
+    m_SystemProxy = new QSortFilterProxyModel(this);
+    m_SystemProxy->setSourceModel(m_SystemType);
+    m_SystemProxy->setFilterKeyColumn(0);
+    m_SystemProxy->setFilterRegExp(QString::number(RequestQuery.value(3).toInt()));
+    int cbTypeRow {m_SystemProxy->mapToSource(m_SystemProxy->index(0, 0)).row()};
+    ui->cb_Type->setCurrentIndex(cbTypeRow);
+    delete m_SystemProxy;
 
-     m_RequestMapper->toFirst();
+    m_StatusProxy = new QSortFilterProxyModel(this);
+    m_StatusProxy->setSourceModel(m_StatusModel);
+    m_StatusProxy->setFilterKeyColumn(0);
+    m_StatusProxy->setFilterRegExp(QString::number(RequestQuery.value(9).toInt()));
+    int cbStatusRow {m_StatusProxy->mapToSource(m_StatusProxy->index(0, 0)).row()};
+    ui->cb_Status->setCurrentIndex(cbStatusRow);
 
-     delete m_DBProcessor;
+    objectID = RequestQuery.value(10).toInt();
+
+    chgRequestData.txtContext = ui->txt_Context->toPlainText();
+    chgRequestData.typeID = m_SystemType->data(m_SystemType->index(ui->cb_Type->currentIndex(), 0), Qt::DisplayRole).toInt();
+
+    chgObjectData.txtName = ui->ed_Object->text();
+    chgObjectData.txtPerson = ui->ed_Person->text();
+    chgObjectData.txtAddress = ui->txt_Address->toPlainText();
+    chgObjectData.txtTelephone = ui->ed_Telephone->text();
+    chgObjectData.txtEmail = ui->ed_Email->text();
+
+    chgStatusData.txtComment = ui->txt_Comment->toPlainText();
+    chgStatusData.typeID = 0;
+}
+
+bool UEditRequest::CheckRequestChange()
+{
+    int typeID {m_SystemType->data(m_SystemType->index(ui->cb_Type->currentIndex(), 0), Qt::DisplayRole).toInt()};
+    if ((ui->txt_Context->toPlainText() != chgRequestData.txtContext) || (typeID != chgRequestData.typeID)){
+        chgRequestData.isChanged = true;
+    }else {
+        chgRequestData.isChanged = false;
+    }
+    return chgRequestData.isChanged;
+}
+
+bool UEditRequest::CheckObjectChange()
+{
+    if ((ui->ed_Object->text() != chgObjectData.txtName) || (ui->ed_Person->text() != chgObjectData.txtPerson) || (ui->txt_Address->toPlainText() != chgObjectData.txtAddress) || (ui->ed_Telephone->text() != chgObjectData.txtTelephone) || (ui->ed_Email->text() != chgObjectData.txtEmail)){
+        chgObjectData.isChanged = true;
+    }else {
+        chgObjectData.isChanged = false;
+    }
+    return chgObjectData.isChanged;
+}
+
+bool UEditRequest::CheckStatusChange()
+{
+    return chgStatusData.isChanged;
 }

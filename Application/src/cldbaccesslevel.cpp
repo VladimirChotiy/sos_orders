@@ -27,6 +27,8 @@ clDBAccessLevel::clDBAccessLevel(int id, QObject *parent) :
     actions.append(accessQuery.value("act_ReqCost").toBool());
     actions.append(accessQuery.value("act_History").toBool());
     actions.append(accessQuery.value("act_ReqClose").toBool());
+    actions.append(accessQuery.value("act_AttachFiles").toBool());
+    actions.append(accessQuery.value("act_ReportDesigner").toBool());
 
     columns.append(true);
     columns.append(accessQuery.value("col_Context").toBool());

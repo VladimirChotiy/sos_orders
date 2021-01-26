@@ -32,5 +32,15 @@
         <file>Icons/table_all.ico</file>
         <file>Icons/req_filter.ico</file>
         <file>Icons/checklist.ico</file>
+        <file>Icons/logo.png</file>
+        <file>Icons/app.ico</file>
+        <file>Icons/rep_designer.ico</file>
+        <file>Icons/rep_common.ico</file>
+        <file>Icons/toExel.ico</file>
+        <file>Icons/attached.ico</file>
+        <file>Icons/orders.ico</file>
+        <file>Icons/pdf.ico</file>
+        <file>Icons/excel_files.ico</file>
+        <file>Icons/word_files.ico</file>
     </qresource>
 </RCC>

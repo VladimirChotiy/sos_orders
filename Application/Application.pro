@@ -1,4 +1,4 @@
-QT += core gui sql
+QT += core gui sql printsupport qml axcontainer
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -9,7 +9,8 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    src/uistatusfilter.cpp \
+    src/uiorders.cpp \
+    src/clExelExport.cpp \
     src/cldbfilter.cpp \
     src/cldbaccesslevel.cpp \
     src/cldbprotocolquerymodel.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     inc/DBProcessor.h \
     inc/clDBMainQueryModel.h \
     inc/clDBReqInserter.h \
+    inc/clExelExport.h \
     inc/cldbaccesslevel.h \
     inc/cldbfilter.h \
     inc/cldbprotocolquerymodel.h \
@@ -49,12 +51,12 @@ HEADERS += \
     inc/uiaddnewwizard.h \
     inc/uichangestatus.h \
     inc/uichooseengineer.h \
+    inc/uiorders.h \
     inc/uiprotocolview.h \
-    inc/uisetcost.h \
-    inc/uistatusfilter.h
+    inc/uisetcost.h
 
 FORMS += \
-    ui/uistatusfilter.ui \
+    ui/uiorders.ui \
     ui/uiprotocolview.ui \
     ui/uisetcost.ui \
     ui/uichangestatus.ui \
@@ -69,13 +71,18 @@ FORMS += \
 RESOURCES += \
     Res.qrc
 
-LIBS += -L$$PWD/../shared/lib/ -lStoreSettings
+win32: LIBS += -L$$PWD/../shared/lib/ -lStoreSettings
 
-win32:RC_ICONS = $$PWD/Icons/three-bars.ico
+#win32:RC_ICONS = $$PWD/Icons/three-bars.ico
+win32:RC_ICONS = $$PWD/Icons/app.ico
 
 CONFIG(release, debug|release) {
     DESTDIR = $$OUT_PWD/../../SOSRequsetRelease
 
+    win32: LIBS += -L$$PWD/../LimeReport/lib64/release/ -llimereport
+
+    INCLUDEPATH += $$PWD/../LimeReport/lib64/release/include
+    DEPENDPATH += $$PWD/../LimeReport/lib64/release/include
 
     unix:OBJECTS_DIR = ../common/build/o/unix
     win32:OBJECTS_DIR = ../common/build/o/win32
@@ -87,4 +94,9 @@ CONFIG(release, debug|release) {
     qnx: target.path = /tmp/$${TARGET}/bin
     else: unix:!android: target.path = /opt/$${TARGET}/bin
     !isEmpty(target.path): INSTALLS += target
+
+    win32: LIBS += -L$$PWD/../LimeReport/lib64/debug/ -llimereportd
+    INCLUDEPATH += $$PWD/../LimeReport/lib64/debug/include
+    DEPENDPATH += $$PWD/../LimeReport/lib64/debug/include
+
 }

@@ -44,6 +44,11 @@ int clDBReqInserter::AddData(QVariantList arg, DBTypes::DBInsertType type)
         errorType = "COST";
         break;
     }
+    case DBTypes::DBInsertType::Order: {
+        textQuery = "INSERT INTO tbl_order (name, type, parent_id) VALUES(?, ?, ?)";
+        errorType = "ORDER";
+        break;
+    }
     default: textQuery = "";
     }
 
@@ -74,7 +79,7 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
 
     switch (type) {
     case DBTypes::DBUpdateType::Request: {
-        textQuery = QString("UPDATE tbl_requests SET obj_id=?, type_id=?, context=? WHERE id=%1").arg(id);
+        textQuery = QString("UPDATE tbl_requests SET type_id=?, context=? WHERE id=%1").arg(id);
         errorType = "Request";
         break;
     }
@@ -88,6 +93,16 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
         errorType = "Cost";
         break;
     }
+    case DBTypes::DBUpdateType::Object: {
+        textQuery = QString("UPDATE tbl_objects SET name=?, address=?, person=?, telephone=?, email=? WHERE id = %1").arg(id);
+        errorType = "Object";
+        break;
+    }
+    case DBTypes::DBUpdateType::Order: {
+        textQuery = QString("UPDATE tbl_order SET name=?, type=?, parent_id=? WHERE id = %1").arg(id);
+        errorType = "Order";
+        break;
+    }
 
     default: textQuery = "";
     }
@@ -96,6 +111,33 @@ void clDBReqInserter::UpdateData(int id, QVariantList arg, DBTypes::DBUpdateType
         qDebug() << "Error updating " << errorType;
     }
     delete m_Prosessor;
+}
+
+bool clDBReqInserter::DeleteRecord(int id, DBTypes::DBRemoveType type)
+{
+    DBProcessor *m_Prosessor {new DBProcessor()};
+    DBTypes::DBResult result {DBTypes::DBResult::OK};
+    QSqlQuery resultQuery {};
+    QString textQuery {};
+    QString errorType;
+    bool retResult {true};
+
+    switch (type) {
+    case DBTypes::DBRemoveType::Order: {
+        textQuery = QString("DELETE FROM tbl_order WHERE tbl_order.id = %1").arg(id);
+        errorType = "Order";
+        break;
+    }
+
+    default: textQuery = "";
+    }
+    std::tie(result, resultQuery) = m_Prosessor->Execute(textQuery);
+    if (isError(result)) {
+        qDebug() << "Error updating " << errorType;
+        retResult = false;
+    }
+    delete m_Prosessor;
+    return retResult;
 }
 
 bool clDBReqInserter::UpdateUser(int user_id, int index)

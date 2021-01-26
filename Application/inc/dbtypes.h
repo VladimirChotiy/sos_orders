@@ -19,14 +19,21 @@ enum class DBInsertType {
     Object,
     Request,
     Status,
-    Cost
+    Cost,
+    Order
 };
 
 enum class DBUpdateType {
     Request,
     Status,
     Engineer,
-    Cost
+    Cost,
+    Object,
+    Order
+};
+
+enum class DBRemoveType {
+    Order
 };
 
 enum class QueryType {
@@ -39,7 +46,10 @@ enum class QueryType {
     Cost,
     Changes,
     Accsess,
-    Dates
+    Dates,
+    RepCovert,
+    RepTitle,
+    Order
 };
 
 }

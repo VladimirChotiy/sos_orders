@@ -14,7 +14,9 @@
 #include "uichangestatus.h"
 #include "uisetcost.h"
 #include "uiprotocolview.h"
+#include "uiorders.h"
 #include "cldbfilter.h"
+#include <LimeReport>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -31,6 +33,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    LimeReport::ReportEngine *m_LReport;
     UConnect_db *ui_connect;
     QLabel *sts_connection;
     QLabel *sts_accsess;
@@ -40,6 +43,7 @@ private:
     uiChooseEngineer *ui_ChooseEngineer;
     uiChangeStatus *ui_ChangeStatus;
     uiSetCost *ui_SetCost;
+    uiOrders *ui_OrdersList;
     uiProtocolView *ui_ProtocolView;
     db::clDBMainQueryModel *mainTableModel;
     db::clDBAccessLevel *m_AccessLevel;
@@ -67,6 +71,7 @@ public slots:
 private slots:
     void usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous);
     void usr_setAccsessFilter();
+    void usr_StatusActions_load(const QAction *action);
     void upd_statusBar_dbConnection(bool status);
     void on_act_DBConnection_triggered();
     void on_act_Exit_triggered();
@@ -102,6 +107,16 @@ private slots:
     void on_cb_OnlyResp_toggled(bool checked);
     void on_ded_fBeginDate_dateTimeChanged(const QDateTime &dateTime);
     void on_ded_fEndDate_dateTimeChanged(const QDateTime &dateTime);
+
+    void on_act_RepDesigner_triggered();
+
+    void on_act_Card_triggered();
+
+    void on_act_LiterList_triggered();
+
+    void on_act_ExportToExel_triggered();
+
+    void on_act_OrdersList_triggered();
 
 protected:
     void closeEvent(QCloseEvent *event);

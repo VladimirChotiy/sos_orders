@@ -4,6 +4,7 @@
 #include "DBProcessor.h"
 #include "clDBReqInserter.h"
 #include <QSqlQueryModel>
+#include <QAbstractButton>
 #include <QMessageBox>
 #include <QDebug>
 
