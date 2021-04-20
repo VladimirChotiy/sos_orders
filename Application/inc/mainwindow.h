@@ -107,15 +107,10 @@ private slots:
     void on_cb_OnlyResp_toggled(bool checked);
     void on_ded_fBeginDate_dateTimeChanged(const QDateTime &dateTime);
     void on_ded_fEndDate_dateTimeChanged(const QDateTime &dateTime);
-
     void on_act_RepDesigner_triggered();
-
     void on_act_Card_triggered();
-
     void on_act_LiterList_triggered();
-
     void on_act_ExportToExel_triggered();
-
     void on_act_OrdersList_triggered();
 
 protected:

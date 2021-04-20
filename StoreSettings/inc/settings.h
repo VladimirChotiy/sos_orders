@@ -21,6 +21,8 @@ public:
     void setGroupName(const QString grName);
     void CloseGroup() const;
     void OpenGroup() const;
+    std::pair<int, int> GetFormGeometry(const QString formName);
+    void SetFormGeometry(const QString formName, int fWidth, int fHeigth);
 
 private:
     QString groupName;

@@ -19,11 +19,9 @@ StoreSettings::StoreSettings()
     }
 
     m_settings = new QSettings(fullPath, QSettings::IniFormat);
-    //qDebug() << "Create settings!";
 }
 
 StoreSettings::~StoreSettings(){
-    //qDebug() << "Delete settings!";
     delete m_settings;
 }
 
@@ -77,6 +75,26 @@ void StoreSettings::CloseGroup() const
 void StoreSettings::OpenGroup() const
 {
     m_settings->beginGroup(groupName);
+}
+
+std::pair<int, int> StoreSettings::GetFormGeometry(const QString formName)
+{
+    int formWidth;
+    int formHeigth;
+
+    m_settings->beginGroup(formName);
+    formWidth = m_settings->value("Width", 300).toInt();
+    formHeigth = m_settings->value("Heigth", 200).toInt();
+    m_settings->endGroup();
+    return std::make_pair(formWidth, formHeigth);
+}
+
+void StoreSettings::SetFormGeometry(const QString formName, int fWidth, int fHeigth)
+{
+    m_settings->beginGroup(formName);
+    m_settings->setValue("Width", fWidth);
+    m_settings->setValue("Heigth", fHeigth);
+    m_settings->endGroup();
 }
 
 }

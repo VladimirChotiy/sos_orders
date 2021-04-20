@@ -38,7 +38,7 @@ void uiProtocolView::SaveDialogSettings()
     m_settings->setGroupName("ProtocolViewDlg");
     m_settings->OpenGroup();
     m_settings->setParam("Width", this->geometry().width());
-    m_settings->setParam("Heigth", this->geometry().height());
+    m_settings->setParam("  ", this->geometry().height());
     m_settings->setParam("TblGeometry", ui->tbl_Protocol->horizontalHeader()->saveState());
     m_settings->CloseGroup();
     delete m_settings;
