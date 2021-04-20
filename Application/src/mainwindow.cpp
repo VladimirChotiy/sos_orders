@@ -268,8 +268,12 @@ void MainWindow::ConnectToDB()
     m_DBFilter->usr_fStatusFilter_changed(nullptr);
 
     mainTableModel = new db::clDBMainQueryModel(this);
-    ui->tbl_Requests->setModel(mainTableModel);
+    m_mainProxyModel = new QSortFilterProxyModel(this);
+    m_mainProxyModel->setSourceModel(mainTableModel);
+    ui->tbl_Requests->setModel(m_mainProxyModel);
     QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
+
+    m_mainProxyModel->setFilterKeyColumn(-1);
 
     ui->ded_fBeginDate->setDateTime(firstStatusDateTime);
     ui->ded_fEndDate->setDate(QDate::currentDate());
@@ -692,4 +696,10 @@ void MainWindow::on_act_OrdersList_triggered()
     ui_OrdersList = new uiOrders(sendID, this);
     ui_OrdersList->setAttribute(Qt::WA_DeleteOnClose);
     ui_OrdersList->open();
+}
+
+void MainWindow::on_ed_fRegExp_textChanged(const QString &arg1)
+{
+    qDebug() << arg1;
+    m_mainProxyModel->setFilterWildcard(arg1);
 }

@@ -5,6 +5,7 @@
 #include <QLabel>
 #include <QString>
 #include <QDateTime>
+#include <QSortFilterProxyModel>
 #include "uconnect_db.h"
 #include "ueditrequest.h"
 #include "clDBMainQueryModel.h"
@@ -45,6 +46,7 @@ private:
     uiSetCost *ui_SetCost;
     uiOrders *ui_OrdersList;
     uiProtocolView *ui_ProtocolView;
+    QSortFilterProxyModel *m_mainProxyModel;
     db::clDBMainQueryModel *mainTableModel;
     db::clDBAccessLevel *m_AccessLevel;
     db::clDBFilter *m_DBFilter;
@@ -112,6 +114,8 @@ private slots:
     void on_act_LiterList_triggered();
     void on_act_ExportToExel_triggered();
     void on_act_OrdersList_triggered();
+
+    void on_ed_fRegExp_textChanged(const QString &arg1);
 
 protected:
     void closeEvent(QCloseEvent *event);
