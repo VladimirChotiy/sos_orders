@@ -271,6 +271,7 @@ void MainWindow::ConnectToDB()
     m_mainProxyModel = new QSortFilterProxyModel(this);
     m_mainProxyModel->setSourceModel(mainTableModel);
     ui->tbl_Requests->setModel(m_mainProxyModel);
+    //ui->tbl_Requests->setModel(mainTableModel);
     QObject::connect(ui->tbl_Requests->selectionModel(), SIGNAL(currentRowChanged(const QModelIndex, const QModelIndex)), this, SLOT(usr_ActionsActivity_check(const QModelIndex, const QModelIndex)));
 
     m_mainProxyModel->setFilterKeyColumn(-1);
@@ -303,8 +304,8 @@ void MainWindow::upd_statusBar_dbConnection(bool status)
 void MainWindow::usr_ActionsActivity_check(const QModelIndex &current, const QModelIndex &previous)
 {
     Q_UNUSED(previous);
-    int statusID {mainTableModel->data(mainTableModel->index(current.row(), 16), Qt::DisplayRole).toInt()};
-
+    //int statusID {mainTableModel->data(mainTableModel->index(current.row(), 16), Qt::DisplayRole).toInt()};
+    int statusID = m_mainProxyModel->data(m_mainProxyModel->index(current.row(), 16), Qt::DisplayRole).toInt();
     if (m_AccessLevel->getActionAccessList()->value(1)) {
         if (ui->tbl_Requests->currentIndex().row() > -1) {
             ui->act_ReqEdit->setEnabled(true);
@@ -390,7 +391,7 @@ void MainWindow::on_act_Refresh_triggered()
 
 void MainWindow::on_act_ReqEdit_triggered()
 {
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_editRequest = new UEditRequest(dbUserID, sendID, this);
     ui_editRequest->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_editRequest, SIGNAL(db_RequestUpdate()), this, SLOT(on_act_Refresh_triggered()));
@@ -399,7 +400,7 @@ void MainWindow::on_act_ReqEdit_triggered()
 
 void MainWindow::on_act_AcceptRequest_triggered()
 {
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     QMessageBox engAcceptBox(QMessageBox::Question, "Принять в обработку", QString("Вы действительно хотите принять в обработку заявку №%1?").arg(sendID), QMessageBox::Ok | QMessageBox::Cancel, this);
     if (engAcceptBox.exec() == QMessageBox::Ok) {
         db::clDBReqInserter *m_ReqInserter {new db::clDBReqInserter(this)};
@@ -422,7 +423,7 @@ void MainWindow::on_act_AcceptRequest_triggered()
 
 void MainWindow::on_act_ChangeEngineer_triggered()
 {
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_ChooseEngineer = new uiChooseEngineer(std::make_pair(sendID, dbUserID), this);
     ui_ChooseEngineer->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_ChooseEngineer, SIGNAL(usr_Engineer_update()), this, SLOT(on_act_Refresh_triggered()));
@@ -431,8 +432,8 @@ void MainWindow::on_act_ChangeEngineer_triggered()
 
 void MainWindow::on_act_ChangeStatus_triggered()
 {
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
-    int stateID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 16), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int stateID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 16), Qt::DisplayRole).toInt()};
     ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), stateID, this);
     ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_ChangeStatus, SIGNAL(usr_ReqStatus_update()), this, SLOT(on_act_Refresh_triggered()));
@@ -441,7 +442,7 @@ void MainWindow::on_act_ChangeStatus_triggered()
 
 void MainWindow::on_act_ReqClose_triggered()
 {
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_ChangeStatus = new uiChangeStatus(std::make_pair(sendID, dbUserID), 6, this);
     ui_ChangeStatus->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_ChangeStatus, SIGNAL(usr_ReqStatus_update()), this, SLOT(on_act_Refresh_triggered()));
@@ -450,7 +451,7 @@ void MainWindow::on_act_ReqClose_triggered()
 
 void MainWindow::on_act_SetCost_triggered()
 {
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 17), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 17), Qt::DisplayRole).toInt()};
     ui_SetCost = new uiSetCost(std::make_pair(sendID, dbUserID), this);
     ui_SetCost->setAttribute(Qt::WA_DeleteOnClose);
     QObject::connect(ui_SetCost, SIGNAL(usr_ReqCost_update()), this, SLOT(on_act_Refresh_triggered()));
@@ -459,7 +460,7 @@ void MainWindow::on_act_SetCost_triggered()
 
 void MainWindow::on_act_History_triggered()
 {
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_ProtocolView = new uiProtocolView(sendID, this);
     ui_ProtocolView->setAttribute(Qt::WA_DeleteOnClose);
     ui_ProtocolView->open();
@@ -615,7 +616,7 @@ void MainWindow::on_act_RepDesigner_triggered()
 void MainWindow::on_act_Card_triggered()
 {
     QSqlQuery reportQuery {};
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     m_LReport->loadFromFile(QDir::currentPath() + "/ReportTemplates/Covert.lrxml");
     db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
     reportQuery = m_DBProcessor->prepareQuery(DBTypes::QueryType::RepCovert, sendID);
@@ -638,7 +639,7 @@ void MainWindow::on_act_LiterList_triggered()
     QString litNumber = QInputDialog::getText(this, "Введите номер литерного дела", "Номер", QLineEdit::EchoMode::Normal, "", &bOK);
     if (bOK && (!litNumber.isEmpty())) {
         QSqlQuery reportQuery {};
-        int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+        int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
         m_LReport->loadFromFile(QDir::currentPath() + "/ReportTemplates/TitleList.lrxml");
         db::DBProcessor *m_DBProcessor {new db::DBProcessor()};
         reportQuery = m_DBProcessor->prepareQuery(DBTypes::QueryType::RepTitle, sendID);
@@ -692,7 +693,7 @@ void MainWindow::on_act_ExportToExel_triggered()
 
 void MainWindow::on_act_OrdersList_triggered()
 {
-    int sendID {mainTableModel->data(mainTableModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
+    int sendID {m_mainProxyModel->data(m_mainProxyModel->index(ui->tbl_Requests->currentIndex().row(), 0), Qt::DisplayRole).toInt()};
     ui_OrdersList = new uiOrders(sendID, this);
     ui_OrdersList->setAttribute(Qt::WA_DeleteOnClose);
     ui_OrdersList->open();
